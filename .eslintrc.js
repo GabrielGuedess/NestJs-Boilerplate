@@ -20,6 +20,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
     'plugin:@darraghor/nestjs-typed/recommended',
+    'plugin:@darraghor/nestjs-typed/no-swagger',
     'plugin:jest/recommended',
     'plugin:jest/style',
     'prettier',
