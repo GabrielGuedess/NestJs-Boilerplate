@@ -1,6 +1,7 @@
 import { CacheModule, Module } from '@nestjs/common';
 
 import * as redisStore from 'cache-manager-redis-store';
+import { PrismaService } from 'infra/database/prisma/prisma.service';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -16,6 +17,6 @@ import { AppService } from './app.service';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, PrismaService],
 })
 export class AppModule {}
