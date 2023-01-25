@@ -20,6 +20,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
     'plugin:@darraghor/nestjs-typed/recommended',
+    'plugin:@darraghor/nestjs-typed/no-swagger',
     'plugin:jest/recommended',
     'plugin:jest/style',
     'prettier',
@@ -35,6 +36,7 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    'jest/expect-expect': 'off',
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     'import/extensions': [
       'error',
