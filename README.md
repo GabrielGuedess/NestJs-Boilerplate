@@ -46,7 +46,7 @@ NestJs Boilerplate
     <a href="https://github.com/GabrielGuedess/NestJs-Boilerplate/issues">Request Feature</a>
   </p>
 
-![image](https://user-images.githubusercontent.com/64827875/232729976-7d0fce57-791c-4bce-a2fd-deca76529af7.png)
+![image](https://github.com/GabrielGuedess/NestJs-Boilerplate/assets/64827875/1129f844-627b-4a66-a8c0-0835f1b25caa)
 
 <!-- TABLE OF CONTENTS -->
 
@@ -123,13 +123,13 @@ To clone and run this application, you'll need _Git_ and _Docker_ installed on y
 ### Installation
 
 ```sh
-git clone https://github.com/GabrielGuedess/api-mobilogistica
+git clone https://github.com/GabrielGuedess/NestJs-Boilerplate
 ```
 
 2. Go into the repository
 
 ```sh
-cd api-mobilogistica
+cd NestJs-Boilerplate
 ```
 
 3. Run Docker.
