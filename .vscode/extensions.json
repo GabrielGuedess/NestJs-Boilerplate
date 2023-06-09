@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "matt-meyers.vscode-dbml",
+    "yoavbls.pretty-ts-errors",
+    "EditorConfig.EditorConfig"
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.fixAll.tslint": true,
+  },
+
+  "[json][jsonc][yaml]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "eslint.validate": [
+    "mdx",
+    "markdown",
+    "javascript",
+    "typescript",
+  ],
+
+  "search.exclude": {
+    "package-lock.json": true,
+    "yarn.lock": true,
+    "pnpm-lock.yaml": true,
+  },
+
+  "prettier.ignorePath": ".gitignore",
+  "prettier.prettierPath": "./node_modules/prettier",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "mdx.experimentalLanguageServer": true,
+
+  "material-icon-theme.folders.associations": {
+    "workflows": "ci",
+    "ISSUE_TEMPLATE": "error",
+    "http": "container",
+    "modules": "components",
+    "dtos": "typescript",
+    "useCases": "controller",
+    "mappers": "meta",
+    "eslint-config": "tools",
+    "ui": "container",
+    "MailProvider": "Mail",
+    "queries": "command",
+    "fragments": "mjml"
+  },
+
+  "material-icon-theme.files.associations": {
+    ".ts-prunerc": "typst",
+    ".czrc": "commitlint",
+    "prismaClient.ts": "prisma",
+    "prisma.ts": "prisma",
+    "stories.tsx": "storybook",
+    "test.tsx": "test-jsx",
+    "test.ts": "test-ts",
+    "spec.tsx": "test-jsx",
+    "spec.ts": "test-ts",
+    "mock.ts": "log",
+    "mocks.ts": "log",
+    "apollo.ts": "apollo",
+    "husky.sh": "husky"
+  }
+}

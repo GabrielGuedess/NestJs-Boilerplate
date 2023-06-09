@@ -12,6 +12,8 @@ COPY --chown=node:node . .
 
 RUN pnpm install
 
+RUN pnpm prisma generate
+
 USER node
 
 # BUILD
@@ -32,7 +34,9 @@ RUN pnpm build
 
 ENV NODE_ENV production
 
-RUN pnpm install --prod
+RUN pnpm install --prod --ignore-scripts
+
+RUN npx prisma generate && npx prisma db push
 
 USER node
 
@@ -43,4 +47,4 @@ FROM node:18-alpine As production
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
 
-CMD [ "node", "dist/main.js" ]
+CMD [ "node", "dist/src/main.js" ]

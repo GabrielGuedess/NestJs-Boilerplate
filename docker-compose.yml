@@ -1,6 +1,6 @@
 services:
   app:
-    container_name: api
+    container_name: api_nestjs
     build:
       dockerfile: Dockerfile
       context: .
@@ -8,25 +8,16 @@ services:
     volumes:
       - .:/usr/src/app
     env_file:
-    - .env
+      - .env
     command: pnpm start:dev
     ports:
       - 3000:3000
     depends_on:
       - db
-      - redis
-
-  redis:
-    image: redis:latest
-    container_name: redis
-    ports:
-      - '6379:6379'
-    volumes:
-      - redis:/data
 
   db:
     image: postgres:latest
-    container_name: db
+    container_name: db_nestjs
     restart: always
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
@@ -38,7 +29,5 @@ services:
       - pgdata:/data/postgres
 
 volumes:
-  redis:
-      driver: local
   pgdata:
     driver: local

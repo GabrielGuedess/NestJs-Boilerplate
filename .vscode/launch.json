@@ -1,0 +1,32 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Nest: Chrome",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Nest: Node",
+      "program": "${workspaceFolder}/node_modules/.bin/next",
+      "args": [
+        "dev"
+      ],
+      "autoAttachChildProcesses": true,
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "console": "integratedTerminal"
+    },
+  ],
+  "compounds": [
+    {
+      "name": "Nest: Full",
+      "configurations": ["Nest: Node", "Nest: Chrome"]
+    }
+  ]
+}
