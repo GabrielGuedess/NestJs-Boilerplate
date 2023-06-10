@@ -1,4 +1,4 @@
-FROM node:18-alpine As development
+FROM node:20-alpine As development
 
 RUN npm i -g pnpm
 
@@ -18,7 +18,7 @@ USER node
 
 # BUILD
 
-FROM node:18 As build
+FROM node:20 As build
 
 RUN npm i -g pnpm
 
@@ -42,7 +42,7 @@ USER node
 
 # PRODUCTION
 
-FROM node:18-alpine As production
+FROM node:20-alpine As production
 
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
