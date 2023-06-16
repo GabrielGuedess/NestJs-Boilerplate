@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.0.0...v1.0.1) (2023-06-16)
+
+
+### Bug Fixes
+
+* **deps:** update nest monorepo to v10 ([db29f33](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/db29f33e1232e94cadc6538509f7c10b02a2331c))
+
 # 1.0.0 (2023-06-09)
 
 
