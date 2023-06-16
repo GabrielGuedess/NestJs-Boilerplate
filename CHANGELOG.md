@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.0.1...v1.0.2) (2023-06-16)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @nestjs/cache-manager to v2 ([772da73](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/772da73ccd031fdc3acdfdae2bd8ac3c0ac2da1d))
+
 ## [1.0.1](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.0.0...v1.0.1) (2023-06-16)
 
 
