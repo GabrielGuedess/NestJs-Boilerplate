@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.0.3...v1.0.4) (2023-07-14)
+
+
+### Bug Fixes
+
+* **deps:** update prisma monorepo to v5 ([d32921e](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/d32921e18265d593c1a71e2698bbbc84bc1f3b6e))
+
 ## [1.0.3](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.0.2...v1.0.3) (2023-06-19)
 
 
