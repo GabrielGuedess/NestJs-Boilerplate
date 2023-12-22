@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.0.4...v1.0.5) (2023-12-22)
+
+
+### Bug Fixes
+
+* **deps:** update dependency reflect-metadata to v0.2.1 ([1c97655](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/1c97655e279dacfdbce0e5265881ddef66982208))
+
 ## [1.0.4](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.0.3...v1.0.4) (2023-07-14)
 
 
