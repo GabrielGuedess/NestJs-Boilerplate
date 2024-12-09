@@ -6,7 +6,7 @@ orbs:
 jobs:
   test-api:
     docker:
-      - image: cimg/python:3.12.7
+      - image: cimg/python:3.12.8
     steps:
       - checkout
       - run:
