@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.0...v1.1.1) (2024-12-28)
+
+
+### Bug Fixes
+
+* remove old template files ([31897a0](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/31897a0ecc146e74bd53989aa63ac3a0e1a892d4))
+
 # [1.1.0](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.0.5...v1.1.0) (2024-12-28)
 
 
