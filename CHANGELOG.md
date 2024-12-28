@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.0.5...v1.1.0) (2024-12-28)
+
+
+### Features
+
+* add graphql ([fc4fd54](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/fc4fd5427dcfea4ca79da434f58f8e21b72ce35a))
+
 ## [1.0.5](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.0.4...v1.0.5) (2023-12-22)
 
 
