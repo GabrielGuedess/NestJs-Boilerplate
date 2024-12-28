@@ -31,7 +31,14 @@ const config = [
   ...compat.extends('@kesills/airbnb-typescript'),
 
   {
-    ignores: ['**/coverage', '**/plopfile.mjs', '**/generated/**'],
+    ignores: [
+      'dist',
+      '**/coverage',
+      'node_modules',
+      '**/generator.mjs',
+      '**/plopfile.mjs',
+      '**/generated/**',
+    ],
   },
 
   {
@@ -116,7 +123,6 @@ const config = [
       'jest/no-identical-title': 'error',
       'promise/catch-or-return': 'error',
       'unicorn/no-keyword-prefix': 'off',
-      'unicorn/no-array-for-each': 'off',
       'unicorn/no-nested-ternary': 'off',
       'import/no-default-export': 'error',
       'node/no-unpublished-import': 'off',
@@ -573,6 +579,7 @@ const config = [
     files: ['src/infrastructure/env.ts'],
 
     rules: {
+      'zod/require-strict': 'off',
       'perfectionist/sort-objects': 'off',
     },
   },
@@ -637,7 +644,12 @@ const config = [
       'import/no-default-export': 'off',
     },
 
-    files: ['plopfile.mjs', 'jest.config.ts', 'commitlint.config.ts'],
+    files: [
+      'plopfile.mjs',
+      'jest.config.ts',
+      'jest.config.husky.ts',
+      'commitlint.config.ts',
+    ],
   },
 
   {

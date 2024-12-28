@@ -6,8 +6,6 @@ WORKDIR /usr/src/app
 
 COPY --chown=node:node pnpm-lock.yaml ./
 
-RUN pnpm fetch --prod
-
 COPY --chown=node:node . .
 
 RUN pnpm install
@@ -33,8 +31,6 @@ COPY --chown=node:node . .
 RUN pnpm build
 
 ENV NODE_ENV production
-
-RUN pnpm fetch --prod
 
 RUN pnpm install
 

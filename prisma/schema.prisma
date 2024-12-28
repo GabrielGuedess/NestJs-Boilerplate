@@ -1,5 +1,5 @@
-generator User {
-  provider      = "prisma-User-js"
+generator client {
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "debian-openssl-3.0.x", "linux-musl", "linux-musl-openssl-3.0.x"]
 }
 

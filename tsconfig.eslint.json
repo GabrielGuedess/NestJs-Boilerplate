@@ -2,6 +2,7 @@
   "extends": "./tsconfig.json",
   "include": [
     "*.ts",
+    ".jest/*.ts",
     "src/**/*.ts",
     "test/**/*.ts",
     "eslint.config.mjs"
