@@ -1,0 +1,154 @@
+import { UseGuards } from '@nestjs/common';
+import { Args, Query, Mutation, Resolver } from '@nestjs/graphql';
+
+import { RelayPagination } from 'domain/shared/dtos/RelayPagination';
+
+import { Count{{ pascalCasePlural name }}UseCase } from 'application/useCases/{{ camelCase name }}/count{{ pascalCasePlural name }}/Count{{ pascalCasePlural name }}UseCase';
+import { Create{{ pascalCase name }}UseCase } from 'application/useCases/{{ camelCase name }}/create{{ pascalCase name }}/Create{{ pascalCase name }}UseCase';
+import { Delete{{ pascalCase name }}UseCase } from 'application/useCases/{{ camelCase name }}/delete{{ pascalCase name }}/Delete{{ pascalCase name }}UseCase';
+import { Update{{ pascalCase name }}UseCase } from 'application/useCases/{{ camelCase name }}/update{{ pascalCase name }}/Update{{ pascalCase name }}UseCase';
+import { FindAll{{ pascalCasePlural name }}UseCase } from 'application/useCases/{{ camelCase name }}/findAll{{ pascalCasePlural name }}/FindAll{{ pascalCasePlural name }}UseCase';
+import { FindUnique{{ pascalCase name }}UseCase } from 'application/useCases/{{ camelCase name }}/findUnique{{ pascalCase name }}/FindUnique{{ pascalCase name }}UseCase';
+import { DeleteMany{{ pascalCasePlural name }}UseCase } from 'application/useCases/{{ camelCase name }}/deleteMany{{ pascalCasePlural name }}/DeleteMany{{ pascalCasePlural name }}UseCase';
+import { UpdateMany{{ pascalCasePlural name }}UseCase } from 'application/useCases/{{ camelCase name }}/updateMany{{ pascalCasePlural name }}/UpdateMany{{ pascalCasePlural name }}UseCase';
+
+import { GraphQLAuthGuard } from 'infrastructure/http/guard/graphql.guard';
+import { {{ pascalCase name }}ViewModel } from 'infrastructure/http/view-models/{{ pascalCase name }}ViewModel';
+import { type {{ pascalCase name }}ResponseDTO } from 'infrastructure/http/dtos/{{ camelCase name }}/{{ pascalCase name }}ResponseDTO';
+import {
+  {{ pascalCase name }}Model,
+  {{ pascalCasePlural name }}Connection,
+} from 'infrastructure/http/graphql/models/{{ camelCase name }}.model';
+import {
+  Create{{ pascalCase name }}Input,
+  Update{{ pascalCase name }}Input,
+} from 'infrastructure/http/graphql/inputs/{{ camelCase name }}.input';
+import {
+  {{ pascalCase name }}Args,
+  {{ pascalCasePlural name }}Args,
+  Count{{ pascalCasePlural name }}Args,
+} from 'infrastructure/http/graphql/args/{{ camelCase name }}.args';
+
+@Resolver(() => {{ pascalCase name }}Model)
+export class {{ pascalCase name }}Resolver {
+  constructor(
+    private count{{ pascalCasePlural name }}UseCase: Count{{ pascalCasePlural name }}UseCase,
+    private create{{ pascalCase name }}UseCase: Create{{ pascalCase name }}UseCase,
+    private update{{ pascalCase name }}UseCase: Update{{ pascalCase name }}UseCase,
+    private delete{{ pascalCase name }}UseCase: Delete{{ pascalCase name }}UseCase,
+    private findAll{{ pascalCasePlural name }}UseCase: FindAll{{ pascalCasePlural name }}UseCase,
+    private findUnique{{ pascalCase name }}UseCase: FindUnique{{ pascalCase name }}UseCase,
+    private updateMany{{ pascalCasePlural name }}UseCase: UpdateMany{{ pascalCasePlural name }}UseCase,
+    private deleteMany{{ pascalCasePlural name }}UseCase: DeleteMany{{ pascalCasePlural name }}UseCase,
+  ) {}
+
+  @Query(() => Number)
+  @UseGuards(GraphQLAuthGuard)
+  async total{{ pascalCasePlural name }}(@Args() args: Count{{ pascalCasePlural name }}Args): Promise<number> {
+    const total = await this.count{{ pascalCasePlural name }}UseCase.execute({ where: args.where });
+
+    return total;
+  }
+
+  @Query(() => {{ pascalCasePlural name }}Connection)
+  @UseGuards(GraphQLAuthGuard)
+  async {{ camelCasePlural name }}(
+    @Args() args: {{ pascalCasePlural name }}Args,
+  ): Promise<RelayPagination<{{ pascalCase name }}ResponseDTO>> {
+    const {{ camelCasePlural name }} = await this.findAll{{ pascalCasePlural name }}UseCase.execute({
+      last: args.last,
+      order: args.order,
+      after: args.after,
+      first: args.first,
+      where: args.where,
+      before: args.before,
+    });
+
+    const edges = {{ camelCasePlural name }}.edges.map(edge => ({
+      ...edge,
+      node: {{ pascalCase name }}ViewModel.toHTTP(edge.node),
+    }));
+
+    const nodes = {{ camelCasePlural name }}.edges.map(edge => {{ pascalCase name }}ViewModel.toHTTP(edge.node));
+
+    return {
+      edges,
+      nodes,
+      count: {{ camelCasePlural name }}.count,
+      totalCount: {{ camelCasePlural name }}.totalCount,
+      pageInfo: {
+        endCursor: {{ camelCasePlural name }}.pageInfo.endCursor,
+        hasNextPage: {{ camelCasePlural name }}.pageInfo.hasNextPage,
+        startCursor: {{ camelCasePlural name }}.pageInfo.startCursor,
+        hasPreviousPage: {{ camelCasePlural name }}.pageInfo.hasPreviousPage,
+      },
+    };
+  }
+
+  @Query(() => {{ pascalCase name }}Model)
+  @UseGuards(GraphQLAuthGuard)
+  async {{ camelCase name }}(@Args() args: {{ pascalCase name }}Args): Promise<{{ pascalCase name }}ResponseDTO> {
+    const {{ camelCase name }} = await this.findUnique{{ pascalCase name }}UseCase.execute({
+      where: {
+        id: args?.where?.id,
+      },
+    });
+
+    return {{ pascalCase name }}ViewModel.toHTTP({{ camelCase name }});
+  }
+
+  @Mutation(() => {{ pascalCase name }}Model)
+  async create{{ pascalCase name }}(
+    @Args('{{ camelCase name }}') {{ camelCase name }}: Create{{ pascalCase name }}Input,
+  ): Promise<{{ pascalCase name }}ResponseDTO> {
+    const new{{ pascalCase name }} = await this.create{{ pascalCase name }}UseCase.execute({
+      description: {{ camelCase name }}.description,
+    });
+
+    return {{ pascalCase name }}ViewModel.toHTTP(new{{ pascalCase name }});
+  }
+
+  @Mutation(() => {{ pascalCase name }}Model)
+  @UseGuards(GraphQLAuthGuard)
+  async update{{ pascalCase name }}(
+    @Args('{{ camelCase name }}')
+    {{ camelCase name }}: Update{{ pascalCase name }}Input,
+  ): Promise<{{ pascalCase name }}ResponseDTO> {
+    const update{{ pascalCase name }} = await this.update{{ pascalCase name }}UseCase.execute({{ camelCase name }});
+
+    return {{ pascalCase name }}ViewModel.toHTTP(update{{ pascalCase name }});
+  }
+
+  @Mutation(() => [{{ pascalCase name }}Model])
+  @UseGuards(GraphQLAuthGuard)
+  async updateMany{{ pascalCasePlural name }}(
+    @Args('{{ camelCasePlural name }}', { type: () => [Update{{ pascalCase name }}Input] })
+    {{ camelCasePlural name }}: Update{{ pascalCase name }}Input[],
+  ): Promise<{{ pascalCase name }}ResponseDTO[]> {
+    const update{{ pascalCasePlural name }} = await this.updateMany{{ pascalCasePlural name }}UseCase.execute({{ camelCasePlural name }});
+
+    return update{{ pascalCasePlural name }}.map({{ camelCase name }} => {{ pascalCase name }}ViewModel.toHTTP({{ camelCase name }}));
+  }
+
+  @Mutation(() => {{ pascalCase name }}Model)
+  @UseGuards(GraphQLAuthGuard)
+  async delete{{ pascalCase name }}(
+    @Args('id', { type: () => String }) id: string,
+  ): Promise<{{ pascalCase name }}ResponseDTO> {
+    const delete{{ pascalCase name }} = await this.delete{{ pascalCase name }}UseCase.execute({
+      id,
+    });
+
+    return {{ pascalCase name }}ViewModel.toHTTP(delete{{ pascalCase name }});
+  }
+
+  @Mutation(() => [{{ pascalCase name }}Model])
+  @UseGuards(GraphQLAuthGuard)
+  async deleteMany{{ pascalCasePlural name }}(
+    @Args('ids', { type: () => [String] }) ids: string[],
+  ): Promise<{{ pascalCase name }}ResponseDTO[]> {
+    const delete{{ pascalCasePlural name }} = await this.deleteMany{{ pascalCasePlural name }}UseCase.execute(ids);
+
+    return delete{{ pascalCasePlural name }}.map({{ camelCase name }} => {{ pascalCase name }}ViewModel.toHTTP({{ camelCase name }}));
+  }
+}

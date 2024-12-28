@@ -1,0 +1,29 @@
+import { type {{pascalCase name}} as Raw{{pascalCase name}} } from '@prisma/client';
+
+import { {{pascalCase name}} } from 'domain/entities/{{camelCase name}}/{{pascalCase name}}';
+
+export class Prisma{{pascalCase name}}Mapper {
+  static toPrisma({{camelCase name}}: {{pascalCase name}}): Raw{{pascalCase name}} {
+    return {
+      id: {{camelCase name}}.id,
+      description: {{camelCase name}}.description,
+      active: {{camelCase name}}.active,
+      created_at: {{camelCase name}}.createdAt,
+      updated_at: {{camelCase name}}.updatedAt,
+    };
+  }
+
+  static toDomain(raw: Raw{{pascalCase name}}): {{pascalCase name}} {
+    const {{camelCase name}} = new {{pascalCase name}}(
+      {
+        description: raw.description,
+        active: raw.active,
+        created_at: raw.created_at,
+        updated_at: raw.updated_at,
+      },
+      raw.id,
+    );
+
+    return {{camelCase name}};
+  }
+}

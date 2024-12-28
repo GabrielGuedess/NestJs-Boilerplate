@@ -11,28 +11,37 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3.6.0
+        uses: actions/checkout@v4
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: 20.x
 
-      - uses: pnpm/action-setup@v2
+      - uses: pnpm/action-setup@v4
         name: Install pnpm
         id: pnpm-install
         with:
-          version: 7
+          version: 9.9.0
           run_install: false
 
       - name: Install dependencies
         run: pnpm i --no-frozen-lockfile
+
+      - name: Prisma
+        run: pnpm prisma generate
+
+      - name: Typecheck
+        run: pnpm typecheck
 
       - name: Linting
         run: pnpm lint
 
       - name: Test
         run: pnpm test
+
+      - name: Test E2E
+        run: pnpm test:e2e
 
       - name: Build
         run: pnpm build

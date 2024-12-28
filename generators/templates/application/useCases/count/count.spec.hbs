@@ -1,0 +1,23 @@
+import { InMemory{{ pascalCase name }}Repository } from '@test/repositories/in-memory-{{ kebabCase name }}-repository';
+
+import { {{ pascalCase name }} } from 'domain/entities/{{ camelCase name }}/{{ pascalCase name }}';
+
+import { Count{{ pascalCasePlural name }}UseCase } from 'application/useCases/{{ camelCase name }}/count{{ pascalCasePlural name }}/Count{{ pascalCasePlural name }}UseCase';
+
+describe('Count {{ pascalCasePlural name }}', () => {
+  it('should be able to count all {{convertToLowerWords name}} with use case', async () => {
+    const {{ camelCasePlural name }}Repository = new InMemory{{ pascalCase name }}Repository();
+
+    const {{ camelCase name }} = new {{ pascalCase name }}({
+      description: 'Test',
+    });
+
+    await {{ camelCasePlural name }}Repository.create({{ camelCase name }});
+
+    const count{{ pascalCasePlural name }}UseCase = new Count{{ pascalCasePlural name }}UseCase({{ camelCasePlural name }}Repository);
+
+    await count{{ pascalCasePlural name }}UseCase.execute({ where: {} });
+
+    expect({{ camelCasePlural name }}Repository.{{ camelCasePlural name }}).toHaveLength(1);
+  });
+});

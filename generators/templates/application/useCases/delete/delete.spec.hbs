@@ -1,0 +1,27 @@
+import { InMemory{{ pascalCase name }}Repository } from '@test/repositories/in-memory-{{ kebabCase name }}-repository';
+
+import { {{ pascalCase name }} } from 'domain/entities/{{ camelCase name }}/{{ pascalCase name }}';
+
+import { Delete{{ pascalCase name }}UseCase } from 'application/useCases/{{ camelCase name }}/delete{{ pascalCase name }}/Delete{{ pascalCase name }}UseCase';
+
+describe('Delete {{ pascalCase name }}', () => {
+  it('should be able to delete a {{convertToLowerWords name}} with use case', async () => {
+    const {{ camelCase name }}Repository = new InMemory{{ pascalCase name }}Repository();
+
+    const delete{{ pascalCase name }}UseCase = new Delete{{ pascalCase name }}UseCase(
+      {{ camelCase name }}Repository,
+    );
+
+    const {{ camelCase name }} = new {{ pascalCase name }}({
+      description: 'Test',
+    });
+
+    await {{ camelCase name }}Repository.create({{ camelCase name }});
+
+    const delete{{ pascalCase name }} = await delete{{ pascalCase name }}UseCase.execute({
+      id: {{ camelCase name }}.id,
+    });
+
+    expect(delete{{ pascalCase name }}).toBe({{ camelCase name }});
+  });
+});

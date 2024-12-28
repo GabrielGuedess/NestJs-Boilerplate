@@ -37,3 +37,4 @@ tsconfig.build.tsbuildinfo
 
 # Env
 .env
+.env.development

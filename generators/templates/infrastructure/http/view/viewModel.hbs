@@ -1,0 +1,15 @@
+import { type {{pascalCase name}} } from 'domain/entities/{{camelCase name}}/{{pascalCase name}}';
+
+import { type {{pascalCase name}}ResponseDTO } from 'infrastructure/http/dtos/{{camelCase name}}/{{pascalCase name}}ResponseDTO';
+
+export class {{pascalCase name}}ViewModel {
+  static toHTTP({{camelCase name}}: {{pascalCase name}}): {{pascalCase name}}ResponseDTO {
+    return {
+      id: {{camelCase name}}.id,
+      description: {{camelCase name}}.description,
+      active: {{camelCase name}}.active,
+      created_at: {{camelCase name}}.createdAt,
+      updated_at: {{camelCase name}}.updatedAt,
+    };
+  }
+}

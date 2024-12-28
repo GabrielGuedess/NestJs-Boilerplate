@@ -1,0 +1,15 @@
+import { Injectable } from '@nestjs/common';
+
+import { type {{ pascalCase name }} } from 'domain/entities/{{ camelCase name }}/{{ pascalCase name }}';
+import { {{ pascalCase name }}Repository } from 'domain/repositories/{{ pascalCase name }}Repository';
+
+@Injectable()
+export class DeleteMany{{ pascalCasePlural name }}UseCase {
+  constructor(private {{ camelCase name }}Repository: {{ pascalCase name }}Repository) {}
+
+  async execute(request: string[]): Promise<{{ pascalCase name }}[]> {
+    const {{ camelCasePlural name }} = await this.{{ camelCase name }}Repository.deleteMany(request);
+
+    return {{ camelCasePlural name }};
+  }
+}

@@ -1,0 +1,18 @@
+import { InMemory{{ pascalCase name }}Repository } from '@test/repositories/in-memory-{{ kebabCase name }}-repository';
+
+import { Create{{ pascalCase name }}UseCase } from 'application/useCases/{{ camelCase name }}/create{{ pascalCase name }}/Create{{ pascalCase name }}UseCase';
+
+describe('Create {{ pascalCase name }}', () => {
+  it('should be able to create a {{convertToLowerWords name}} with use case', async () => {
+    const {{ camelCasePlural name }}Repository = new InMemory{{ pascalCase name }}Repository();
+
+    const create{{ pascalCase name }}UseCase = new Create{{ pascalCase name }}UseCase({{ camelCasePlural name }}Repository);
+
+    const {{ camelCase name }} = await create{{ pascalCase name }}UseCase.execute({
+      description: 'Test',
+    });
+
+    expect({{ camelCasePlural name }}Repository.{{ camelCasePlural name }}).toHaveLength(1);
+    expect({{ camelCasePlural name }}Repository.{{ camelCasePlural name }}[0]).toEqual({{ camelCase name }});
+  });
+});

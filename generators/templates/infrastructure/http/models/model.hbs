@@ -1,0 +1,52 @@
+import { ID, Field, ObjectType } from '@nestjs/graphql';
+
+import * as Relay from 'graphql-relay';
+import { PageInfo } from 'nestjs-graphql-relay';
+
+import { type {{pascalCase name}}ResponseDTO } from 'infrastructure/http/dtos/{{camelCase name}}/{{pascalCase name}}ResponseDTO';
+
+@ObjectType()
+export class {{pascalCase name}}Model implements {{pascalCase name}}ResponseDTO {
+  @Field(() => ID)
+  id: string;
+
+  @Field()
+  description: string;
+
+  @Field()
+  active: boolean;
+
+  @Field()
+  created_at: Date;
+
+  @Field()
+  updated_at: Date;
+}
+
+@ObjectType({ isAbstract: true })
+abstract class {{ pascalCasePlural name }}Edge implements Relay.Edge<{{ pascalCase name }}Model> {
+  @Field(() => {{ pascalCase name }}Model)
+  readonly node: {{ pascalCase name }}Model;
+
+  @Field()
+  readonly cursor: Relay.ConnectionCursor;
+}
+
+@ObjectType()
+export class {{ pascalCasePlural name }}Connection implements Relay.Connection<{{ pascalCase name }}Model> {
+  @Field()
+  readonly pageInfo: PageInfo;
+
+  @Field(() => [{{ pascalCase name }}Model])
+  nodes: {{ pascalCase name }}Model[];
+
+  @Field(() => Number, { defaultValue: 0 })
+  count: number = 0;
+
+  @Field(() => Number, { defaultValue: 0 })
+  totalCount: number = 0;
+
+  @Field(() => [{{ pascalCasePlural name }}Edge])
+  readonly edges: Array<Relay.Edge<{{ pascalCase name }}Model>>;
+}
+

@@ -1,0 +1,21 @@
+import { type {{ pascalCase name }} } from 'domain/entities/{{ camelCase name }}/{{ pascalCase name }}';
+import { type RelayPagination } from 'domain/shared/dtos/RelayPagination';
+import {
+  type Find{{ pascalCase name }}RequestDTO,
+  type Count{{ pascalCasePlural name }}RequestDTO,
+  type Update{{ pascalCase name }}RequestDTO,
+  type FindAll{{ pascalCasePlural name }}RequestDTO,
+} from 'domain/dtos/repositories/{{ pascalCase name }}RepositoryDTO';
+
+export abstract class {{ pascalCase name }}Repository {
+  abstract create({{ camelCase name }}: {{ pascalCase name }}): Promise<{{ pascalCase name }}>;
+  abstract delete(id: string): Promise<{{ pascalCase name }}>;
+  abstract deleteMany(ids: string[]): Promise<{{ pascalCase name }}[]>;
+  abstract update(params: Update{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}>;
+  abstract count(params: Count{{ pascalCasePlural name }}RequestDTO): Promise<number>;
+  abstract findUnique(params: Find{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}>;
+  abstract updateMany(params: Update{{ pascalCase name }}RequestDTO[]): Promise<{{ pascalCase name }}[]>;
+  abstract findAll(
+    params: FindAll{{ pascalCasePlural name }}RequestDTO,
+  ): Promise<RelayPagination<{{ pascalCase name }}>>;
+}

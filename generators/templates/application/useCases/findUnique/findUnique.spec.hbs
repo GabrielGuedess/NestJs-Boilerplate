@@ -1,0 +1,25 @@
+import { InMemory{{ pascalCase name }}Repository } from '@test/repositories/in-memory-{{ kebabCase name }}-repository';
+
+import { {{ pascalCase name }} } from 'domain/entities/{{ camelCase name }}/{{ pascalCase name }}';
+
+import { FindUnique{{ pascalCase name }}UseCase } from 'application/useCases/{{ camelCase name }}/findUnique{{ pascalCase name }}/FindUnique{{ pascalCase name }}UseCase';
+
+describe('Find {{ pascalCase name }} By Id', () => {
+  it('should be able to find a {{convertToLowerWords name}} with use case', async () => {
+    const {{ camelCasePlural name }}Repository = new InMemory{{ pascalCase name }}Repository();
+
+    const {{ camelCase name }} = new {{ pascalCase name }}({
+      description: 'Test'
+    });
+
+    await {{ camelCasePlural name }}Repository.create({{ camelCase name }});
+
+    const findUnique{{ pascalCase name }}UseCase = new FindUnique{{ pascalCase name }}UseCase({{ camelCasePlural name }}Repository);
+
+    const found{{ pascalCase name }} = await findUnique{{ pascalCase name }}UseCase.execute({
+      where: { id: {{ camelCase name }}.id },
+    });
+
+    expect(found{{ pascalCase name }}).toEqual({{ camelCase name }});
+  });
+});

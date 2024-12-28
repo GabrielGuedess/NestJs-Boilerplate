@@ -1,0 +1,55 @@
+import { Field, ArgsType } from '@nestjs/graphql';
+
+import { Type } from 'class-transformer';
+import { IsOptional } from 'class-validator';
+
+import { {{ pascalCase name }}WhereUniqueInput } from 'infrastructure/http/graphql/inputs/{{kebabCase name}}.input';
+import {
+  {{ pascalCase name }}WhereInput,
+  {{ pascalCase name }}OrderByWithRelationInput,
+} from 'infrastructure/http/graphql/generated/{{kebabCase name}}';
+
+@ArgsType()
+export class Count{{ pascalCasePlural name }}Args {
+  @Field(() => {{ pascalCase name }}WhereInput, { nullable: true })
+  @Type(() => {{ pascalCase name }}WhereInput)
+  @IsOptional()
+  where?: {{ pascalCase name }}WhereInput;
+}
+
+@ArgsType()
+export class {{ pascalCase name }}Args {
+  @Field(() => {{ pascalCase name }}WhereUniqueInput, { nullable: true })
+  @Type(() => {{ pascalCase name }}WhereUniqueInput)
+  @IsOptional()
+  where?: {{ pascalCase name }}WhereUniqueInput;
+}
+
+@ArgsType()
+export class {{ pascalCasePlural name }}Args {
+  @Field(() => Number, { nullable: true })
+  @IsOptional()
+  last?: number;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  after?: string;
+
+  @Field(() => Number, { nullable: true })
+  @IsOptional()
+  first?: number;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  before?: string;
+
+  @Field(() => {{ pascalCase name }}WhereInput, { nullable: true })
+  @Type(() => {{ pascalCase name }}WhereInput)
+  @IsOptional()
+  where?: {{ pascalCase name }}WhereInput;
+
+  @Field(() => {{ pascalCase name }}OrderByWithRelationInput, { nullable: true })
+  @Type(() => {{ pascalCase name }}OrderByWithRelationInput)
+  @IsOptional()
+  order?: {{ pascalCase name }}OrderByWithRelationInput;
+}

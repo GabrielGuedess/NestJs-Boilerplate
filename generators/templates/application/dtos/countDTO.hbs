@@ -1,0 +1,5 @@
+import { type Where{{ pascalCase name }}DTO } from 'application/dtos/{{ camelCase name }}/FindAll{{ pascalCasePlural name }}UseCaseDTO';
+
+export abstract class Count{{ pascalCasePlural name }}UseCaseRequestDTO {
+  where?: Where{{ pascalCase name }}DTO;
+}

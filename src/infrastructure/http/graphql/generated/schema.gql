@@ -1,0 +1,1998 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input AuthUserInput {
+  email: EmailAddress!
+  password: String!
+}
+
+type AuthUserModel {
+  refresh_token: JWT!
+  refresh_token_expires: DateTimeISO!
+  token: JWT!
+  token_expires: DateTimeISO!
+  user: UserModel!
+  user_id: UUID!
+}
+
+input BoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
+}
+
+type Branch {
+  Category: [Category!]
+  Customer: Customer!
+  Employees: [Employee!]
+  Product: [Product!]
+  Table: [Table!]
+  _count: BranchCount!
+  active: Boolean!
+  address: String!
+  address_complement: String!
+  address_neighborhood: String!
+  address_number: String!
+  branch_name: String!
+  city: String!
+  cnpj: String!
+  created_at: DateTime!
+  customer_id: String!
+  id: ID!
+  state: String!
+  updated_at: DateTime!
+  zip_code: String!
+}
+
+type BranchCount {
+  Category: Int!
+  Employees: Int!
+  Product: Int!
+  Table: Int!
+}
+
+type BranchCountAggregate {
+  _all: Int!
+  active: Int!
+  address: Int!
+  address_complement: Int!
+  address_neighborhood: Int!
+  address_number: Int!
+  branch_name: Int!
+  city: Int!
+  cnpj: Int!
+  created_at: Int!
+  customer_id: Int!
+  id: Int!
+  state: Int!
+  updated_at: Int!
+  zip_code: Int!
+}
+
+input BranchListRelationFilter {
+  every: BranchWhereInput
+  none: BranchWhereInput
+  some: BranchWhereInput
+}
+
+type BranchMaxAggregate {
+  active: Boolean
+  address: String
+  address_complement: String
+  address_neighborhood: String
+  address_number: String
+  branch_name: String
+  city: String
+  cnpj: String
+  created_at: DateTime
+  customer_id: String
+  id: String
+  state: String
+  updated_at: DateTime
+  zip_code: String
+}
+
+type BranchMinAggregate {
+  active: Boolean
+  address: String
+  address_complement: String
+  address_neighborhood: String
+  address_number: String
+  branch_name: String
+  city: String
+  cnpj: String
+  created_at: DateTime
+  customer_id: String
+  id: String
+  state: String
+  updated_at: DateTime
+  zip_code: String
+}
+
+type BranchModel {
+  active: Boolean!
+  address: String!
+  address_complement: String!
+  address_neighborhood: String!
+  address_number: String!
+  branch_name: String!
+  city: String!
+  cnpj: String!
+  created_at: DateTimeISO!
+  customer_id: UUID!
+  employees: [EmployeeModel!]!
+  id: ID!
+  state: String!
+  updated_at: DateTimeISO!
+  zip_code: String!
+}
+
+input BranchOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input BranchOrderByWithRelationInput {
+  Category: CategoryOrderByRelationAggregateInput
+  Customer: CustomerOrderByWithRelationInput
+  Employees: EmployeeOrderByRelationAggregateInput
+  Product: ProductOrderByRelationAggregateInput
+  Table: TableOrderByRelationAggregateInput
+  active: SortOrder
+  address: SortOrder
+  address_complement: SortOrder
+  address_neighborhood: SortOrder
+  address_number: SortOrder
+  branch_name: SortOrder
+  city: SortOrder
+  cnpj: SortOrder
+  created_at: SortOrder
+  customer_id: SortOrder
+  id: SortOrder
+  state: SortOrder
+  updated_at: SortOrder
+  zip_code: SortOrder
+}
+
+input BranchWhereInput {
+  AND: [BranchWhereInput!]
+  Category: CategoryListRelationFilter
+  Customer: CustomerWhereInput
+  Employees: EmployeeListRelationFilter
+  NOT: [BranchWhereInput!]
+  OR: [BranchWhereInput!]
+  Product: ProductListRelationFilter
+  Table: TableListRelationFilter
+  active: BoolFilter
+  address: StringFilter
+  address_complement: StringFilter
+  address_neighborhood: StringFilter
+  address_number: StringFilter
+  branch_name: StringFilter
+  city: StringFilter
+  cnpj: StringFilter
+  created_at: DateTimeFilter
+  customer_id: UuidFilter
+  id: UuidFilter
+  state: StringFilter
+  updated_at: DateTimeFilter
+  zip_code: StringFilter
+}
+
+input BranchWhereUniqueInput {
+  cnpj: String
+  id: String
+}
+
+type BranchesConnection {
+  count: Float!
+  edges: [BranchesEdge!]!
+  nodes: [BranchModel!]!
+  pageInfo: PageInfo!
+  totalCount: Float!
+}
+
+type BranchesEdge {
+  cursor: String!
+  node: BranchModel!
+}
+
+type CategoriesConnection {
+  count: Float!
+  edges: [CategoriesEdge!]!
+  nodes: [CategoryModel!]!
+  pageInfo: PageInfo!
+  totalCount: Float!
+}
+
+type CategoriesEdge {
+  cursor: String!
+  node: CategoryModel!
+}
+
+type Category {
+  Branch: Branch!
+  Products: [Product!]
+  _count: CategoryCount!
+  active: Boolean!
+  branch_id: String!
+  created_at: DateTime!
+  description: String!
+  id: ID!
+  name: String!
+  updated_at: DateTime!
+}
+
+type CategoryCount {
+  Products: Int!
+}
+
+type CategoryCountAggregate {
+  _all: Int!
+  active: Int!
+  branch_id: Int!
+  created_at: Int!
+  description: Int!
+  id: Int!
+  name: Int!
+  updated_at: Int!
+}
+
+input CategoryListRelationFilter {
+  every: CategoryWhereInput
+  none: CategoryWhereInput
+  some: CategoryWhereInput
+}
+
+type CategoryMaxAggregate {
+  active: Boolean
+  branch_id: String
+  created_at: DateTime
+  description: String
+  id: String
+  name: String
+  updated_at: DateTime
+}
+
+type CategoryMinAggregate {
+  active: Boolean
+  branch_id: String
+  created_at: DateTime
+  description: String
+  id: String
+  name: String
+  updated_at: DateTime
+}
+
+type CategoryModel {
+  active: Boolean!
+  branch_id: String!
+  created_at: DateTimeISO!
+  description: String!
+  id: ID!
+  name: String!
+  products: [ProductModel!]!
+  updated_at: DateTimeISO!
+}
+
+input CategoryOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input CategoryOrderByWithRelationInput {
+  Branch: BranchOrderByWithRelationInput
+  Products: ProductOrderByRelationAggregateInput
+  active: SortOrder
+  branch_id: SortOrder
+  created_at: SortOrder
+  description: SortOrder
+  id: SortOrder
+  name: SortOrder
+  updated_at: SortOrder
+}
+
+input CategoryWhereInput {
+  AND: [CategoryWhereInput!]
+  Branch: BranchWhereInput
+  NOT: [CategoryWhereInput!]
+  OR: [CategoryWhereInput!]
+  Products: ProductListRelationFilter
+  active: BoolFilter
+  branch_id: UuidFilter
+  created_at: DateTimeFilter
+  description: StringFilter
+  id: UuidFilter
+  name: StringFilter
+  updated_at: DateTimeFilter
+}
+
+input CategoryWhereUniqueInput {
+  id: String
+}
+
+input CreateBranchInput {
+  address: String!
+  address_complement: String!
+  address_neighborhood: String!
+  address_number: String!
+  branch_name: String!
+  city: String!
+  cnpj: String!
+  customer_id: String!
+  state: String!
+  zip_code: String!
+}
+
+input CreateCategoryInput {
+  branch_id: String!
+  description: String!
+  name: String!
+}
+
+input CreateCustomerInput {
+  cnpj: String!
+  company_name: String!
+  fantasy_name: String!
+  user_id: String!
+}
+
+input CreateEmployeeInput {
+  branch_id: String!
+  role: String!
+  user_id: String!
+}
+
+input CreateOrderInput {
+  finished_at: DateTime
+  observations: String
+  payment_date: DateTime
+  payment_status: PaymentStatus
+  status: OrderStatus
+  tab_id: String!
+  total_price: Float!
+}
+
+input CreateProductImageInput {
+  product_id: String!
+}
+
+input CreateProductInput {
+  branch_id: String!
+  calories: Float
+  category_id: String!
+  name: String!
+  preparation_time: Float!
+  price: Float!
+  size: ProductSize!
+  status: ProductStatus!
+}
+
+input CreateTabInput {
+  discount: Float
+  employee_tax: Float
+  observations: String
+  payment_method: String
+  status: TabStatus
+  table_id: String!
+  value: Float!
+}
+
+input CreateTableInput {
+  branch_id: String!
+  capacity: Float!
+  location: String!
+  name: String!
+  occupied_since: DateTime
+  status: TableStatus
+}
+
+input CreateUserInput {
+  document: String!
+  email: EmailAddress!
+  full_name: String!
+  password: String!
+}
+
+type Customer {
+  Branches: [Branch!]
+  User: User!
+  _count: CustomerCount!
+  active: Boolean!
+  cnpj: String!
+  company_name: String!
+  created_at: DateTime!
+  fantasy_name: String!
+  id: ID!
+  updated_at: DateTime!
+  user_id: String!
+}
+
+type CustomerCount {
+  Branches: Int!
+}
+
+type CustomerCountAggregate {
+  _all: Int!
+  active: Int!
+  cnpj: Int!
+  company_name: Int!
+  created_at: Int!
+  fantasy_name: Int!
+  id: Int!
+  updated_at: Int!
+  user_id: Int!
+}
+
+type CustomerMaxAggregate {
+  active: Boolean
+  cnpj: String
+  company_name: String
+  created_at: DateTime
+  fantasy_name: String
+  id: String
+  updated_at: DateTime
+  user_id: String
+}
+
+type CustomerMinAggregate {
+  active: Boolean
+  cnpj: String
+  company_name: String
+  created_at: DateTime
+  fantasy_name: String
+  id: String
+  updated_at: DateTime
+  user_id: String
+}
+
+type CustomerModel {
+  active: Boolean!
+  branches: [BranchModel!]!
+  cnpj: String!
+  company_name: String!
+  created_at: DateTimeISO!
+  fantasy_name: String!
+  id: ID!
+  updated_at: DateTimeISO!
+  user: UserModel!
+  user_id: UUID!
+}
+
+input CustomerOrderByWithRelationInput {
+  Branches: BranchOrderByRelationAggregateInput
+  User: UserOrderByWithRelationInput
+  active: SortOrder
+  cnpj: SortOrder
+  company_name: SortOrder
+  created_at: SortOrder
+  fantasy_name: SortOrder
+  id: SortOrder
+  updated_at: SortOrder
+  user_id: SortOrder
+}
+
+input CustomerWhereInput {
+  AND: [CustomerWhereInput!]
+  Branches: BranchListRelationFilter
+  NOT: [CustomerWhereInput!]
+  OR: [CustomerWhereInput!]
+  User: UserWhereInput
+  active: BoolFilter
+  cnpj: StringFilter
+  company_name: StringFilter
+  created_at: DateTimeFilter
+  fantasy_name: StringFilter
+  id: UuidFilter
+  updated_at: DateTimeFilter
+  user_id: UuidFilter
+}
+
+input CustomerWhereUniqueInput {
+  cnpj: String
+  id: String
+}
+
+type CustomersConnection {
+  count: Float!
+  edges: [CustomersEdge!]!
+  nodes: [CustomerModel!]!
+  pageInfo: PageInfo!
+  totalCount: Float!
+}
+
+type CustomersEdge {
+  cursor: String!
+  node: CustomerModel!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input DateTimeFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeFilter
+  notIn: [DateTime!]
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format.
+"""
+scalar DateTimeISO
+
+input DateTimeNullableFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableFilter
+  notIn: [DateTime!]
+}
+
+"""
+A field whose value conforms to the standard internet email address format as specified in HTML Spec: https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address.
+"""
+scalar EmailAddress @specifiedBy(url: "https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address")
+
+type Employee {
+  Branch: Branch!
+  Tables: [Table!]
+  User: User!
+  _count: EmployeeCount!
+  active: Boolean!
+  branch_id: String!
+  created_at: DateTime!
+  id: ID!
+  role: String!
+  updated_at: DateTime!
+  user_id: String!
+}
+
+type EmployeeCount {
+  Tables: Int!
+}
+
+type EmployeeCountAggregate {
+  _all: Int!
+  active: Int!
+  branch_id: Int!
+  created_at: Int!
+  id: Int!
+  role: Int!
+  updated_at: Int!
+  user_id: Int!
+}
+
+input EmployeeListRelationFilter {
+  every: EmployeeWhereInput
+  none: EmployeeWhereInput
+  some: EmployeeWhereInput
+}
+
+type EmployeeMaxAggregate {
+  active: Boolean
+  branch_id: String
+  created_at: DateTime
+  id: String
+  role: String
+  updated_at: DateTime
+  user_id: String
+}
+
+type EmployeeMinAggregate {
+  active: Boolean
+  branch_id: String
+  created_at: DateTime
+  id: String
+  role: String
+  updated_at: DateTime
+  user_id: String
+}
+
+type EmployeeModel {
+  active: Boolean!
+  branch_id: UUID!
+  created_at: DateTimeISO!
+  id: ID!
+  role: String!
+  updated_at: DateTimeISO!
+  user_id: UUID!
+}
+
+input EmployeeOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input EmployeeOrderByWithRelationInput {
+  Branch: BranchOrderByWithRelationInput
+  Tables: TableOrderByRelationAggregateInput
+  User: UserOrderByWithRelationInput
+  active: SortOrder
+  branch_id: SortOrder
+  created_at: SortOrder
+  id: SortOrder
+  role: SortOrder
+  updated_at: SortOrder
+  user_id: SortOrder
+}
+
+input EmployeeWhereInput {
+  AND: [EmployeeWhereInput!]
+  Branch: BranchWhereInput
+  NOT: [EmployeeWhereInput!]
+  OR: [EmployeeWhereInput!]
+  Tables: TableListRelationFilter
+  User: UserWhereInput
+  active: BoolFilter
+  branch_id: UuidFilter
+  created_at: DateTimeFilter
+  id: UuidFilter
+  role: StringFilter
+  updated_at: DateTimeFilter
+  user_id: UuidFilter
+}
+
+input EmployeeWhereUniqueInput {
+  id: String
+}
+
+type EmployeesConnection {
+  count: Float!
+  edges: [EmployeesEdge!]!
+  nodes: [EmployeeModel!]!
+  pageInfo: PageInfo!
+  totalCount: Float!
+}
+
+type EmployeesEdge {
+  cursor: String!
+  node: EmployeeModel!
+}
+
+input EnumOrderStatusFilter {
+  equals: OrderStatus
+  in: [OrderStatus!]
+  not: NestedEnumOrderStatusFilter
+  notIn: [OrderStatus!]
+}
+
+input EnumPaymentStatusFilter {
+  equals: PaymentStatus
+  in: [PaymentStatus!]
+  not: NestedEnumPaymentStatusFilter
+  notIn: [PaymentStatus!]
+}
+
+input EnumProductSizeFilter {
+  equals: ProductSize
+  in: [ProductSize!]
+  not: NestedEnumProductSizeFilter
+  notIn: [ProductSize!]
+}
+
+input EnumProductStatusFilter {
+  equals: ProductStatus
+  in: [ProductStatus!]
+  not: NestedEnumProductStatusFilter
+  notIn: [ProductStatus!]
+}
+
+input EnumRoleFilter {
+  equals: Role
+  in: [Role!]
+  not: NestedEnumRoleFilter
+  notIn: [Role!]
+}
+
+input EnumTabStatusFilter {
+  equals: TabStatus
+  in: [TabStatus!]
+  not: NestedEnumTabStatusFilter
+  notIn: [TabStatus!]
+}
+
+input EnumTableStatusFilter {
+  equals: TableStatus
+  in: [TableStatus!]
+  not: NestedEnumTableStatusFilter
+  notIn: [TableStatus!]
+}
+
+input IntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntFilter
+  notIn: [Int!]
+}
+
+input IntNullableFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntNullableFilter
+  notIn: [Int!]
+}
+
+"""
+A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
+"""
+scalar JWT
+
+type Mutation {
+  createBranch(branch: CreateBranchInput!): BranchModel!
+  createCategory(category: CreateCategoryInput!): CategoryModel!
+  createCustomer(customer: CreateCustomerInput!): CustomerModel!
+  createEmployee(employee: CreateEmployeeInput!): EmployeeModel!
+  createOrder(order: CreateOrderInput!): OrderModel!
+  createProduct(product: CreateProductInput!): ProductModel!
+  createProductImage(product: Upload!, productImage: CreateProductImageInput!): ProductImageModel!
+  createTab(tab: CreateTabInput!): TabModel!
+  createTable(table: CreateTableInput!): TableModel!
+  createUser(avatar: Upload, user: CreateUserInput!): UserModel!
+  deleteBranch(id: String!): BranchModel!
+  deleteCategory(id: String!): CategoryModel!
+  deleteCustomer(id: String!): CustomerModel!
+  deleteEmployee(id: String!): EmployeeModel!
+  deleteManyBranches(ids: [String!]!): [BranchModel!]!
+  deleteManyCategories(ids: [String!]!): [CategoryModel!]!
+  deleteManyCustomers(ids: [String!]!): [CustomerModel!]!
+  deleteManyEmployees(ids: [String!]!): [EmployeeModel!]!
+  deleteManyOrders(ids: [String!]!): [OrderModel!]!
+  deleteManyProductImages(ids: [String!]!): [ProductImageModel!]!
+  deleteManyProducts(ids: [String!]!): [ProductModel!]!
+  deleteManyTables(ids: [String!]!): [TableModel!]!
+  deleteManyTabs(ids: [String!]!): [TabModel!]!
+  deleteManyUsers(ids: [String!]!): [UserModel!]!
+  deleteOrder(id: String!): OrderModel!
+  deleteProduct(id: String!): ProductModel!
+  deleteProductImage(id: String!): ProductImageModel!
+  deleteTab(id: String!): TabModel!
+  deleteTable(id: String!): TableModel!
+  deleteUser(id: String!): UserModel!
+  refreshToken: RefreshModel!
+  signIn(signIn: AuthUserInput!): AuthUserModel!
+  updateBranch(branch: UpdateBranchInput!): BranchModel!
+  updateCategory(category: UpdateCategoryInput!): CategoryModel!
+  updateCustomer(customer: UpdateCustomerInput!): CustomerModel!
+  updateEmployee(employee: UpdateEmployeeInput!): EmployeeModel!
+  updateManyBranches(branches: [UpdateBranchInput!]!): [BranchModel!]!
+  updateManyCategories(categories: [UpdateCategoryInput!]!): [CategoryModel!]!
+  updateManyCustomers(customers: [UpdateCustomerInput!]!): [CustomerModel!]!
+  updateManyEmployees(employees: [UpdateEmployeeInput!]!): [EmployeeModel!]!
+  updateManyOrders(orders: [UpdateOrderInput!]!): [OrderModel!]!
+  updateManyProductImages(productImages: [UpdateProductImageInput!]!): [ProductImageModel!]!
+  updateManyProducts(products: [UpdateProductInput!]!): [ProductModel!]!
+  updateManyTables(tables: [UpdateTableInput!]!): [TableModel!]!
+  updateManyTabs(tabs: [UpdateTabInput!]!): [TabModel!]!
+  updateManyUsers(users: [UpdateUserInput!]!): [UserModel!]!
+  updateOrder(order: UpdateOrderInput!): OrderModel!
+  updateProduct(product: UpdateProductInput!): ProductModel!
+  updateProductImage(product: Upload, productImage: UpdateProductImageInput!): ProductImageModel!
+  updateTab(tab: UpdateTabInput!): TabModel!
+  updateTable(table: UpdateTableInput!): TableModel!
+  updateUser(avatar: Upload, user: UpdateUserInput!): UserModel!
+}
+
+input NestedBoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
+}
+
+input NestedDateTimeFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeFilter
+  notIn: [DateTime!]
+}
+
+input NestedDateTimeNullableFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableFilter
+  notIn: [DateTime!]
+}
+
+input NestedEnumOrderStatusFilter {
+  equals: OrderStatus
+  in: [OrderStatus!]
+  not: NestedEnumOrderStatusFilter
+  notIn: [OrderStatus!]
+}
+
+input NestedEnumPaymentStatusFilter {
+  equals: PaymentStatus
+  in: [PaymentStatus!]
+  not: NestedEnumPaymentStatusFilter
+  notIn: [PaymentStatus!]
+}
+
+input NestedEnumProductSizeFilter {
+  equals: ProductSize
+  in: [ProductSize!]
+  not: NestedEnumProductSizeFilter
+  notIn: [ProductSize!]
+}
+
+input NestedEnumProductStatusFilter {
+  equals: ProductStatus
+  in: [ProductStatus!]
+  not: NestedEnumProductStatusFilter
+  notIn: [ProductStatus!]
+}
+
+input NestedEnumRoleFilter {
+  equals: Role
+  in: [Role!]
+  not: NestedEnumRoleFilter
+  notIn: [Role!]
+}
+
+input NestedEnumTabStatusFilter {
+  equals: TabStatus
+  in: [TabStatus!]
+  not: NestedEnumTabStatusFilter
+  notIn: [TabStatus!]
+}
+
+input NestedEnumTableStatusFilter {
+  equals: TableStatus
+  in: [TableStatus!]
+  not: NestedEnumTableStatusFilter
+  notIn: [TableStatus!]
+}
+
+input NestedIntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntFilter
+  notIn: [Int!]
+}
+
+input NestedIntNullableFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntNullableFilter
+  notIn: [Int!]
+}
+
+input NestedStringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+input NestedStringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringNullableFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+input NestedUuidFilter {
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedUuidFilter
+  notIn: [String!]
+}
+
+enum NullsOrder {
+  first
+  last
+}
+
+type Order {
+  Tab: Tab!
+  active: Boolean!
+  created_at: DateTime!
+  finished_at: DateTime
+  id: ID!
+  observations: String
+  payment_date: DateTime
+  payment_status: PaymentStatus!
+  status: OrderStatus!
+  tab_id: String!
+  total_price: Int!
+  updated_at: DateTime!
+}
+
+type OrderAvgAggregate {
+  total_price: Float
+}
+
+type OrderCountAggregate {
+  _all: Int!
+  active: Int!
+  created_at: Int!
+  finished_at: Int!
+  id: Int!
+  observations: Int!
+  payment_date: Int!
+  payment_status: Int!
+  status: Int!
+  tab_id: Int!
+  total_price: Int!
+  updated_at: Int!
+}
+
+input OrderListRelationFilter {
+  every: OrderWhereInput
+  none: OrderWhereInput
+  some: OrderWhereInput
+}
+
+type OrderMaxAggregate {
+  active: Boolean
+  created_at: DateTime
+  finished_at: DateTime
+  id: String
+  observations: String
+  payment_date: DateTime
+  payment_status: PaymentStatus
+  status: OrderStatus
+  tab_id: String
+  total_price: Int
+  updated_at: DateTime
+}
+
+type OrderMinAggregate {
+  active: Boolean
+  created_at: DateTime
+  finished_at: DateTime
+  id: String
+  observations: String
+  payment_date: DateTime
+  payment_status: PaymentStatus
+  status: OrderStatus
+  tab_id: String
+  total_price: Int
+  updated_at: DateTime
+}
+
+type OrderModel {
+  active: Boolean!
+  created_at: DateTimeISO!
+  finished_at: DateTime
+  id: ID!
+  observations: String
+  payment_date: DateTime
+  payment_status: PaymentStatus!
+  status: OrderStatus!
+  tab_id: UUID!
+  total_price: Float!
+  updated_at: DateTimeISO!
+}
+
+input OrderOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input OrderOrderByWithRelationInput {
+  Tab: TabOrderByWithRelationInput
+  active: SortOrder
+  created_at: SortOrder
+  finished_at: SortOrderInput
+  id: SortOrder
+  observations: SortOrderInput
+  payment_date: SortOrderInput
+  payment_status: SortOrder
+  status: SortOrder
+  tab_id: SortOrder
+  total_price: SortOrder
+  updated_at: SortOrder
+}
+
+enum OrderStatus {
+  ACCEPTED
+  CANCELLED
+  DELIVERED
+  PENDING
+  PREPARING
+  READY
+  SERVED
+}
+
+type OrderSumAggregate {
+  total_price: Int
+}
+
+input OrderWhereInput {
+  AND: [OrderWhereInput!]
+  NOT: [OrderWhereInput!]
+  OR: [OrderWhereInput!]
+  Tab: TabWhereInput
+  active: BoolFilter
+  created_at: DateTimeFilter
+  finished_at: DateTimeNullableFilter
+  id: UuidFilter
+  observations: StringNullableFilter
+  payment_date: DateTimeNullableFilter
+  payment_status: EnumPaymentStatusFilter
+  status: EnumOrderStatusFilter
+  tab_id: UuidFilter
+  total_price: IntFilter
+  updated_at: DateTimeFilter
+}
+
+input OrderWhereUniqueInput {
+  id: String
+}
+
+type OrdersConnection {
+  count: Float!
+  edges: [OrdersEdge!]!
+  nodes: [OrderModel!]!
+  pageInfo: PageInfo!
+  totalCount: Float!
+}
+
+type OrdersEdge {
+  cursor: String!
+  node: OrderModel!
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
+enum PaymentStatus {
+  CANCELLED
+  COMPLETED
+  FAILED
+  PENDING
+  REFUNDED
+}
+
+type Product {
+  Branch: Branch!
+  Category: Category!
+  ProductImages: [ProductImage!]
+  _count: ProductCount!
+  active: Boolean!
+  branch_id: String!
+  calories: Int
+  category_id: String!
+  created_at: DateTime!
+  id: ID!
+  name: String!
+  preparation_time: Int!
+  price: Int!
+  size: ProductSize!
+  status: ProductStatus!
+  updated_at: DateTime!
+}
+
+type ProductAvgAggregate {
+  calories: Float
+  preparation_time: Float
+  price: Float
+}
+
+type ProductCount {
+  ProductImages: Int!
+}
+
+type ProductCountAggregate {
+  _all: Int!
+  active: Int!
+  branch_id: Int!
+  calories: Int!
+  category_id: Int!
+  created_at: Int!
+  id: Int!
+  name: Int!
+  preparation_time: Int!
+  price: Int!
+  size: Int!
+  status: Int!
+  updated_at: Int!
+}
+
+type ProductImage {
+  Product: Product!
+  active: Boolean!
+  created_at: DateTime!
+  id: ID!
+  path: String!
+  product_id: String!
+  updated_at: DateTime!
+}
+
+type ProductImageCountAggregate {
+  _all: Int!
+  active: Int!
+  created_at: Int!
+  id: Int!
+  path: Int!
+  product_id: Int!
+  updated_at: Int!
+}
+
+input ProductImageListRelationFilter {
+  every: ProductImageWhereInput
+  none: ProductImageWhereInput
+  some: ProductImageWhereInput
+}
+
+type ProductImageMaxAggregate {
+  active: Boolean
+  created_at: DateTime
+  id: String
+  path: String
+  product_id: String
+  updated_at: DateTime
+}
+
+type ProductImageMinAggregate {
+  active: Boolean
+  created_at: DateTime
+  id: String
+  path: String
+  product_id: String
+  updated_at: DateTime
+}
+
+type ProductImageModel {
+  active: Boolean!
+  created_at: DateTimeISO!
+  id: ID!
+  path: URL!
+  product_id: UUID!
+  updated_at: DateTimeISO!
+}
+
+input ProductImageOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input ProductImageOrderByWithRelationInput {
+  Product: ProductOrderByWithRelationInput
+  active: SortOrder
+  created_at: SortOrder
+  id: SortOrder
+  path: SortOrder
+  product_id: SortOrder
+  updated_at: SortOrder
+}
+
+input ProductImageWhereInput {
+  AND: [ProductImageWhereInput!]
+  NOT: [ProductImageWhereInput!]
+  OR: [ProductImageWhereInput!]
+  Product: ProductWhereInput
+  active: BoolFilter
+  created_at: DateTimeFilter
+  id: UuidFilter
+  path: StringFilter
+  product_id: UuidFilter
+  updated_at: DateTimeFilter
+}
+
+input ProductImageWhereUniqueInput {
+  id: String
+}
+
+type ProductImagesConnection {
+  count: Float!
+  edges: [ProductImagesEdge!]!
+  nodes: [ProductImageModel!]!
+  pageInfo: PageInfo!
+  totalCount: Float!
+}
+
+type ProductImagesEdge {
+  cursor: String!
+  node: ProductImageModel!
+}
+
+input ProductListRelationFilter {
+  every: ProductWhereInput
+  none: ProductWhereInput
+  some: ProductWhereInput
+}
+
+type ProductMaxAggregate {
+  active: Boolean
+  branch_id: String
+  calories: Int
+  category_id: String
+  created_at: DateTime
+  id: String
+  name: String
+  preparation_time: Int
+  price: Int
+  size: ProductSize
+  status: ProductStatus
+  updated_at: DateTime
+}
+
+type ProductMinAggregate {
+  active: Boolean
+  branch_id: String
+  calories: Int
+  category_id: String
+  created_at: DateTime
+  id: String
+  name: String
+  preparation_time: Int
+  price: Int
+  size: ProductSize
+  status: ProductStatus
+  updated_at: DateTime
+}
+
+type ProductModel {
+  active: Boolean!
+  branch_id: String!
+  calories: Float
+  category_id: UUID!
+  created_at: DateTimeISO!
+  id: ID!
+  name: String!
+  preparation_time: Float!
+  price: Float!
+  size: ProductSize!
+  status: ProductStatus!
+  updated_at: DateTimeISO!
+}
+
+input ProductOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input ProductOrderByWithRelationInput {
+  Branch: BranchOrderByWithRelationInput
+  Category: CategoryOrderByWithRelationInput
+  ProductImages: ProductImageOrderByRelationAggregateInput
+  active: SortOrder
+  branch_id: SortOrder
+  calories: SortOrderInput
+  category_id: SortOrder
+  created_at: SortOrder
+  id: SortOrder
+  name: SortOrder
+  preparation_time: SortOrder
+  price: SortOrder
+  size: SortOrder
+  status: SortOrder
+  updated_at: SortOrder
+}
+
+enum ProductSize {
+  LARGE
+  MEDIUM
+  SMALL
+}
+
+enum ProductStatus {
+  AVAILABLE
+  UNAVAILABLE
+}
+
+type ProductSumAggregate {
+  calories: Int
+  preparation_time: Int
+  price: Int
+}
+
+input ProductWhereInput {
+  AND: [ProductWhereInput!]
+  Branch: BranchWhereInput
+  Category: CategoryWhereInput
+  NOT: [ProductWhereInput!]
+  OR: [ProductWhereInput!]
+  ProductImages: ProductImageListRelationFilter
+  active: BoolFilter
+  branch_id: UuidFilter
+  calories: IntNullableFilter
+  category_id: UuidFilter
+  created_at: DateTimeFilter
+  id: UuidFilter
+  name: StringFilter
+  preparation_time: IntFilter
+  price: IntFilter
+  size: EnumProductSizeFilter
+  status: EnumProductStatusFilter
+  updated_at: DateTimeFilter
+}
+
+input ProductWhereUniqueInput {
+  id: String
+}
+
+type ProductsConnection {
+  count: Float!
+  edges: [ProductsEdge!]!
+  nodes: [ProductModel!]!
+  pageInfo: PageInfo!
+  totalCount: Float!
+}
+
+type ProductsEdge {
+  cursor: String!
+  node: ProductModel!
+}
+
+type Query {
+  branch(where: BranchWhereUniqueInput): BranchModel!
+  branches(after: String, before: String, first: Float, last: Float, order: BranchOrderByWithRelationInput, where: BranchWhereInput): BranchesConnection!
+  categories(after: String, before: String, first: Float, last: Float, order: CategoryOrderByWithRelationInput, where: CategoryWhereInput): CategoriesConnection!
+  category(where: CategoryWhereUniqueInput): CategoryModel!
+  customer(where: CustomerWhereUniqueInput): CustomerModel!
+  customers(after: String, before: String, first: Float, last: Float, order: CustomerOrderByWithRelationInput, where: CustomerWhereInput): CustomersConnection!
+  employee(where: EmployeeWhereUniqueInput): EmployeeModel!
+  employees(after: String, before: String, first: Float, last: Float, order: EmployeeOrderByWithRelationInput, where: EmployeeWhereInput): EmployeesConnection!
+  order(where: OrderWhereUniqueInput): OrderModel!
+  orders(after: String, before: String, first: Float, last: Float, order: OrderOrderByWithRelationInput, where: OrderWhereInput): OrdersConnection!
+  product(where: ProductWhereUniqueInput): ProductModel!
+  productImage(where: ProductImageWhereUniqueInput): ProductImageModel!
+  productImages(after: String, before: String, first: Float, last: Float, order: ProductImageOrderByWithRelationInput, where: ProductImageWhereInput): ProductImagesConnection!
+  products(after: String, before: String, first: Float, last: Float, order: ProductOrderByWithRelationInput, where: ProductWhereInput): ProductsConnection!
+  tab(where: TabWhereUniqueInput): TabModel!
+  table(where: TableWhereUniqueInput): TableModel!
+  tables(after: String, before: String, first: Float, last: Float, order: TableOrderByWithRelationInput, where: TableWhereInput): TablesConnection!
+  tabs(after: String, before: String, first: Float, last: Float, order: TabOrderByWithRelationInput, where: TabWhereInput): TabsConnection!
+  totalBranches(where: BranchWhereInput): Float!
+  totalCategories(where: CategoryWhereInput): Float!
+  totalCustomers(where: CustomerWhereInput): Float!
+  totalEmployees(where: EmployeeWhereInput): Float!
+  totalOrders(where: OrderWhereInput): Float!
+  totalProductImages(where: ProductImageWhereInput): Float!
+  totalProducts(where: ProductWhereInput): Float!
+  totalTables(where: TableWhereInput): Float!
+  totalTabs(where: TabWhereInput): Float!
+  totalUsers(where: UserWhereInput): Float!
+  user(where: UserWhereUniqueInput): UserModel!
+  users(after: String, before: String, first: Float, last: Float, order: UserOrderByWithRelationInput, where: UserWhereInput): UsersConnection!
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+type RefreshModel {
+  token: JWT!
+  token_expires: DateTimeISO!
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input SortOrderInput {
+  nulls: NullsOrder
+  sort: SortOrder!
+}
+
+input StringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  mode: QueryMode
+  not: NestedStringFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+input StringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  mode: QueryMode
+  not: NestedStringNullableFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+type Tab {
+  Orders: [Order!]
+  Table: Table!
+  _count: TabCount!
+  active: Boolean!
+  created_at: DateTime!
+  discount: Int
+  employee_tax: Int
+  id: ID!
+  observations: String
+  payment_method: String!
+  status: TabStatus!
+  table_id: String!
+  updated_at: DateTime!
+  value: Int!
+}
+
+type TabAvgAggregate {
+  discount: Float
+  employee_tax: Float
+  value: Float
+}
+
+type TabCount {
+  Orders: Int!
+}
+
+type TabCountAggregate {
+  _all: Int!
+  active: Int!
+  created_at: Int!
+  discount: Int!
+  employee_tax: Int!
+  id: Int!
+  observations: Int!
+  payment_method: Int!
+  status: Int!
+  table_id: Int!
+  updated_at: Int!
+  value: Int!
+}
+
+input TabListRelationFilter {
+  every: TabWhereInput
+  none: TabWhereInput
+  some: TabWhereInput
+}
+
+type TabMaxAggregate {
+  active: Boolean
+  created_at: DateTime
+  discount: Int
+  employee_tax: Int
+  id: String
+  observations: String
+  payment_method: String
+  status: TabStatus
+  table_id: String
+  updated_at: DateTime
+  value: Int
+}
+
+type TabMinAggregate {
+  active: Boolean
+  created_at: DateTime
+  discount: Int
+  employee_tax: Int
+  id: String
+  observations: String
+  payment_method: String
+  status: TabStatus
+  table_id: String
+  updated_at: DateTime
+  value: Int
+}
+
+type TabModel {
+  active: Boolean!
+  created_at: DateTimeISO!
+  discount: Float
+  employee_tax: Float
+  id: ID!
+  observations: String
+  payment_method: String!
+  status: TabStatus!
+  table_id: UUID!
+  updated_at: DateTimeISO!
+  value: Float!
+}
+
+input TabOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input TabOrderByWithRelationInput {
+  Orders: OrderOrderByRelationAggregateInput
+  Table: TableOrderByWithRelationInput
+  active: SortOrder
+  created_at: SortOrder
+  discount: SortOrderInput
+  employee_tax: SortOrderInput
+  id: SortOrder
+  observations: SortOrderInput
+  payment_method: SortOrder
+  status: SortOrder
+  table_id: SortOrder
+  updated_at: SortOrder
+  value: SortOrder
+}
+
+enum TabStatus {
+  CLOSED
+  OPEN
+}
+
+type TabSumAggregate {
+  discount: Int
+  employee_tax: Int
+  value: Int
+}
+
+input TabWhereInput {
+  AND: [TabWhereInput!]
+  NOT: [TabWhereInput!]
+  OR: [TabWhereInput!]
+  Orders: OrderListRelationFilter
+  Table: TableWhereInput
+  active: BoolFilter
+  created_at: DateTimeFilter
+  discount: IntNullableFilter
+  employee_tax: IntNullableFilter
+  id: UuidFilter
+  observations: StringNullableFilter
+  payment_method: StringFilter
+  status: EnumTabStatusFilter
+  table_id: UuidFilter
+  updated_at: DateTimeFilter
+  value: IntFilter
+}
+
+input TabWhereUniqueInput {
+  id: String
+}
+
+type Table {
+  Branch: Branch!
+  Employees: [Employee!]
+  Tabs: [Tab!]
+  _count: TableCount!
+  active: Boolean!
+  branch_id: String!
+  capacity: Int!
+  created_at: DateTime!
+  id: ID!
+  location: String!
+  name: String!
+  occupied_since: DateTime
+  status: TableStatus!
+  updated_at: DateTime!
+}
+
+type TableAvgAggregate {
+  capacity: Float
+}
+
+type TableCount {
+  Employees: Int!
+  Tabs: Int!
+}
+
+type TableCountAggregate {
+  _all: Int!
+  active: Int!
+  branch_id: Int!
+  capacity: Int!
+  created_at: Int!
+  id: Int!
+  location: Int!
+  name: Int!
+  occupied_since: Int!
+  status: Int!
+  updated_at: Int!
+}
+
+input TableListRelationFilter {
+  every: TableWhereInput
+  none: TableWhereInput
+  some: TableWhereInput
+}
+
+type TableMaxAggregate {
+  active: Boolean
+  branch_id: String
+  capacity: Int
+  created_at: DateTime
+  id: String
+  location: String
+  name: String
+  occupied_since: DateTime
+  status: TableStatus
+  updated_at: DateTime
+}
+
+type TableMinAggregate {
+  active: Boolean
+  branch_id: String
+  capacity: Int
+  created_at: DateTime
+  id: String
+  location: String
+  name: String
+  occupied_since: DateTime
+  status: TableStatus
+  updated_at: DateTime
+}
+
+type TableModel {
+  active: Boolean!
+  branch_id: UUID!
+  capacity: Float!
+  created_at: DateTimeISO!
+  id: ID!
+  location: String!
+  name: String!
+  occupied_since: DateTime!
+  status: TableStatus!
+  updated_at: DateTimeISO!
+}
+
+input TableOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input TableOrderByWithRelationInput {
+  Branch: BranchOrderByWithRelationInput
+  Employees: EmployeeOrderByRelationAggregateInput
+  Tabs: TabOrderByRelationAggregateInput
+  active: SortOrder
+  branch_id: SortOrder
+  capacity: SortOrder
+  created_at: SortOrder
+  id: SortOrder
+  location: SortOrder
+  name: SortOrder
+  occupied_since: SortOrderInput
+  status: SortOrder
+  updated_at: SortOrder
+}
+
+enum TableStatus {
+  AVAILABLE
+  UNAVAILABLE
+}
+
+type TableSumAggregate {
+  capacity: Int
+}
+
+input TableWhereInput {
+  AND: [TableWhereInput!]
+  Branch: BranchWhereInput
+  Employees: EmployeeListRelationFilter
+  NOT: [TableWhereInput!]
+  OR: [TableWhereInput!]
+  Tabs: TabListRelationFilter
+  active: BoolFilter
+  branch_id: UuidFilter
+  capacity: IntFilter
+  created_at: DateTimeFilter
+  id: UuidFilter
+  location: StringFilter
+  name: StringFilter
+  occupied_since: DateTimeNullableFilter
+  status: EnumTableStatusFilter
+  updated_at: DateTimeFilter
+}
+
+input TableWhereUniqueInput {
+  id: String
+}
+
+type TablesConnection {
+  count: Float!
+  edges: [TablesEdge!]!
+  nodes: [TableModel!]!
+  pageInfo: PageInfo!
+  totalCount: Float!
+}
+
+type TablesEdge {
+  cursor: String!
+  node: TableModel!
+}
+
+type TabsConnection {
+  count: Float!
+  edges: [TabsEdge!]!
+  nodes: [TabModel!]!
+  pageInfo: PageInfo!
+  totalCount: Float!
+}
+
+type TabsEdge {
+  cursor: String!
+  node: TabModel!
+}
+
+"""
+A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt.
+"""
+scalar URL
+
+"""
+A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier.
+"""
+scalar UUID
+
+input UpdateBranchInput {
+  address: String
+  address_complement: String
+  address_neighborhood: String
+  address_number: String
+  branch_name: String
+  city: String
+  cnpj: String
+  customer_id: String
+  id: String!
+  state: String
+  zip_code: String
+}
+
+input UpdateCategoryInput {
+  branch_id: String
+  description: String
+  id: String!
+  name: String
+}
+
+input UpdateCustomerInput {
+  cnpj: String
+  company_name: String
+  fantasy_name: String
+  id: String!
+  user_id: String
+}
+
+input UpdateEmployeeInput {
+  branch_id: String
+  id: String!
+  role: String
+  user_id: String
+}
+
+input UpdateOrderInput {
+  finished_at: DateTime
+  id: String!
+  observations: String
+  payment_date: DateTime
+  payment_status: PaymentStatus
+  status: OrderStatus
+  tab_id: String
+  total_price: Float
+}
+
+input UpdateProductImageInput {
+  id: String!
+  product_id: String
+}
+
+input UpdateProductInput {
+  branch_id: String
+  calories: Float
+  category_id: String
+  id: String!
+  name: String
+  preparation_time: Float
+  price: Float
+  size: ProductSize
+  status: ProductStatus
+}
+
+input UpdateTabInput {
+  discount: Float
+  employee_tax: Float
+  id: String!
+  observations: String
+  payment_method: String
+  status: TabStatus
+  table_id: String
+  value: Float
+}
+
+input UpdateTableInput {
+  branch_id: String
+  capacity: Float
+  id: String!
+  location: String
+  name: String
+  occupied_since: DateTime
+  status: TableStatus
+}
+
+input UpdateUserInput {
+  document: String
+  email: EmailAddress
+  full_name: String
+  id: UUID!
+  password: String
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+type User {
+  Customer: Customer
+  Employee: Employee
+  active: Boolean!
+  avatar_url: String
+  created_at: DateTime!
+  document: String!
+  email: EmailAddress!
+  full_name: String!
+  id: ID!
+  role: Role!
+  updated_at: DateTime!
+  validated: Boolean!
+}
+
+type UserCountAggregate {
+  _all: Int!
+  active: Int!
+  avatar_url: Int!
+  created_at: Int!
+  document: Int!
+  email: Int!
+  full_name: Int!
+  id: Int!
+  role: Int!
+  updated_at: Int!
+  validated: Int!
+}
+
+type UserMaxAggregate {
+  active: Boolean
+  avatar_url: String
+  created_at: DateTime
+  document: String
+  email: EmailAddress
+  full_name: String
+  id: String
+  role: Role
+  updated_at: DateTime
+  validated: Boolean
+}
+
+type UserMinAggregate {
+  active: Boolean
+  avatar_url: String
+  created_at: DateTime
+  document: String
+  email: EmailAddress
+  full_name: String
+  id: String
+  role: Role
+  updated_at: DateTime
+  validated: Boolean
+}
+
+type UserModel {
+  active: Boolean!
+  avatar_url: URL
+  created_at: DateTimeISO!
+  document: String!
+  email: EmailAddress!
+  full_name: String!
+  id: ID!
+  role: Role!
+  updated_at: DateTimeISO!
+  validated: Boolean!
+}
+
+input UserOrderByWithRelationInput {
+  Customer: CustomerOrderByWithRelationInput
+  Employee: EmployeeOrderByWithRelationInput
+  active: SortOrder
+  avatar_url: SortOrderInput
+  created_at: SortOrder
+  document: SortOrder
+  email: SortOrder
+  full_name: SortOrder
+  id: SortOrder
+  role: SortOrder
+  updated_at: SortOrder
+  validated: SortOrder
+}
+
+input UserWhereInput {
+  AND: [UserWhereInput!]
+  Customer: CustomerWhereInput
+  Employee: EmployeeWhereInput
+  NOT: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  active: BoolFilter
+  avatar_url: StringNullableFilter
+  created_at: DateTimeFilter
+  document: StringFilter
+  email: StringFilter
+  full_name: StringFilter
+  id: UuidFilter
+  role: EnumRoleFilter
+  updated_at: DateTimeFilter
+  validated: BoolFilter
+}
+
+input UserWhereUniqueInput {
+  document: String
+  email: String
+  id: String
+}
+
+type UsersConnection {
+  count: Float!
+  edges: [UsersEdge!]!
+  nodes: [UserModel!]!
+  pageInfo: PageInfo!
+  totalCount: Float!
+}
+
+type UsersEdge {
+  cursor: String!
+  node: UserModel!
+}
+
+input UuidFilter {
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  mode: QueryMode
+  not: NestedUuidFilter
+  notIn: [String!]
+}

@@ -1,0 +1,27 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Project "NestJs-Boilerplate" {
+  database_type: 'PostgreSQL'
+  Note: ''
+}
+
+Table users {
+  id String [pk]
+  email String [unique, not null, note: '@FieldType(\'Scalars.GraphQLEmailAddress\')']
+  full_name String [not null, note: '@Validator.MinLength(3)']
+  document String [unique, not null]
+  avatar_url String
+  role Role [not null, default: 'USER']
+  validated Boolean [not null, default: false]
+  active Boolean [not null, default: true]
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [default: `now()`, not null]
+  password String [not null, note: '@HideField({ input: true, output: true })']
+}
+
+Enum Role {
+  USER
+  ADMIN
+}

@@ -1,0 +1,9 @@
+import { WhereDTO } from 'domain/shared/dtos/WhereDTO';
+
+abstract class Where{{ pascalCase name }}Unique extends WhereDTO {
+  id?: string;
+}
+
+export abstract class FindUnique{{ pascalCase name }}UseCaseRequestDTO {
+  where?: Where{{ pascalCase name }}Unique;
+}

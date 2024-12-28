@@ -1,0 +1,29 @@
+import { Field, InputType, PartialType } from '@nestjs/graphql';
+
+import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+
+import { type {{pascalCase name}}RequestDTO } from 'infrastructure/http/dtos/{{camelCase name}}/{{pascalCase name}}RequestDTO';
+
+@InputType()
+export class Create{{pascalCase name}}Input implements {{pascalCase name}}RequestDTO {
+  @Field()
+  @IsString()
+  description: string;
+}
+
+@InputType()
+export class Update{{pascalCase name}}Input extends PartialType(
+  Create{{pascalCase name}}Input,
+) {
+  @Field()
+  @IsUUID()
+  @IsNotEmpty()
+  id: string;
+}
+
+@InputType()
+export class {{ pascalCase name }}WhereUniqueInput {
+  @Field(() => String, { nullable: true })
+  id?: string;
+}
+

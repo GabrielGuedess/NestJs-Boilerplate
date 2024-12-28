@@ -1,4 +1,4 @@
-FROM node:20-alpine As development
+FROM node:20 AS development
 
 RUN npm i -g pnpm
 
@@ -18,7 +18,7 @@ USER node
 
 # BUILD
 
-FROM node:20 As build
+FROM node:20 AS build
 
 RUN npm i -g pnpm
 
@@ -34,17 +34,23 @@ RUN pnpm build
 
 ENV NODE_ENV production
 
-RUN pnpm install --prod --ignore-scripts
+RUN pnpm fetch --prod
 
-RUN npx prisma generate && npx prisma db push
+RUN pnpm install
+
+RUN pnpm prisma generate
 
 USER node
 
 # PRODUCTION
 
-FROM node:20-alpine As production
+FROM node:20 AS production
 
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
+COPY --chown=node:node --from=build /usr/src/app/.docker ./.docker
+COPY --chown=node:node --from=build /usr/src/app/prisma ./prisma
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
 
-CMD [ "node", "dist/src/main.js" ]
+RUN chmod +x ./.docker/start.sh
+
+ENTRYPOINT ["node", "dist/src/infrastructure/main.js"]

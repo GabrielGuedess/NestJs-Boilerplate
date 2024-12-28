@@ -1,0 +1,252 @@
+import { HttpStatus, Injectable } from '@nestjs/common';
+
+import { GraphQLError } from 'graphql';
+import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
+
+import { {{ pascalCase name }} } from 'domain/entities/{{ camelCase name }}/{{ pascalCase name }}';
+import { RelayPagination } from 'domain/shared/dtos/RelayPagination';
+import { type {{ pascalCase name }}Repository } from 'domain/repositories/{{ pascalCase name }}Repository';
+import {
+  Find{{ pascalCase name }}RequestDTO,
+  type Count{{ pascalCasePlural name }}RequestDTO,
+  type Update{{ pascalCase name }}RequestDTO,
+  type FindAll{{ pascalCasePlural name }}RequestDTO,
+} from 'domain/dtos/repositories/{{ pascalCase name }}RepositoryDTO';
+
+import { PrismaService } from 'infrastructure/database/prisma/prisma.service';
+import { Prisma{{ pascalCase name }}Mapper } from 'infrastructure/database/prisma/mappers/Prisma{{ pascalCase name }}Mapper';
+
+@Injectable()
+export class Prisma{{ pascalCase name }}Repository implements {{ pascalCase name }}Repository {
+  constructor(private prisma: PrismaService) {}
+
+  async count(params: Count{{ pascalCasePlural name }}RequestDTO): Promise<number> {
+    const count = this.prisma.{{ camelCase name }}.count({ where: params.where });
+
+    return count;
+  }
+
+  async create({{ camelCase name }}: {{ pascalCase name }}): Promise<{{ pascalCase name }}> {
+    const {{ camelCase name }}Exist = await this.prisma.{{ camelCase name }}.findUnique({
+      where: { id: {{ camelCase name }}.id },
+    });
+
+    if ({{ camelCase name }}Exist) {
+      throw new GraphQLError('{{ pascalCase name }} already exists!', {
+        extensions: { code: HttpStatus.CONFLICT },
+      });
+    }
+
+    const {{ camelCase name }}Prisma = await this.prisma.{{ camelCase name }}.create({
+      data: Prisma{{ pascalCase name }}Mapper.toPrisma({{ camelCase name }}),
+    });
+
+    const {{ camelCase name }}Domain = Prisma{{ pascalCase name }}Mapper.toDomain({{ camelCase name }}Prisma);
+
+    return {{ camelCase name }}Domain;
+  }
+
+  async delete(id: string): Promise<{{ pascalCase name }}> {
+    const {{ camelCase name }} = await this.prisma.{{ camelCase name }}.findUnique({
+      where: { id },
+    });
+
+    if (!{{ camelCase name }}) {
+      throw new GraphQLError('{{ pascalCase name }} not found!', {
+        extensions: { code: HttpStatus.NOT_FOUND },
+      });
+    }
+
+    const {{ camelCase name }}Prisma = await this.prisma.{{ camelCase name }}.delete({
+      where: { id },
+    });
+
+    if (!{{ camelCase name }}Prisma) {
+      throw new GraphQLError('{{ pascalCase name }} not deleted!', {
+        extensions: { code: HttpStatus.BAD_REQUEST },
+      });
+    }
+
+    const {{ camelCase name }}Domain = Prisma{{ pascalCase name }}Mapper.toDomain({{ camelCase name }}Prisma);
+
+    return {{ camelCase name }}Domain;
+  }
+
+  async update(params: Update{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}> {
+    const {{ camelCase name }} = await this.prisma.{{ camelCase name }}.findUnique({
+      where: { id: params.id },
+    });
+
+    if (!{{ camelCase name }}) {
+      throw new GraphQLError('{{ pascalCase name }} not found!', {
+        extensions: { code: HttpStatus.NOT_FOUND },
+      });
+    }
+
+    const {{ camelCase name }}Prisma = await this.prisma.{{ camelCase name }}.update({
+      where: { id: params.id },
+      data: {
+        ...params,
+        updated_at: new Date(),
+      },
+    });
+
+    if (!{{ camelCase name }}Prisma) {
+      throw new GraphQLError('{{ pascalCase name }} not updated!', {
+        extensions: { code: HttpStatus.BAD_REQUEST },
+      });
+    }
+
+    const {{ camelCase name }}Domain = Prisma{{ pascalCase name }}Mapper.toDomain({{ camelCase name }}Prisma);
+
+    return {{ camelCase name }}Domain;
+  }
+
+  async deleteMany(ids: string[]): Promise<{{ pascalCase name }}[]> {
+    const {{ camelCasePlural name }}: {{ pascalCase name }}[] = [];
+
+    await Promise.all(
+      ids.map(async id => {
+        const {{ camelCase name }} = await this.prisma.{{ camelCase name }}.findUnique({
+          where: { id },
+        });
+
+        if (!{{ camelCase name }}) {
+          throw new GraphQLError('{{ pascalCase name }} not found!', {
+            extensions: { code: HttpStatus.NOT_FOUND },
+          });
+        }
+
+        const {{ camelCase name }}Prisma = await this.prisma.{{ camelCase name }}.delete({
+          where: { id },
+        });
+
+        if (!{{ camelCase name }}Prisma) {
+          throw new GraphQLError('{{ pascalCase name }} not deleted!', {
+            extensions: { code: HttpStatus.BAD_REQUEST },
+          });
+        }
+
+        const {{ camelCase name }}Domain = Prisma{{ pascalCase name }}Mapper.toDomain({{ camelCase name }}Prisma);
+
+        {{ camelCasePlural name }}.push({{ camelCase name }}Domain);
+      }),
+    );
+
+    return {{ camelCasePlural name }};
+  }
+
+  async findUnique(params: Find{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}> {
+    if (!params?.where?.id) {
+      throw new GraphQLError(
+        'At least one field (id, email, or document) must be provided.',
+        {
+          extensions: { code: HttpStatus.BAD_REQUEST },
+        },
+      );
+    }
+
+    const {{ camelCase name }} = await this.prisma.{{ camelCase name }}.findUnique({
+      where: {
+        ...(params?.where?.id && { id: params.where.id }),
+      },
+    });
+
+    if (!{{ camelCase name }}) {
+      throw new GraphQLError('{{ pascalCase name }} not found!', {
+        extensions: { code: HttpStatus.NOT_FOUND },
+      });
+    }
+
+    return Prisma{{ pascalCase name }}Mapper.toDomain({{ camelCase name }});
+  }
+
+  async updateMany(params: Update{{ pascalCase name }}RequestDTO[]): Promise<{{ pascalCase name }}[]> {
+    const {{ camelCasePlural name }}: {{ pascalCase name }}[] = [];
+
+    await Promise.all(
+      params.map(async item => {
+        const {{ camelCase name }} = await this.prisma.{{ camelCase name }}.findUnique({
+          where: { id: item.id },
+        });
+
+        if (!{{ camelCase name }}) {
+          throw new GraphQLError(`{{ pascalCase name }} with id "${item.id}" not found!`, {
+            extensions: { code: HttpStatus.NOT_FOUND },
+          });
+        }
+
+        const {{ camelCase name }}Prisma = await this.prisma.{{ camelCase name }}.update({
+          where: { id: item.id },
+          data: {
+            ...item,
+            updated_at: new Date(),
+          },
+        });
+
+        if (!{{ camelCase name }}Prisma) {
+          throw new GraphQLError(`{{ pascalCase name }} with id "${item.id}" not updated!`, {
+            extensions: { code: HttpStatus.BAD_REQUEST },
+          });
+        }
+
+        const {{ camelCase name }}Domain = Prisma{{ pascalCase name }}Mapper.toDomain({{ camelCase name }}Prisma);
+
+        {{ camelCasePlural name }}.push({{ camelCase name }}Domain);
+      }),
+    );
+
+    return {{ camelCasePlural name }};
+  }
+
+  async findAll(
+    params: FindAll{{ pascalCasePlural name }}RequestDTO,
+  ): Promise<RelayPagination<{{ pascalCase name }}>> {
+    const keys = Object.keys(params.order ?? {});
+
+    if (keys?.length > 1) {
+      throw new GraphQLError('Only a single sort parameter can be passed!', {
+        extensions: { code: HttpStatus.CONFLICT },
+      });
+    }
+
+    const relay = await findManyCursorConnection(
+      args =>
+        this.prisma.{{ camelCase name }}.findMany({
+          ...args,
+          where: params.where,
+          orderBy: params.order,
+        }),
+      () => this.prisma.{{ camelCase name }}.count(),
+      {
+        last: params.last,
+        first: params.first,
+        after: params.after,
+        before: params.before,
+      },
+      {
+        getCursor: record => ({ id: record.id }),
+      },
+    );
+
+    const edges = relay.edges.map(edge => ({
+      ...edge,
+      node: new {{ pascalCase name }}(edge.node, edge.node.id),
+    }));
+
+    const nodes = relay.edges.map(edge => new {{ pascalCase name }}(edge.node, edge.node.id));
+
+    return {
+      edges,
+      nodes,
+      count: edges.length,
+      totalCount: relay.totalCount,
+      pageInfo: {
+        endCursor: relay.pageInfo.endCursor,
+        hasNextPage: relay.pageInfo.hasNextPage,
+        startCursor: relay.pageInfo.startCursor,
+        hasPreviousPage: relay.pageInfo.hasPreviousPage,
+      },
+    };
+  }
+}

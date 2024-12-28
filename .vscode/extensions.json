@@ -1,9 +1,13 @@
 {
   "recommendations": [
+    "prisma.prisma",
     "dbaeumer.vscode-eslint",
+    "andrejunges.handlebars",
     "esbenp.prettier-vscode",
     "matt-meyers.vscode-dbml",
+    "mylesmurphy.prettify-ts",
     "yoavbls.pretty-ts-errors",
-    "EditorConfig.EditorConfig"
+    "EditorConfig.EditorConfig",
+    "abhijoybasak.nestjs-files"
   ]
 }

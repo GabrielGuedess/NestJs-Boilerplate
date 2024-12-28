@@ -1,10 +1,33 @@
-generator client {
-  provider      = "prisma-client-js"
+generator User {
+  provider      = "prisma-User-js"
   binaryTargets = ["native", "debian-openssl-3.0.x", "linux-musl", "linux-musl-openssl-3.0.x"]
 }
 
 generator dbml {
-  provider = "prisma-dbml-generator"
+  projectDatabaseType = "PostgreSQL"
+  projectName         = "NestJs-Boilerplate"
+  output              = "../docs/database/dbml"
+  provider            = "prisma-dbml-generator"
+}
+
+generator nestgraphql {
+  provider                              = "node node_modules/prisma-nestjs-graphql"
+  fields_Validator_from                 = "class-validator"
+  useInputType_WhereInput_ALL           = "WhereInput"
+  fields_Scalars_from                   = "graphql-scalars"
+  fields_Scalars_input                  = true
+  fields_Scalars_output                 = true
+  output                                = "../src/infrastructure/http/graphql/generated"
+  fields_Validator_input                = true
+  unsafeCompatibleWhereUniqueInput      = false
+  requireSingleFieldsInWhereUniqueInput = true
+  reExport                              = Directories
+
+  decorate_1_type      = "WhereInput"
+  decorate_1_field     = document
+  decorate_1_name      = IsCPF
+  decorate_1_from      = "infrastructure/http/validators/cpf.decorator"
+  decorate_1_arguments = "[]"
 }
 
 datasource db {
@@ -12,8 +35,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
-  id    String @id @default(uuid())
-  email String @unique
-  name  String
+  id         String   @id @unique @default(uuid(7)) @db.Uuid
+  /// @FieldType('Scalars.GraphQLEmailAddress')
+  email      String   @unique
+  /// @Validator.MinLength(3)
+  full_name  String
+  document   String   @unique
+  avatar_url String?
+  role       Role     @default(USER)
+  validated  Boolean  @default(false)
+  active     Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  /// @HideField({ input: true, output: true })
+  password String
+
+  @@map("users")
 }

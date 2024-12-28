@@ -1,0 +1,46 @@
+import { WhereDTO } from 'domain/shared/dtos/WhereDTO';
+import { type BoolFilterDTO } from 'domain/shared/dtos/BoolFilterDTO';
+import { type StringFilterDTO } from 'domain/shared/dtos/StringFilterDTO';
+import { type DateTimeFilterDTO } from 'domain/shared/dtos/DateTimeFilterDTO';
+
+abstract class Where{{ pascalCase name }}UniqueDTO extends WhereDTO {
+  id?: string;
+}
+
+abstract class Where{{ pascalCase name }}DTO extends WhereDTO {
+  id?: StringFilterDTO;
+  description?: StringFilterDTO;
+  active?: BoolFilterDTO;
+  created_at?: DateTimeFilterDTO;
+  updated_at?: DateTimeFilterDTO;
+}
+
+abstract class OrderBy{{ pascalCase name }}DTO {
+  id?: 'asc' | 'desc';
+  description?: 'asc' | 'desc';
+  active?: 'asc' | 'desc';
+  created_at?: 'asc' | 'desc';
+  updated_at?: 'asc' | 'desc';
+}
+
+export abstract class Find{{ pascalCase name }}RequestDTO {
+  where?: Where{{ pascalCase name }}UniqueDTO;
+}
+
+export abstract class FindAll{{ pascalCasePlural name }}RequestDTO {
+  last?: number;
+  after?: string;
+  first?: number;
+  before?: string;
+  where?: Where{{ pascalCase name }}DTO;
+  order?: OrderBy{{ pascalCase name }}DTO;
+}
+
+export abstract class Count{{ pascalCasePlural name }}RequestDTO {
+  where?: Where{{ pascalCase name }}DTO;
+}
+
+export abstract class Update{{ pascalCase name }}RequestDTO {
+  id: string;
+  description?: string;
+}
