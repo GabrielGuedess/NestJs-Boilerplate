@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.1...v1.1.2) (2025-01-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @apollo/server to v4.11.3 ([#115](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/115)) ([7b13905](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/7b1390517ec7abb40a8fc6e5775cb0f2fdd5250c))
+
 ## [1.1.1](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.0...v1.1.1) (2024-12-28)
 
 
