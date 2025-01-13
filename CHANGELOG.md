@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.2...v1.1.3) (2025-01-13)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @nestjs/swagger to v8.1.1 ([#124](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/124)) ([ba19fc5](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/ba19fc5367d4dca44e5ba9983f1aa148a5f2f64b))
+
 ## [1.1.2](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.1...v1.1.2) (2025-01-06)
 
 
