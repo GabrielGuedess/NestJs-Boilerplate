@@ -143,7 +143,7 @@ importers:
         version: 19.5.0
       '@darraghor/eslint-plugin-nestjs-typed':
         specifier: ^5.0.30
-        version: 5.0.32(@typescript-eslint/parser@8.19.1(eslint@9.17.0(jiti@2.4.2))(typescript@5.7.3))(class-validator@0.14.1)(eslint-import-resolver-typescript@3.7.0)(eslint@9.17.0(jiti@2.4.2))(typescript@5.7.3)
+        version: 5.1.0(@typescript-eslint/parser@8.19.1(eslint@9.17.0(jiti@2.4.2))(typescript@5.7.3))(class-validator@0.14.1)(eslint-import-resolver-typescript@3.7.0)(eslint@9.17.0(jiti@2.4.2))(typescript@5.7.3)
       '@eslint-community/eslint-plugin-eslint-comments':
         specifier: ^4.4.1
         version: 4.4.1(eslint@9.17.0(jiti@2.4.2))
@@ -957,8 +957,8 @@ packages:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
 
-  '@darraghor/eslint-plugin-nestjs-typed@5.0.32':
-    resolution: {integrity: sha512-fURluXshOppVDIXCpSqX7SQbGs8qr3fkcNpYnqZPINPK9kQ4VYtl0iSmc6HLAvTH5IsrWaxTqFn55PKfwGzLZQ==}
+  '@darraghor/eslint-plugin-nestjs-typed@5.1.0':
+    resolution: {integrity: sha512-vnVt6pxWxWRB61i1SPGC0v50B6IYuCFUC7I6bjj7DT7yPwmb5iYl4uzIyMXbEUkIxpxjOpNIOtag98m9/j+DGA==}
     engines: {node: ^18.18.0 || >=20.0.0}
     peerDependencies:
       '@typescript-eslint/parser': ^7.0.0 || ^8.0.0
@@ -9226,7 +9226,7 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
-  '@darraghor/eslint-plugin-nestjs-typed@5.0.32(@typescript-eslint/parser@8.19.1(eslint@9.17.0(jiti@2.4.2))(typescript@5.7.3))(class-validator@0.14.1)(eslint-import-resolver-typescript@3.7.0)(eslint@9.17.0(jiti@2.4.2))(typescript@5.7.3)':
+  '@darraghor/eslint-plugin-nestjs-typed@5.1.0(@typescript-eslint/parser@8.19.1(eslint@9.17.0(jiti@2.4.2))(typescript@5.7.3))(class-validator@0.14.1)(eslint-import-resolver-typescript@3.7.0)(eslint@9.17.0(jiti@2.4.2))(typescript@5.7.3)':
     dependencies:
       '@typescript-eslint/parser': 8.19.1(eslint@9.17.0(jiti@2.4.2))(typescript@5.7.3)
       '@typescript-eslint/scope-manager': 8.19.0
@@ -11001,7 +11001,7 @@ snapshots:
       '@typescript-eslint/types': 8.19.0
       '@typescript-eslint/visitor-keys': 8.19.0
       debug: 4.4.0
-      fast-glob: 3.3.2
+      fast-glob: 3.3.3
       is-glob: 4.0.3
       minimatch: 9.0.5
       semver: 7.6.3
