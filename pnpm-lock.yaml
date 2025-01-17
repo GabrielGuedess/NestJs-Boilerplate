@@ -239,7 +239,7 @@ importers:
         version: 9.1.0(eslint@9.17.0(jiti@2.4.2))
       eslint-formatter-mo:
         specifier: ^1.2.1
-        version: 1.2.1
+        version: 1.4.1
       eslint-import-resolver-typescript:
         specifier: ^3.7.0
         version: 3.7.0(eslint-plugin-import@2.31.0)(eslint@9.17.0(jiti@2.4.2))
@@ -3843,8 +3843,8 @@ packages:
     resolution: {integrity: sha512-WXg2D5kMHcRxIZA3ulxdevi8/BGTXu72pfOO5vXHqcAfClfIWDSlOljROjCSOCcKvilgmHz1jDWbvFCZHjMQ5w==}
     engines: {node: '>=0.10.0'}
 
-  eslint-formatter-mo@1.2.1:
-    resolution: {integrity: sha512-dAS3r5/kj0UKgA6i6nM3KGJnsSufLNGd8edqZ95Vcn3wNUTnVWlvNSLB16JJ20R5J8VoEthSR79P9QFThEVhEw==}
+  eslint-formatter-mo@1.4.1:
+    resolution: {integrity: sha512-wWxsIIL/A9SL522bX3/D/pBHpYwVp/eajrO7Un1THS8AhdR3z3gGVqJi2nFe56677UvNN/lXlRO9nMcn49mdbA==}
 
   eslint-import-resolver-node@0.3.9:
     resolution: {integrity: sha512-WFj2isz22JahUv+B788TlO3N6zL3nNJGU8CcZbPZvVEkBPaJdCV4vy5wyghty5ROFbCRnm132v8BScu5/1BQ8g==}
@@ -13009,13 +13009,14 @@ snapshots:
       strip-ansi: 5.2.0
       text-table: 0.2.0
 
-  eslint-formatter-mo@1.2.1:
+  eslint-formatter-mo@1.4.1:
     dependencies:
       chalk: 3.0.0
       emphasize: 4.2.0
       gradient-string: 1.2.0
       plur: 4.0.0
       string-width: 4.2.3
+      terminal-link: 2.1.1
 
   eslint-import-resolver-node@0.3.9:
     dependencies:
