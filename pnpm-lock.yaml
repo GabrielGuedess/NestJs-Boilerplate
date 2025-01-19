@@ -260,7 +260,7 @@ importers:
         version: 3.1.0(eslint@9.17.0(jiti@2.4.2))
       eslint-plugin-no-relative-import-paths:
         specifier: ^1.5.5
-        version: 1.5.5
+        version: 1.6.1
       eslint-plugin-no-secrets:
         specifier: ^2.1.1
         version: 2.1.1(eslint@9.17.0(jiti@2.4.2))
@@ -3934,8 +3934,8 @@ packages:
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9
 
-  eslint-plugin-no-relative-import-paths@1.5.5:
-    resolution: {integrity: sha512-UjudFFdBbv93v0CsVdEKcMLbBzRIjeK2PubTctX57tgnHxZcMj1Jm8lDBWoETnPxk0S5g5QLSltEM+511yL4+w==}
+  eslint-plugin-no-relative-import-paths@1.6.1:
+    resolution: {integrity: sha512-YZNeOnsOrJcwhFw0X29MXjIzu2P/f5X2BZDPWw1R3VUYBRFxNIh77lyoL/XrMU9ewZNQPcEvAgL/cBOT1P330A==}
 
   eslint-plugin-no-secrets@2.1.1:
     resolution: {integrity: sha512-jcxk11tA3riniLoI5UqUtrW6/nmC60pNAG1NFpXrenzAu0Hmbjxq63e27YhvNIq+exT2yMZLvCqAQ+lC/+ZWZA==}
@@ -13148,7 +13148,7 @@ snapshots:
       safe-regex-test: 1.1.0
       string.prototype.includes: 2.0.1
 
-  eslint-plugin-no-relative-import-paths@1.5.5: {}
+  eslint-plugin-no-relative-import-paths@1.6.1: {}
 
   eslint-plugin-no-secrets@2.1.1(eslint@9.17.0(jiti@2.4.2)):
     dependencies:
