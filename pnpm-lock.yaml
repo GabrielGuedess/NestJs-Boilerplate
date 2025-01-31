@@ -143,7 +143,7 @@ importers:
         version: 19.5.0
       '@darraghor/eslint-plugin-nestjs-typed':
         specifier: ^5.0.30
-        version: 5.1.4(@typescript-eslint/parser@8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.3))(class-validator@0.14.1)(eslint-import-resolver-typescript@3.7.0)(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.3)
+        version: 5.2.1(@typescript-eslint/parser@8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.3))(class-validator@0.14.1)(eslint-import-resolver-typescript@3.7.0)(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.3)
       '@eslint-community/eslint-plugin-eslint-comments':
         specifier: ^4.4.1
         version: 4.4.1(eslint@9.19.0(jiti@2.4.2))
@@ -945,8 +945,8 @@ packages:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
 
-  '@darraghor/eslint-plugin-nestjs-typed@5.1.4':
-    resolution: {integrity: sha512-E9wU3Ar3oPJAUOa+wvuBeQoK1YAAM0RAJcyw4i8WEQMsuOt4kuO6kre6HSsEdLMW2tWEejnQoQNxlxSvTt7yyA==}
+  '@darraghor/eslint-plugin-nestjs-typed@5.2.1':
+    resolution: {integrity: sha512-zitbX0wJJNUhPKvuXjyoOfF78gCNgmXBs5CFtUL6LIEUxKFxFmpfhxJD6+obhnQECLpCYLHjVa75ryKekLm6Qw==}
     engines: {node: ^18.18.0 || >=20.0.0}
     peerDependencies:
       '@typescript-eslint/parser': ^7.0.0 || ^8.0.0
@@ -9205,7 +9205,7 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
-  '@darraghor/eslint-plugin-nestjs-typed@5.1.4(@typescript-eslint/parser@8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.3))(class-validator@0.14.1)(eslint-import-resolver-typescript@3.7.0)(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.3)':
+  '@darraghor/eslint-plugin-nestjs-typed@5.2.1(@typescript-eslint/parser@8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.3))(class-validator@0.14.1)(eslint-import-resolver-typescript@3.7.0)(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.3)':
     dependencies:
       '@typescript-eslint/parser': 8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.3)
       '@typescript-eslint/scope-manager': 8.22.0
