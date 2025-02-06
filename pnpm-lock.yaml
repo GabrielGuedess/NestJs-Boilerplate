@@ -263,7 +263,7 @@ importers:
         version: 1.6.1
       eslint-plugin-no-secrets:
         specifier: ^2.1.1
-        version: 2.1.1(eslint@9.19.0(jiti@2.4.2))
+        version: 2.2.1(eslint@9.19.0(jiti@2.4.2))
       eslint-plugin-perfectionist:
         specifier: ^4.4.0
         version: 4.8.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.3)
@@ -3934,8 +3934,8 @@ packages:
   eslint-plugin-no-relative-import-paths@1.6.1:
     resolution: {integrity: sha512-YZNeOnsOrJcwhFw0X29MXjIzu2P/f5X2BZDPWw1R3VUYBRFxNIh77lyoL/XrMU9ewZNQPcEvAgL/cBOT1P330A==}
 
-  eslint-plugin-no-secrets@2.1.1:
-    resolution: {integrity: sha512-jcxk11tA3riniLoI5UqUtrW6/nmC60pNAG1NFpXrenzAu0Hmbjxq63e27YhvNIq+exT2yMZLvCqAQ+lC/+ZWZA==}
+  eslint-plugin-no-secrets@2.2.1:
+    resolution: {integrity: sha512-/7BduEiFeINJ7mlc8iRmqp0sDw2a2lAFahig/RGppn7qf1dKhldXopUuv4M92kc4PX90dcxfKwKtYrW159cuhA==}
     engines: {node: '>=18', npm: '>=8'}
     peerDependencies:
       eslint: '>=5'
@@ -13112,7 +13112,7 @@ snapshots:
 
   eslint-plugin-no-relative-import-paths@1.6.1: {}
 
-  eslint-plugin-no-secrets@2.1.1(eslint@9.19.0(jiti@2.4.2)):
+  eslint-plugin-no-secrets@2.2.1(eslint@9.19.0(jiti@2.4.2)):
     dependencies:
       eslint: 9.19.0(jiti@2.4.2)
 
