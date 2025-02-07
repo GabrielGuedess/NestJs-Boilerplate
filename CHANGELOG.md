@@ -1,3 +1,10 @@
+## [1.1.7](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.6...v1.1.7) (2025-02-07)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @nestjs/terminus to v10.3.0 ([#165](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/165)) ([b9cd7d6](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/b9cd7d6e84a413c5e2fe260511817de32c8b862f))
+
 ## [1.1.6](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.5...v1.1.6) (2025-02-07)
 
 
