@@ -1,3 +1,10 @@
+## [1.1.10](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.9...v1.1.10) (2025-02-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency zod to v3.24.2 ([#174](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/174)) ([4a82862](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/4a82862f90cf8bf1b8c29114145f78a52807aa59))
+
 ## [1.1.9](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.8...v1.1.9) (2025-02-09)
 
 
