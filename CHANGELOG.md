@@ -1,3 +1,10 @@
+## [1.1.12](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.11...v1.1.12) (2025-02-21)
+
+
+### Bug Fixes
+
+* **deps:** update dependency pino-http to v10.4.0 ([#187](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/187)) ([59e7926](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/59e7926e5c78d5d43b28296230c1a80f9749781e))
+
 ## [1.1.11](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.10...v1.1.11) (2025-02-20)
 
 
