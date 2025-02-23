@@ -1,3 +1,10 @@
+## [1.1.13](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.12...v1.1.13) (2025-02-23)
+
+
+### Bug Fixes
+
+* **deps:** update dependency nestjs-pino to v4.3.1 ([#191](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/191)) ([4241f5f](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/4241f5f32b13be408d577598ccc36fc17cbbc8ce))
+
 ## [1.1.12](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.11...v1.1.12) (2025-02-21)
 
 
