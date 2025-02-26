@@ -1,3 +1,10 @@
+## [1.1.14](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.13...v1.1.14) (2025-02-26)
+
+
+### Bug Fixes
+
+* **deps:** update dependency rxjs to v7.8.2 ([#194](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/194)) ([e988e83](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/e988e83e2039809e8254cfe2b47d6c0577dbc814))
+
 ## [1.1.13](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.12...v1.1.13) (2025-02-23)
 
 
