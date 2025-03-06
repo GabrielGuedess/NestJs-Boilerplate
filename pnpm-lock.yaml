@@ -115,7 +115,7 @@ importers:
         version: 10.4.0
       prisma-nestjs-graphql:
         specifier: ^20.0.3
-        version: 20.0.3
+        version: 20.1.0
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -6694,8 +6694,8 @@ packages:
     resolution: {integrity: sha512-b5CqA9cCY5jmNJGjx8oUbPw3KSgVd+mu8711MSZIRY9dIF0Vlcs/Au6LR3S5guncydM7Zkh8iz8vC+c2CDj3Xw==}
     hasBin: true
 
-  prisma-nestjs-graphql@20.0.3:
-    resolution: {integrity: sha512-p8ZGoXqc+s6sI1UnIRK9qmT9neFyt8V+SAfuP1SZNgJQBhKc/8hO2dfwZFqLHAYrbfo/psAa+AghO4yx5pohuA==}
+  prisma-nestjs-graphql@20.1.0:
+    resolution: {integrity: sha512-NQzQErAeNH8HgGRk96XCYrUkR+TMLVrq4ufbz87dA3NyrU02uuKhbiFZdWPS8Fb20+9qDY8JtE2cFmM7dm+LlA==}
     hasBin: true
 
   prisma@6.1.0:
@@ -16288,7 +16288,7 @@ snapshots:
       - encoding
       - supports-color
 
-  prisma-nestjs-graphql@20.0.3:
+  prisma-nestjs-graphql@20.1.0:
     dependencies:
       '@prisma/generator-helper': 5.22.0
       await-event-emitter: 2.0.2
