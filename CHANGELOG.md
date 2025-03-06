@@ -1,3 +1,10 @@
+## [1.1.17](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.16...v1.1.17) (2025-03-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency nestjs-graphql-relay to v10.6.0 ([#210](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/210)) ([b3aa8dc](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/b3aa8dcf2ec00520241be67501d4776378fc9946))
+
 ## [1.1.16](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.15...v1.1.16) (2025-03-02)
 
 
