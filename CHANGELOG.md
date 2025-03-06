@@ -1,3 +1,10 @@
+## [1.1.18](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.17...v1.1.18) (2025-03-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency prisma-nestjs-graphql to v20.1.0 ([#211](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/211)) ([09a63d3](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/09a63d37223e6452c2fda0b953533e50fdde2ac0))
+
 ## [1.1.17](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.16...v1.1.17) (2025-03-06)
 
 
