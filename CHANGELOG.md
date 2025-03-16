@@ -1,3 +1,10 @@
+## [1.1.21](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.20...v1.1.21) (2025-03-16)
+
+
+### Bug Fixes
+
+* **deps:** update dependency cloudinary to v2.6.0 ([#233](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/233)) ([fbd2028](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/fbd2028779b7e784826dc1e34384a2294c2034cb))
+
 ## [1.1.20](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.19...v1.1.20) (2025-03-13)
 
 
