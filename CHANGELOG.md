@@ -1,3 +1,10 @@
+## [1.1.22](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.21...v1.1.22) (2025-04-04)
+
+
+### Bug Fixes
+
+* **deps:** update dependency axios to v1.8.4 ([#248](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/248)) ([8168ff1](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/8168ff113a293b6055efaf7f7e1666029d012522))
+
 ## [1.1.21](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.20...v1.1.21) (2025-03-16)
 
 
