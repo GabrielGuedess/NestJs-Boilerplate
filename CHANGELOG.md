@@ -1,3 +1,10 @@
+## [1.1.23](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.22...v1.1.23) (2025-04-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency graphql-scalars to v1.24.2 ([#250](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/250)) ([3bd6a82](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/3bd6a82ab0397b94a68f034439f3e473387ca75f))
+
 ## [1.1.22](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.21...v1.1.22) (2025-04-04)
 
 
