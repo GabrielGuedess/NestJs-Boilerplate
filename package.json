@@ -97,7 +97,7 @@
     "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
     "@commitlint/types": "^19.5.0",
-    "@darraghor/eslint-plugin-nestjs-typed": "^5.0.30",
+    "@darraghor/eslint-plugin-nestjs-typed": "^6.0.0",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.4.1",
     "@eslint/compat": "^1.2.4",
     "@eslint/eslintrc": "^3.2.0",
