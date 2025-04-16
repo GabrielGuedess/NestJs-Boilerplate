@@ -1,3 +1,10 @@
+## [1.1.24](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.23...v1.1.24) (2025-04-16)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @nestjs/common to v10.4.16 [security] ([#259](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/259)) ([cadc453](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/cadc453e0c5b3c3d312521cf1af21ecf85aea7e1))
+
 ## [1.1.23](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.22...v1.1.23) (2025-04-06)
 
 
