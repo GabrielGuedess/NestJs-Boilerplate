@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.2.0...v1.3.0) (2025-04-19)
+
+
+### Features
+
+* add redis ([b1d9494](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/b1d9494ea55956beb72f279c927d175febc5463d))
+
 # [1.2.0](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.25...v1.2.0) (2025-04-19)
 
 
