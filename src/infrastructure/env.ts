@@ -27,8 +27,11 @@ const envSchema = z.object({
   CLOUDINARY_API_KEY: z.string().min(1),
   CLOUDINARY_API_SECRET: z.string().min(1),
 
-  API_PORT: z.string().default('3002'),
-  DB_PORT: z.string().default('5433'),
+  API_PORT: z.string().default('3000'),
+  DB_PORT: z.string().default('5432'),
+
+  NGINX_PORT: z.string().default('80'),
+  REDIS_PORT: z.string().default('6379'),
 });
 
 export const env = envSchema.parse(process.env);

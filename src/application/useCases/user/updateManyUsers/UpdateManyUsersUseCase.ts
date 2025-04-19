@@ -2,32 +2,35 @@ import { Injectable } from '@nestjs/common';
 
 import { hash } from 'bcrypt';
 
-import { type User } from 'domain/entities/user/User';
+import { User } from 'domain/entities/user/User';
 import { UserRepository } from 'domain/repositories/UserRepository';
 
-import { type UpdateUserUseCaseRequestDTO } from 'application/dtos/user/UpdateUserUseCaseDTO';
+import { UpdateUserUseCaseRequestDTO } from 'application/dtos/user/UpdateUserUseCaseDTO';
 
 @Injectable()
 export class UpdateManyUsersUseCase {
-  constructor(private userRepository: UserRepository) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async execute(request: UpdateUserUseCaseRequestDTO[]): Promise<User[]> {
-    const data = await Promise.all(
-      request.map(async user => {
-        if (user.password) {
-          const passwordHash = await hash(user.password, 10);
+    const updatedData = await Promise.all(
+      request.map(async ({ data, where }) => {
+        if (data.password) {
+          const passwordHash = await hash(data.password, 10);
 
           return {
-            ...user,
-            password: passwordHash,
+            where,
+            data: {
+              ...data,
+              password: passwordHash,
+            },
           };
         }
 
-        return user;
+        return { data, where };
       }),
     );
 
-    const updateUsers = await this.userRepository.updateMany(data);
+    const updateUsers = await this.userRepository.updateMany(updatedData);
 
     return updateUsers;
   }

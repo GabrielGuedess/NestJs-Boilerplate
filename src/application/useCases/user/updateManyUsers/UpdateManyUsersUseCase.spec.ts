@@ -24,8 +24,8 @@ describe('Update User', () => {
 
     await updateManyUsersUseCase.execute([
       {
-        id: user.id,
-        document: newDocument,
+        where: { id: user.id },
+        data: { document: newDocument },
       },
     ]);
 
@@ -52,8 +52,8 @@ describe('Update User', () => {
 
     await updateManyUsersUseCase.execute([
       {
-        id: user.id,
-        password: newPassword,
+        where: { id: user.id },
+        data: { password: newPassword },
       },
     ]);
 

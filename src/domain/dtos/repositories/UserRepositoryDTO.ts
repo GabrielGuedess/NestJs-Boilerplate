@@ -5,14 +5,18 @@ import { type BoolFilterDTO } from 'domain/shared/dtos/BoolFilterDTO';
 import { type StringFilterDTO } from 'domain/shared/dtos/StringFilterDTO';
 import { type DateTimeFilterDTO } from 'domain/shared/dtos/DateTimeFilterDTO';
 import { type SortOrderInputDTO } from 'domain/shared/dtos/SortOrderInputDTO';
+import { type RequireAtLeastOne } from 'domain/shared/helpers/RequireAtLeastOne';
 
-abstract class WhereUserUniqueDTO extends WhereDTO {
-  id?: string;
-  email?: string;
-  document?: string;
-}
+export type WhereUserUniqueDTO = RequireAtLeastOne<
+  {
+    id?: string;
+    email?: string;
+    document?: string;
+  },
+  'id' | 'email' | 'document'
+>;
 
-abstract class WhereUserDTO extends WhereDTO {
+export abstract class WhereUserDTO extends WhereDTO {
   id?: StringFilterDTO;
   active?: BoolFilterDTO;
   email?: StringFilterDTO;
@@ -25,7 +29,7 @@ abstract class WhereUserDTO extends WhereDTO {
   updated_at?: DateTimeFilterDTO;
 }
 
-abstract class OrderByUserDTO {
+export abstract class OrderByUserDTO {
   id?: 'asc' | 'desc';
   role?: 'asc' | 'desc';
   email?: 'asc' | 'desc';
@@ -38,11 +42,7 @@ abstract class OrderByUserDTO {
   avatar_url?: SortOrderInputDTO;
 }
 
-export abstract class FindUserRequestDTO {
-  where?: WhereUserUniqueDTO;
-}
-
-export abstract class FindAllUsersRequestDTO {
+export abstract class PaginationCursorUsersRequestDTO {
   last?: number;
   after?: string;
   first?: number;
@@ -51,15 +51,51 @@ export abstract class FindAllUsersRequestDTO {
   order?: OrderByUserDTO;
 }
 
+export abstract class PaginationOffsetUsersRequestDTO {
+  page?: number;
+  limit?: number;
+  where?: WhereUserDTO;
+  order?: OrderByUserDTO;
+}
+
+export abstract class FindAllUsersRequestDTO {
+  where?: WhereUserDTO;
+  order?: OrderByUserDTO;
+}
+
+export abstract class FindUniqueUserRequestDTO {
+  returnError?: boolean;
+  where?: WhereUserUniqueDTO;
+}
+
+export abstract class FindFirstUserRequestDTO {
+  where?: WhereUserDTO;
+  returnError?: boolean;
+}
+
 export abstract class CountUsersRequestDTO {
   where?: WhereUserDTO;
 }
 
+export abstract class ActivateUserRequestDTO {
+  where?: WhereUserUniqueDTO;
+}
+
+export abstract class DeactivateUserRequestDTO {
+  where?: WhereUserUniqueDTO;
+}
+
+export abstract class DeleteUserRequestDTO {
+  where?: WhereUserUniqueDTO;
+}
+
 export abstract class UpdateUserRequestDTO {
-  id: string;
-  email?: string;
-  password?: string;
-  document?: string;
-  full_name?: string;
-  avatar_url?: string;
+  where: WhereUserUniqueDTO;
+  data: {
+    email?: string;
+    password?: string;
+    document?: string;
+    full_name?: string;
+    avatar_url?: string;
+  };
 }

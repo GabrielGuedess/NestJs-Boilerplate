@@ -5,100 +5,130 @@ import { GraphQLUpload } from 'graphql-upload-minimal';
 
 import { FileUploadDTO } from 'domain/shared/dtos/FileUploadDTO';
 import { RelayPagination } from 'domain/shared/dtos/RelayPagination';
+import { OffsetPagination } from 'domain/shared/dtos/OffsetPagination';
+import { WhereUserUniqueDTO } from 'domain/dtos/repositories/UserRepositoryDTO';
 
 import { CountUsersUseCase } from 'application/useCases/user/countUsers/CountUsersUseCase';
 import { CreateUserUseCase } from 'application/useCases/user/createUser/CreateUserUseCase';
-import { DeleteUserUseCase } from 'application/useCases/user/deleteUser/DeleteUserUseCase';
 import { UpdateUserUseCase } from 'application/useCases/user/updateUser/UpdateUserUseCase';
+import { DeleteUserUseCase } from 'application/useCases/user/deleteUser/DeleteUserUseCase';
 import { FindAllUsersUseCase } from 'application/useCases/user/findAllUsers/FindAllUsersUseCase';
+import { ActivateUserUseCase } from 'application/useCases/user/activateUser/ActivateUserUseCase';
+import { FindFirstUserUseCase } from 'application/useCases/user/findFirstUser/FindFirstUserUseCase';
 import { FindUniqueUserUseCase } from 'application/useCases/user/findUniqueUser/FindUniqueUserUseCase';
-import { DeleteManyUsersUseCase } from 'application/useCases/user/deleteManyUsers/DeleteManyUsersUseCase';
+import { DeactivateUserUseCase } from 'application/useCases/user/deactivateUser/DeactivateUserUseCase';
+import { CreateManyUsersUseCase } from 'application/useCases/user/createManyUser/CreateManyUsersUseCase';
 import { UpdateManyUsersUseCase } from 'application/useCases/user/updateManyUsers/UpdateManyUsersUseCase';
+import { DeleteManyUsersUseCase } from 'application/useCases/user/deleteManyUsers/DeleteManyUsersUseCase';
+import { PaginationCursorUsersUseCase } from 'application/useCases/user/paginationCursorUsers/PaginationCursorUsersUseCase';
+import { PaginationOffsetUsersUseCase } from 'application/useCases/user/paginationOffsetUsers/PaginationOffsetUsersUseCase';
 
 import { GraphQLAuthGuard } from 'infrastructure/http/guard/graphql.guard';
 import { UserViewModel } from 'infrastructure/http/view-models/UserViewModel';
-import { type UserResponseDTO } from 'infrastructure/http/dtos/user/UserResponseDTO';
-import {
-  UserModel,
-  UsersConnection,
-} from 'infrastructure/http/graphql/models/user.model';
+import { UserResponseDTO } from 'infrastructure/http/dtos/user/UserResponseDTO';
 import {
   CreateUserInput,
   UpdateUserInput,
+  DeleteUserInput,
 } from 'infrastructure/http/graphql/inputs/user.input';
 import {
-  UserArgs,
+  UserModel,
+  UsersCursorConnection,
+  UsersOffsetConnection,
+} from 'infrastructure/http/graphql/models/user.model';
+import {
   UsersArgs,
-  CountUsersArgs,
+  UserFirstArgs,
+  UserUniqueArgs,
+  UsersCountArgs,
+  PaginationUsersCursorArgs,
+  PaginationUsersOffsetArgs,
 } from 'infrastructure/http/graphql/args/user.args';
 
 @Resolver(() => UserModel)
 export class UserResolver {
   constructor(
-    private countUsersUseCase: CountUsersUseCase,
-    private createUserUseCase: CreateUserUseCase,
-    private updateUserUseCase: UpdateUserUseCase,
-    private deleteUserUseCase: DeleteUserUseCase,
-    private findAllUsersUseCase: FindAllUsersUseCase,
-    private findUniqueUserUseCase: FindUniqueUserUseCase,
-    private updateManyUsersUseCase: UpdateManyUsersUseCase,
-    private deleteManyUsersUseCase: DeleteManyUsersUseCase,
+    private readonly countUsersUseCase: CountUsersUseCase,
+    private readonly updateUserUseCase: UpdateUserUseCase,
+    private readonly createUserUseCase: CreateUserUseCase,
+    private readonly deleteUserUseCase: DeleteUserUseCase,
+    private readonly findAllUsersUseCase: FindAllUsersUseCase,
+    private readonly activateUserUseCase: ActivateUserUseCase,
+    private readonly findFirstUserUseCase: FindFirstUserUseCase,
+    private readonly findUniqueUserUseCase: FindUniqueUserUseCase,
+    private readonly deactivateUserUseCase: DeactivateUserUseCase,
+    private readonly createManyUsersUseCase: CreateManyUsersUseCase,
+    private readonly updateManyUsersUseCase: UpdateManyUsersUseCase,
+    private readonly deleteManyUsersUseCase: DeleteManyUsersUseCase,
+    private readonly paginationCursorUsersUseCase: PaginationCursorUsersUseCase,
+    private readonly paginationOffsetUsersUseCase: PaginationOffsetUsersUseCase,
   ) {}
+
+  // Queries
 
   @Query(() => Number)
   @UseGuards(GraphQLAuthGuard)
-  async totalUsers(@Args() args: CountUsersArgs): Promise<number> {
-    const total = await this.countUsersUseCase.execute({ where: args.where });
-
-    return total;
-  }
-
-  @Mutation(() => UserModel)
-  @UseGuards(GraphQLAuthGuard)
-  async deleteUser(
-    @Args('id', { type: () => String }) id: string,
-  ): Promise<UserResponseDTO> {
-    const deleteUser = await this.deleteUserUseCase.execute({
-      id,
-    });
-
-    return UserViewModel.toHTTP(deleteUser);
-  }
-
-  @Mutation(() => [UserModel])
-  @UseGuards(GraphQLAuthGuard)
-  async deleteManyUsers(
-    @Args('ids', { type: () => [String] }) ids: string[],
-  ): Promise<UserResponseDTO[]> {
-    const deleteUsers = await this.deleteManyUsersUseCase.execute(ids);
-
-    return deleteUsers.map(user => UserViewModel.toHTTP(user));
-  }
-
-  @Mutation(() => [UserModel])
-  @UseGuards(GraphQLAuthGuard)
-  async updateManyUsers(
-    @Args('users', { type: () => [UpdateUserInput] })
-    users: UpdateUserInput[],
-  ): Promise<UserResponseDTO[]> {
-    const updateUsers = await this.updateManyUsersUseCase.execute(users);
-
-    return updateUsers.map(user => UserViewModel.toHTTP(user));
+  async usersCount(@Args() args: UsersCountArgs): Promise<number> {
+    return this.countUsersUseCase.execute({ where: args.where });
   }
 
   @Query(() => UserModel)
   @UseGuards(GraphQLAuthGuard)
-  async user(@Args() args: UserArgs): Promise<UserResponseDTO> {
+  async userFirst(@Args() args: UserFirstArgs): Promise<UserResponseDTO> {
+    const user = await this.findFirstUserUseCase.execute({ where: args.where });
+
+    return UserViewModel.toHTTP(user);
+  }
+
+  @Query(() => UserModel)
+  @UseGuards(GraphQLAuthGuard)
+  async user(@Args() args: UserUniqueArgs): Promise<UserResponseDTO> {
     const user = await this.findUniqueUserUseCase.execute({
-      where: {
-        id: args?.where?.id,
-        email: args?.where?.email,
-        document: args?.where?.document,
-      },
+      where: args.where as WhereUserUniqueDTO,
     });
 
     return UserViewModel.toHTTP(user);
   }
+
+  @Query(() => [UserModel])
+  @UseGuards(GraphQLAuthGuard)
+  async users(@Args() args: UsersArgs): Promise<UserResponseDTO[]> {
+    const users = await this.findAllUsersUseCase.execute(args);
+
+    return users.map(UserViewModel.toHTTP);
+  }
+
+  @Query(() => UsersOffsetConnection)
+  @UseGuards(GraphQLAuthGuard)
+  async usersPaginationOffset(
+    @Args() args: PaginationUsersOffsetArgs,
+  ): Promise<OffsetPagination<UserResponseDTO>> {
+    const pagination = await this.paginationOffsetUsersUseCase.execute(args);
+
+    return {
+      ...pagination,
+      nodes: pagination.nodes.map(UserViewModel.toHTTP),
+    };
+  }
+
+  @Query(() => UsersCursorConnection)
+  @UseGuards(GraphQLAuthGuard)
+  async usersPaginationCursor(
+    @Args() args: PaginationUsersCursorArgs,
+  ): Promise<RelayPagination<UserResponseDTO>> {
+    const pagination = await this.paginationCursorUsersUseCase.execute(args);
+
+    return {
+      ...pagination,
+      nodes: pagination.edges.map(edge => UserViewModel.toHTTP(edge.node)),
+      edges: pagination.edges.map(edge => ({
+        ...edge,
+        node: UserViewModel.toHTTP(edge.node),
+      })),
+    };
+  }
+
+  // Mutations
 
   @Mutation(() => UserModel)
   async createUser(
@@ -106,69 +136,93 @@ export class UserResolver {
     @Args('avatar', { nullable: true, type: () => GraphQLUpload })
     avatar: FileUploadDTO,
   ): Promise<UserResponseDTO> {
-    const newUser = await this.createUserUseCase.execute({
-      avatar,
-      email: user.email,
-      document: user.document,
-      password: user.password,
-      full_name: user.full_name,
-    });
+    const newUser = await this.createUserUseCase.execute({ ...user, avatar });
 
     return UserViewModel.toHTTP(newUser);
+  }
+
+  @Mutation(() => [UserModel])
+  async createManyUsers(
+    @Args('user', { type: () => [CreateUserInput] }) users: CreateUserInput[],
+  ): Promise<UserResponseDTO[]> {
+    const result = await this.createManyUsersUseCase.execute(users);
+
+    return result.map(UserViewModel.toHTTP);
   }
 
   @Mutation(() => UserModel)
   @UseGuards(GraphQLAuthGuard)
   async updateUser(
-    @Args('user')
-    user: UpdateUserInput,
+    @Args('user') user: UpdateUserInput,
     @Args('avatar', { nullable: true, type: () => GraphQLUpload })
     avatar: FileUploadDTO,
   ): Promise<UserResponseDTO> {
-    const updateUser = await this.updateUserUseCase.execute({
-      id: user.id,
-      avatar,
-      email: user.email,
-      document: user.document,
-      password: user.password,
-      full_name: user.full_name,
+    const updated = await this.updateUserUseCase.execute({
+      where: user.where as WhereUserUniqueDTO,
+      data: { ...user.data, avatar: avatar?.filename ? avatar : undefined },
     });
 
-    return UserViewModel.toHTTP(updateUser);
+    return UserViewModel.toHTTP(updated);
   }
 
-  @Query(() => UsersConnection)
+  @Mutation(() => [UserModel])
   @UseGuards(GraphQLAuthGuard)
-  async users(
-    @Args() args: UsersArgs,
-  ): Promise<RelayPagination<UserResponseDTO>> {
-    const users = await this.findAllUsersUseCase.execute({
-      last: args.last,
-      order: args.order,
-      after: args.after,
-      first: args.first,
-      where: args.where,
-      before: args.before,
-    });
-
-    const edges = users.edges.map(edge => ({
-      ...edge,
-      node: UserViewModel.toHTTP(edge.node),
+  async updateManyUsers(
+    @Args('users', { type: () => [UpdateUserInput] }) users: UpdateUserInput[],
+  ): Promise<UserResponseDTO[]> {
+    const payload = users.map(({ data, where }) => ({
+      data,
+      where: where as WhereUserUniqueDTO,
     }));
 
-    const nodes = users.edges.map(edge => UserViewModel.toHTTP(edge.node));
+    const result = await this.updateManyUsersUseCase.execute(payload);
 
-    return {
-      edges,
-      nodes,
-      count: users.count,
-      totalCount: users.totalCount,
-      pageInfo: {
-        endCursor: users.pageInfo.endCursor,
-        hasNextPage: users.pageInfo.hasNextPage,
-        startCursor: users.pageInfo.startCursor,
-        hasPreviousPage: users.pageInfo.hasPreviousPage,
-      },
-    };
+    return result.map(UserViewModel.toHTTP);
+  }
+
+  @Mutation(() => UserModel)
+  @UseGuards(GraphQLAuthGuard)
+  async deleteUser(
+    @Args('user') user: DeleteUserInput,
+  ): Promise<UserResponseDTO> {
+    const result = await this.deleteUserUseCase.execute({
+      where: user.where as WhereUserUniqueDTO,
+    });
+
+    return UserViewModel.toHTTP(result);
+  }
+
+  @Mutation(() => [UserModel])
+  @UseGuards(GraphQLAuthGuard)
+  async deleteManyUsers(
+    @Args('users', { type: () => [DeleteUserInput] }) users: DeleteUserInput[],
+  ): Promise<UserResponseDTO[]> {
+    const payload = users.map(({ where }) => ({
+      where: where as WhereUserUniqueDTO,
+    }));
+
+    const result = await this.deleteManyUsersUseCase.execute(payload);
+
+    return result.map(UserViewModel.toHTTP);
+  }
+
+  @Mutation(() => UserModel)
+  @UseGuards(GraphQLAuthGuard)
+  async activateUser(@Args() args: UserUniqueArgs): Promise<UserResponseDTO> {
+    const user = await this.activateUserUseCase.execute({
+      where: args.where as WhereUserUniqueDTO,
+    });
+
+    return UserViewModel.toHTTP(user);
+  }
+
+  @Mutation(() => UserModel)
+  @UseGuards(GraphQLAuthGuard)
+  async deactivateUser(@Args() args: UserUniqueArgs): Promise<UserResponseDTO> {
+    const user = await this.deactivateUserUseCase.execute({
+      where: args.where as WhereUserUniqueDTO,
+    });
+
+    return UserViewModel.toHTTP(user);
   }
 }

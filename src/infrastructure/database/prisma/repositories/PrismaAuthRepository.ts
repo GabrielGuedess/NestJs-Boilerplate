@@ -1,16 +1,18 @@
 import { JwtService } from '@nestjs/jwt';
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { I18nService } from 'nestjs-i18n';
+import { Injectable } from '@nestjs/common';
 
 import dayjs from 'dayjs';
 import { compare } from 'bcrypt';
-import { GraphQLError } from 'graphql';
+import { I18nTranslations } from '@root/i18n/generated';
 
-import { type AuthRepository } from 'domain/repositories/AuthRepository';
+import { AuthRepository } from 'domain/repositories/AuthRepository';
+import { AppError, StatusCode } from 'domain/shared/errors/AppError';
 import {
-  type SignInRequestDTO,
-  type SignInResponseDTO,
-  type RefreshTokenRequestDTO,
-  type RefreshTokenResponseDTO,
+  SignInRequestDTO,
+  SignInResponseDTO,
+  RefreshTokenRequestDTO,
+  RefreshTokenResponseDTO,
 } from 'domain/dtos/repositories/AuthRepositoryDTO';
 
 import { env } from 'infrastructure/env';
@@ -19,8 +21,9 @@ import { PrismaService } from 'infrastructure/database/prisma/prisma.service';
 @Injectable()
 export class PrismaAuthRepository implements AuthRepository {
   constructor(
-    private prisma: PrismaService,
-    private jwtService: JwtService,
+    private readonly prisma: PrismaService,
+    private readonly jwtService: JwtService,
+    private readonly i18n: I18nService<I18nTranslations>,
   ) {}
 
   async refreshToken(
@@ -31,8 +34,9 @@ export class PrismaAuthRepository implements AuthRepository {
     });
 
     if (!user) {
-      throw new GraphQLError('Invalid token!', {
-        extensions: { code: HttpStatus.UNAUTHORIZED },
+      throw new AppError({
+        statusCode: StatusCode.UNAUTHORIZED,
+        message: this.i18n.t('repositories.ERROR_INVALID_TOKEN'),
       });
     }
 
@@ -56,8 +60,11 @@ export class PrismaAuthRepository implements AuthRepository {
     });
 
     if (!user) {
-      throw new GraphQLError('E-mail not found!', {
-        extensions: { code: HttpStatus.UNAUTHORIZED },
+      throw new AppError({
+        statusCode: StatusCode.UNAUTHORIZED,
+        message: this.i18n.t('repositories.ERROR_NOT_FOUND', {
+          args: { name: 'E-mail' },
+        }),
       });
     }
 
@@ -67,8 +74,9 @@ export class PrismaAuthRepository implements AuthRepository {
     );
 
     if (!shouldPasswordMatch) {
-      throw new GraphQLError('Password incorrect!', {
-        extensions: { code: HttpStatus.UNAUTHORIZED },
+      throw new AppError({
+        statusCode: StatusCode.UNAUTHORIZED,
+        message: this.i18n.t('repositories.ERROR_PASSWORD_INCORRECT'),
       });
     }
 

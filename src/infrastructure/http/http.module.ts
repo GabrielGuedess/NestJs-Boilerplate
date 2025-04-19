@@ -10,9 +10,15 @@ import { DeleteUserUseCase } from 'application/useCases/user/deleteUser/DeleteUs
 import { UpdateUserUseCase } from 'application/useCases/user/updateUser/UpdateUserUseCase';
 import { FindAllUsersUseCase } from 'application/useCases/user/findAllUsers/FindAllUsersUseCase';
 import { RefreshTokenUseCase } from 'application/useCases/auth/refreshToken/RefreshTokenUseCase';
+import { ActivateUserUseCase } from 'application/useCases/user/activateUser/ActivateUserUseCase';
+import { FindFirstUserUseCase } from 'application/useCases/user/findFirstUser/FindFirstUserUseCase';
 import { FindUniqueUserUseCase } from 'application/useCases/user/findUniqueUser/FindUniqueUserUseCase';
+import { DeactivateUserUseCase } from 'application/useCases/user/deactivateUser/DeactivateUserUseCase';
+import { CreateManyUsersUseCase } from 'application/useCases/user/createManyUser/CreateManyUsersUseCase';
 import { DeleteManyUsersUseCase } from 'application/useCases/user/deleteManyUsers/DeleteManyUsersUseCase';
 import { UpdateManyUsersUseCase } from 'application/useCases/user/updateManyUsers/UpdateManyUsersUseCase';
+import { PaginationCursorUsersUseCase } from 'application/useCases/user/paginationCursorUsers/PaginationCursorUsersUseCase';
+import { PaginationOffsetUsersUseCase } from 'application/useCases/user/paginationOffsetUsers/PaginationOffsetUsersUseCase';
 
 import { DatabaseModule } from 'infrastructure/database/database.module';
 import { ServicesModule } from 'infrastructure/services/services.module';
@@ -56,9 +62,15 @@ import { JwtRefreshStrategy } from 'infrastructure/http/guard/strategies/jwt-ref
     DeleteUserUseCase,
     CreateUserUseCase,
     FindAllUsersUseCase,
+    ActivateUserUseCase,
+    FindFirstUserUseCase,
+    DeactivateUserUseCase,
     FindUniqueUserUseCase,
+    CreateManyUsersUseCase,
     DeleteManyUsersUseCase,
     UpdateManyUsersUseCase,
+    PaginationCursorUsersUseCase,
+    PaginationOffsetUsersUseCase,
   ],
 })
 export class HttpModule {}

@@ -1,0 +1,5 @@
+{
+  "ERROR_UPLOAD_FILE": "Failed to upload the file",
+  "ERROR_DELETE_UPLOAD_FILE": "Failed to delete the file",
+  "ERROR_DELETE_UPLOAD_FOLDER": "Failed to delete the folder"
+}

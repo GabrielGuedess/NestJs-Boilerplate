@@ -259,10 +259,11 @@ const config = [
         'error',
         {
           ignoreContent: [
-            'CreateWorkSchedule',
-            'WorkScheduleOverview',
-            'DataTableWorkSchedule',
-            'OrderByWithRelationInput',
+            'events.*',
+            'providers.*',
+            'decorators.*',
+            'validation.*',
+            'repositories.*',
           ],
         },
       ],
@@ -533,14 +534,14 @@ const config = [
   },
 
   {
-    files: [
-      'test/repositories/**',
-      'test/providers/**',
-      '**/guard/strategies/**',
-      '**/guard/*.ts',
-      '**/prisma/*.ts',
-    ],
+    files: ['**/exception/i18n-validation-exception.filter.ts'],
+    rules: {
+      'no-param-reassign': 'off',
+      'prefer-destructuring': 'off',
+    },
+  },
 
+  {
     rules: {
       'unicorn/filename-case': [
         'error',
@@ -551,6 +552,15 @@ const config = [
         },
       ],
     },
+
+    files: [
+      'test/repositories/**',
+      'test/providers/**',
+      '**/guard/strategies/**',
+      '**/guard/*.ts',
+      '**/exception/*.ts',
+      '**/prisma/*.ts',
+    ],
   },
 
   {
@@ -567,7 +577,7 @@ const config = [
   },
 
   {
-    files: ['**/domain/entities/**/*.ts'],
+    files: ['**/domain/entities/**/*.ts', '**/resolvers/**/*.ts'],
 
     rules: {
       'no-underscore-dangle': 'off',
@@ -576,7 +586,7 @@ const config = [
   },
 
   {
-    files: ['src/infrastructure/env.ts'],
+    files: ['src/infrastructure/env.ts', 'src/infrastructure/app.module.ts'],
 
     rules: {
       'zod/require-strict': 'off',
@@ -727,6 +737,19 @@ const config = [
 
     rules: {
       '@typescript-eslint/naming-convention': 'off',
+    },
+  },
+
+  {
+    files: ['**/decorators/**/*.ts', '**/pagination/**/*.ts'],
+
+    rules: {
+      'unicorn/filename-case': [
+        'error',
+        {
+          case: 'kebabCase',
+        },
+      ],
     },
   },
 

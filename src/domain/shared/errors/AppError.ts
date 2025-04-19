@@ -1,11 +1,52 @@
-enum StatusCode {
+export enum StatusCode {
+  OK = 200,
+  GONE = 410,
+  FOUND = 302,
+  CREATED = 201,
+  CONTINUE = 100,
+  ACCEPTED = 202,
   CONFLICT = 409,
-  NOT_FOUND = 404,
+  AMBIGUOUS = 300,
+  SEE_OTHER = 303,
   FORBIDDEN = 403,
+  NOT_FOUND = 404,
+  PROCESSING = 102,
+  EARLYHINTS = 103,
+  NO_CONTENT = 204,
   BAD_REQUEST = 400,
+  MISDIRECTED = 421,
+  BAD_GATEWAY = 502,
+  NOT_MODIFIED = 304,
   UNAUTHORIZED = 401,
+  URI_TOO_LONG = 414,
+  RESET_CONTENT = 205,
+  I_AM_A_TEAPOT = 418,
+  NOT_ACCEPTABLE = 406,
+  PARTIAL_CONTENT = 206,
+  REQUEST_TIMEOUT = 408,
+  LENGTH_REQUIRED = 411,
+  NOT_IMPLEMENTED = 501,
+  GATEWAY_TIMEOUT = 504,
+  PAYMENT_REQUIRED = 402,
+  MOVED_PERMANENTLY = 301,
+  PAYLOAD_TOO_LARGE = 413,
+  FAILED_DEPENDENCY = 424,
+  TOO_MANY_REQUESTS = 429,
+  TEMPORARY_REDIRECT = 307,
+  PERMANENT_REDIRECT = 308,
+  METHOD_NOT_ALLOWED = 405,
+  EXPECTATION_FAILED = 417,
+  SWITCHING_PROTOCOLS = 101,
+  PRECONDITION_FAILED = 412,
+  SERVICE_UNAVAILABLE = 503,
   UNPROCESSABLE_ENTITY = 422,
+  PRECONDITION_REQUIRED = 428,
   INTERNAL_SERVER_ERROR = 500,
+  UNSUPPORTED_MEDIA_TYPE = 415,
+  HTTP_VERSION_NOT_SUPPORTED = 505,
+  NON_AUTHORITATIVE_INFORMATION = 203,
+  PROXY_AUTHENTICATION_REQUIRED = 407,
+  REQUESTED_RANGE_NOT_SATISFIABLE = 416,
 }
 
 export class AppError extends Error {
@@ -13,8 +54,17 @@ export class AppError extends Error {
 
   public readonly statusCode: StatusCode;
 
-  constructor(message: string, statusCode: StatusCode) {
+  readonly extensions: Record<string, unknown>;
+
+  constructor({
+    message,
+    statusCode,
+  }: {
+    message: string;
+    statusCode: StatusCode;
+  }) {
     super(message);
     this.statusCode = statusCode;
+    this.extensions = { code: statusCode };
   }
 }

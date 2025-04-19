@@ -1,69 +1,78 @@
 {
+  "[handlebars]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.fixAll.tslint": "explicit"
   },
-  "[json][jsonc][yaml]": {
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "eslint.validate": [
-    "mdx",
-    "markdown",
-    "javascript",
-    "typescript"
-  ],
+  "eslint.validate": ["mdx", "markdown", "javascript", "typescript"],
   "material-icon-theme.activeIconPack": "nest",
-  "search.exclude": {
-    "package-lock.json": true,
-    "yarn.lock": true,
-    "pnpm-lock.yaml": true
-  },
-  "prettier.ignorePath": ".gitignore",
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "mdx.experimentalLanguageServer": true,
-  "material-icon-theme.folders.associations": {
-    "domain": "core",
-    "application": "app",
-    "infrastructure": "server",
-    "entities": "class",
-    "schemas": "class",
-    "view-models": "review",
-    "consumers": "include",
-    "permissions": "secure",
-    "strategies": "keys",
-    "args": "custom",
-    "inputs": "mock",
-    "workflows": "ci",
-    "ISSUE_TEMPLATE": "error",
-    "http": "container",
-    "modules": "components",
-    "repositories": "mappings",
-    "migrations": "tools",
-    "dtos": "typescript",
-    "useCases": "controller",
-    "mappers": "meta",
-    "eslint-config": "tools",
-    "ui": "container",
-    "MailProvider": "Mail",
-    "queries": "command",
-    "fragments": "mjml",
-    "@shared": "shared"
-  },
   "material-icon-theme.files.associations": {
     ".czrc": "commitlint",
-    "prismaClient.ts": "prisma",
-    "prisma.ts": "prisma",
-    "stories.tsx": "storybook",
-    "test.tsx": "test-jsx",
-    "test.ts": "test-ts",
-    "spec.tsx": "test-jsx",
-    "spec.ts": "test-ts",
+    "apollo.ts": "apollo",
+    "husky.sh": "husky",
     "mock.ts": "log",
     "mocks.ts": "log",
-    "apollo.ts": "apollo",
-    "husky.sh": "husky"
+    "prisma.ts": "prisma",
+    "prismaClient.ts": "prisma",
+    "spec.ts": "test-ts",
+    "spec.tsx": "test-jsx",
+    "stories.tsx": "storybook",
+    "test.ts": "test-ts",
+    "test.tsx": "test-jsx"
   },
-  "discord.enabled": true
+  "material-icon-theme.folders.associations": {
+    "@shared": "shared",
+    "ISSUE_TEMPLATE": "error",
+    "MailProvider": "Mail",
+    "application": "app",
+    "args": "custom",
+    "consumers": "include",
+    "domain": "core",
+    "dtos": "typescript",
+    "entities": "class",
+    "eslint-config": "tools",
+    "fragments": "mjml",
+    "http": "container",
+    "infrastructure": "server",
+    "inputs": "mock",
+    "mappers": "meta",
+    "migrations": "tools",
+    "modules": "components",
+    "permissions": "secure",
+    "queries": "command",
+    "repositories": "mappings",
+    "schemas": "class",
+    "strategies": "keys",
+    "ui": "container",
+    "useCases": "controller",
+    "view-models": "review",
+    "workflows": "ci"
+  },
+  "prettier.ignorePath": ".gitignore",
+  "search.exclude": {
+    "package-lock.json": true,
+    "pnpm-lock.yaml": true,
+    "yarn.lock": true
+  },
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

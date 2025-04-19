@@ -29,8 +29,8 @@ describe('Update User', () => {
     const newDocument = '123';
 
     await updateUserUseCase.execute({
-      id: user.id,
-      document: newDocument,
+      where: { id: user.id },
+      data: { document: newDocument },
     });
 
     expect(userRepository.users[0].document).toEqual(newDocument);
@@ -56,8 +56,8 @@ describe('Update User', () => {
     );
 
     await updateUserUseCase.execute({
-      id: user.id,
-      avatar: { filename: 'avatar.jpg' } as FileUploadDTO,
+      where: { id: user.id },
+      data: { avatar: { filename: 'avatar.jpg' } as FileUploadDTO },
     });
 
     expect(userRepository.users[0].avatarUrl).toBe(
@@ -88,8 +88,8 @@ describe('Update User', () => {
     const newPassword = '987654321';
 
     await updateUserUseCase.execute({
-      id: user.id,
-      password: newPassword,
+      where: { id: user.id },
+      data: { password: newPassword },
     });
 
     expect(userRepository.users[0].password).not.toBe(oldPassword);

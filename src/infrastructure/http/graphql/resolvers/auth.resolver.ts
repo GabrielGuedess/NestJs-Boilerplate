@@ -17,8 +17,8 @@ import { UserModel } from 'infrastructure/http/graphql/models/user.model';
 import { UserViewModel } from 'infrastructure/http/view-models/UserViewModel';
 import { AuthUserInput } from 'infrastructure/http/graphql/inputs/auth.input';
 import { CurrentUser } from 'infrastructure/http/decorators/current.decorator';
-import { type AuthResponseDTO } from 'infrastructure/http/dtos/auth/AuthResponseDTO';
-import { type UserResponseDTO } from 'infrastructure/http/dtos/user/UserResponseDTO';
+import { UserResponseDTO } from 'infrastructure/http/dtos/user/UserResponseDTO';
+import { AuthResponseDTO } from 'infrastructure/http/dtos/auth/AuthResponseDTO';
 import {
   RefreshModel,
   AuthUserModel,
@@ -28,16 +28,29 @@ import { JwtRefreshGraphQLAuthGuard } from 'infrastructure/http/guard/jwt-refres
 @Resolver(() => AuthUserModel)
 export class AuthResolver {
   constructor(
-    private authUserUseCase: AuthUserUseCase,
-    private refreshTokenUseCase: RefreshTokenUseCase,
-    private findUserByIdUseCase: FindUniqueUserUseCase,
+    private readonly authUserUseCase: AuthUserUseCase,
+    private readonly refreshTokenUseCase: RefreshTokenUseCase,
+    private readonly findUserByIdUseCase: FindUniqueUserUseCase,
   ) {}
 
   @Mutation(() => AuthUserModel)
   async signIn(
-    @Args('signIn') signIn: AuthUserInput,
+    @Args('signIn') signInInput: AuthUserInput,
   ): Promise<AuthResponseDTO> {
-    return this.authUserUseCase.execute(signIn);
+    return this.authUserUseCase.execute(signInInput);
+  }
+
+  @UseGuards(JwtRefreshGraphQLAuthGuard)
+  @Mutation(() => RefreshModel)
+  async refreshToken(
+    @CurrentUser() user: User,
+  ): Promise<{ token: string; token_expires: Date }> {
+    const refreshToken = await this.refreshTokenUseCase.execute({
+      id: user.id,
+      email: user.email,
+    });
+
+    return refreshToken;
   }
 
   @ResolveField(() => UserModel)
@@ -47,22 +60,5 @@ export class AuthResolver {
     });
 
     return UserViewModel.toHTTP(user);
-  }
-
-  @UseGuards(JwtRefreshGraphQLAuthGuard)
-  @Mutation(() => RefreshModel)
-  async refreshToken(
-    @CurrentUser() user: User,
-  ): Promise<{ token: string; token_expires: Date }> {
-    const { token, token_expires: tokenExpires } =
-      await this.refreshTokenUseCase.execute({
-        id: user.id,
-        email: user.email,
-      });
-
-    return {
-      token,
-      token_expires: tokenExpires,
-    };
   }
 }

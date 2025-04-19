@@ -22,17 +22,6 @@ describe('Find All Users', () => {
 
     const foundUsers = await findAllUsersUseCase.execute({});
 
-    expect(foundUsers).toEqual({
-      count: 1,
-      totalCount: 1,
-      nodes: [userExist],
-      edges: [{ node: userExist, cursor: userExist.id }],
-      pageInfo: {
-        hasNextPage: false,
-        hasPreviousPage: false,
-        endCursor: userExist.id,
-        startCursor: userExist.id,
-      },
-    });
+    expect(foundUsers).toEqual([userExist]);
   });
 });

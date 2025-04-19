@@ -28,7 +28,7 @@ export class UuidFilter {
     gte?: string;
 
     @Field(() => QueryMode, {nullable:true})
-    mode?: keyof typeof QueryMode;
+    mode?: `${QueryMode}`;
 
     @Field(() => NestedUuidFilter, {nullable:true})
     not?: NestedUuidFilter;

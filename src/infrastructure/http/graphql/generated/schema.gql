@@ -49,6 +49,10 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 """
 scalar DateTimeISO
 
+input DeleteUserInput {
+  where: UserWhereUniqueInput!
+}
+
 """
 A field whose value conforms to the standard internet email address format as specified in HTML Spec: https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address.
 """
@@ -67,9 +71,12 @@ A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
 scalar JWT
 
 type Mutation {
+  activateUser(where: UserWhereUniqueInput): UserModel!
+  createManyUsers(user: [CreateUserInput!]!): [UserModel!]!
   createUser(avatar: Upload, user: CreateUserInput!): UserModel!
-  deleteManyUsers(ids: [String!]!): [UserModel!]!
-  deleteUser(id: String!): UserModel!
+  deactivateUser(where: UserWhereUniqueInput): UserModel!
+  deleteManyUsers(users: [DeleteUserInput!]!): [UserModel!]!
+  deleteUser(user: DeleteUserInput!): UserModel!
   refreshToken: RefreshModel!
   signIn(signIn: AuthUserInput!): AuthUserModel!
   updateManyUsers(users: [UpdateUserInput!]!): [UserModel!]!
@@ -143,17 +150,28 @@ enum NullsOrder {
   last
 }
 
-type PageInfo {
-  endCursor: String
+type PageInfoCursor {
+  endCursor: String!
   hasNextPage: Boolean!
   hasPreviousPage: Boolean!
-  startCursor: String
+  startCursor: String!
+}
+
+type PageInfoOffset {
+  currentPage: Float!
+  isFirstPage: Boolean!
+  isLastPage: Boolean!
+  nextPage: Float
+  previousPage: Float
 }
 
 type Query {
-  totalUsers(where: UserWhereInput): Float!
   user(where: UserWhereUniqueInput): UserModel!
-  users(after: String, before: String, first: Float, last: Float, order: UserOrderByWithRelationInput, where: UserWhereInput): UsersConnection!
+  userFirst(where: UserWhereInput): UserModel!
+  users(order: UserOrderByWithRelationInput, where: UserWhereInput): [UserModel!]!
+  usersCount(where: UserWhereInput): Float!
+  usersPaginationCursor(after: String, before: String, first: Float, last: Float, order: UserOrderByWithRelationInput, where: UserWhereInput): UsersCursorConnection!
+  usersPaginationOffset(limit: Float = 10, order: UserOrderByWithRelationInput, page: Float, where: UserWhereInput): UsersOffsetConnection!
 }
 
 enum QueryMode {
@@ -221,12 +239,16 @@ A field whose value is a generic Universally Unique Identifier: https://en.wikip
 """
 scalar UUID
 
-input UpdateUserInput {
+input UpdateDataUserInput {
   document: String
   email: EmailAddress
   full_name: String
-  id: UUID!
   password: String
+}
+
+input UpdateUserInput {
+  data: UpdateDataUserInput!
+  where: UserWhereUniqueInput!
 }
 
 """The `Upload` scalar type represents a file upload."""
@@ -316,21 +338,28 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   document: String
-  email: String
-  id: String
+  email: EmailAddress
+  id: UUID
 }
 
-type UsersConnection {
+type UsersCursorConnection {
   count: Float!
   edges: [UsersEdge!]!
   nodes: [UserModel!]!
-  pageInfo: PageInfo!
+  pageInfo: PageInfoCursor!
   totalCount: Float!
 }
 
 type UsersEdge {
   cursor: String!
   node: UserModel!
+}
+
+type UsersOffsetConnection {
+  count: Float!
+  nodes: [UserModel!]!
+  pageInfo: PageInfoOffset!
+  totalCount: Float!
 }
 
 input UuidFilter {

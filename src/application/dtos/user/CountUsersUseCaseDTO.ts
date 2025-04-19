@@ -1,4 +1,4 @@
-import { type WhereUserDTO } from 'application/dtos/user/FindAllUsersUseCaseDTO';
+import { type WhereUserDTO } from 'domain/dtos/repositories/UserRepositoryDTO';
 
 export abstract class CountUsersUseCaseRequestDTO {
   where?: WhereUserDTO;

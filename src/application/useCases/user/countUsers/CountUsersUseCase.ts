@@ -6,7 +6,7 @@ import { type CountUsersUseCaseRequestDTO } from 'application/dtos/user/CountUse
 
 @Injectable()
 export class CountUsersUseCase {
-  constructor(private userRepository: UserRepository) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async execute(request: CountUsersUseCaseRequestDTO): Promise<number> {
     const user = await this.userRepository.count({ where: request.where });

@@ -12,7 +12,9 @@ import {
 } from 'domain/dtos/repositories/AuthRepositoryDTO';
 
 export class InMemoryAuthRepository implements AuthRepository {
-  constructor(private inMemoryUserRepository: InMemoryUserRepository) {}
+  constructor(
+    private readonly inMemoryUserRepository: InMemoryUserRepository,
+  ) {}
 
   async refreshToken(
     credentials: RefreshTokenRequestDTO,

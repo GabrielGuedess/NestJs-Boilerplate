@@ -1,0 +1,157 @@
+{
+  "tables": {
+    "User": {
+      "name": "User",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "default": "uuid(7)",
+          "notNull": true,
+          "unique": true,
+          "primary": true,
+          "comment": null,
+          "check": null
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "default": null,
+          "notNull": true,
+          "unique": true,
+          "primary": false,
+          "comment": "@FieldType('Scalars.GraphQLEmailAddress')",
+          "check": null
+        },
+        "full_name": {
+          "name": "full_name",
+          "type": "text",
+          "default": null,
+          "notNull": true,
+          "unique": false,
+          "primary": false,
+          "comment": "@Validator.MinLength(3)",
+          "check": null
+        },
+        "document": {
+          "name": "document",
+          "type": "text",
+          "default": null,
+          "notNull": true,
+          "unique": true,
+          "primary": false,
+          "comment": null,
+          "check": null
+        },
+        "avatar_url": {
+          "name": "avatar_url",
+          "type": "text",
+          "default": null,
+          "notNull": false,
+          "unique": false,
+          "primary": false,
+          "comment": null,
+          "check": null
+        },
+        "role": {
+          "name": "role",
+          "type": "Role",
+          "default": "USER",
+          "notNull": true,
+          "unique": false,
+          "primary": false,
+          "comment": null,
+          "check": null
+        },
+        "validated": {
+          "name": "validated",
+          "type": "boolean",
+          "default": false,
+          "notNull": true,
+          "unique": false,
+          "primary": false,
+          "comment": null,
+          "check": null
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "default": true,
+          "notNull": true,
+          "unique": false,
+          "primary": false,
+          "comment": null,
+          "check": null
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(3)",
+          "default": "now()",
+          "notNull": true,
+          "unique": false,
+          "primary": false,
+          "comment": null,
+          "check": null
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(3)",
+          "default": "now()",
+          "notNull": true,
+          "unique": false,
+          "primary": false,
+          "comment": null,
+          "check": null
+        },
+        "password": {
+          "name": "password",
+          "type": "text",
+          "default": null,
+          "notNull": true,
+          "unique": false,
+          "primary": false,
+          "comment": "@HideField({ input: true, output: true })",
+          "check": null
+        }
+      },
+      "comment": null,
+      "indexes": {
+        "User_pkey": {
+          "name": "User_pkey",
+          "unique": true,
+          "columns": [
+            "id"
+          ],
+          "type": ""
+        },
+        "User_id_key": {
+          "name": "User_id_key",
+          "unique": true,
+          "columns": [
+            "id"
+          ],
+          "type": ""
+        },
+        "User_email_key": {
+          "name": "User_email_key",
+          "unique": true,
+          "columns": [
+            "email"
+          ],
+          "type": ""
+        },
+        "User_document_key": {
+          "name": "User_document_key",
+          "unique": true,
+          "columns": [
+            "document"
+          ],
+          "type": ""
+        }
+      },
+      "constraints": {}
+    }
+  },
+  "relationships": {},
+  "tableGroups": {}
+}

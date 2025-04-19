@@ -1,17 +1,19 @@
 import { Injectable } from '@nestjs/common';
 
-import { type User } from 'domain/entities/user/User';
+import { User } from 'domain/entities/user/User';
 import { UserRepository } from 'domain/repositories/UserRepository';
 import { UploaderProvider } from 'domain/providers/UploaderProvider';
+
+import { DeleteUserUseCaseRequestDTO } from 'application/dtos/user/DeleteUserUseCaseDTO';
 
 @Injectable()
 export class DeleteManyUsersUseCase {
   constructor(
-    private userRepository: UserRepository,
-    private uploaderProvider: UploaderProvider,
+    private readonly userRepository: UserRepository,
+    private readonly uploaderProvider: UploaderProvider,
   ) {}
 
-  async execute(request: string[]): Promise<User[]> {
+  async execute(request: DeleteUserUseCaseRequestDTO[]): Promise<User[]> {
     const users = await this.userRepository.deleteMany(request);
 
     for await (const user of users) {

@@ -1,18 +1,15 @@
 import { JwtService } from '@nestjs/jwt';
+import { I18nService } from 'nestjs-i18n';
 import { AuthGuard } from '@nestjs/passport';
 import { GqlExecutionContext } from '@nestjs/graphql';
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
-import {
-  Injectable,
-  HttpStatus,
-  type CanActivate,
-  type ExecutionContext,
-} from '@nestjs/common';
 
-import { type Request } from 'express';
-import { GraphQLError } from 'graphql';
+import { Request } from 'express';
+import { I18nTranslations } from '@root/i18n/generated';
 
-import { type User } from 'domain/entities/user/User';
+import { User } from 'domain/entities/user/User';
+import { AppError, StatusCode } from 'domain/shared/errors/AppError';
 
 import { env } from 'infrastructure/env';
 
@@ -21,14 +18,18 @@ export class JwtRefreshGraphQLAuthGuard
   extends AuthGuard('jwtRefresh')
   implements CanActivate
 {
-  constructor(private jwtService: JwtService) {
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly i18n: I18nService<I18nTranslations>,
+  ) {
     super();
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
     if (!request?.headers?.authorization) {
-      throw new GraphQLError('Missing token!', {
-        extensions: { code: HttpStatus.FORBIDDEN },
+      throw new AppError({
+        statusCode: StatusCode.FORBIDDEN,
+        message: this.i18n.t('guards.ERROR_MISSING_TOKEN'),
       });
     }
 
@@ -45,8 +46,9 @@ export class JwtRefreshGraphQLAuthGuard
     const token = this.extractTokenFromHeader(req);
 
     if (!token) {
-      throw new GraphQLError('Missing token!', {
-        extensions: { code: HttpStatus.FORBIDDEN },
+      throw new AppError({
+        statusCode: StatusCode.FORBIDDEN,
+        message: this.i18n.t('guards.ERROR_MISSING_TOKEN'),
       });
     }
 
@@ -57,8 +59,9 @@ export class JwtRefreshGraphQLAuthGuard
 
       req.user = payload;
     } catch {
-      throw new GraphQLError('Invalid token!', {
-        extensions: { code: HttpStatus.UNAUTHORIZED },
+      throw new AppError({
+        statusCode: StatusCode.UNAUTHORIZED,
+        message: this.i18n.t('guards.ERROR_INVALID_TOKEN'),
       });
     }
 

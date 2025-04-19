@@ -26,7 +26,7 @@ describe('Delete User', () => {
     await userRepository.create(user);
 
     const deleteUser = await deleteUserUseCase.execute({
-      id: user.id,
+      where: { id: user.id },
     });
 
     expect(deleteUser).toBe(user);

@@ -23,7 +23,7 @@ export class UserMinAggregate {
     avatar_url?: string;
 
     @Field(() => Role, {nullable:true})
-    role?: keyof typeof Role;
+    role?: `${Role}`;
 
     @Field(() => Boolean, {nullable:true})
     validated?: boolean;

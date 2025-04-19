@@ -1,0 +1,10 @@
+{
+  "ERROR_INVALID_TOKEN": "Invalid token",
+  "ERROR_ALREADY_EXISTS": "{name} já existe",
+  "ERROR_NOT_CREATED": "Falha ao criar {name}",
+  "ERROR_PASSWORD_INCORRECT": "Senha incorreta",
+  "ERROR_NOT_FOUND": "{name} não foi encontrado",
+  "ERROR_NOT_DELETED": "Falha ao deletar {name}",
+  "ERROR_NOT_UPDATED": "Falha ao atualizar {name}",
+  "ERROR_SORT_MULTIPLE_PARAMS": "Apenas um parâmetro de ordenação é permitido"
+}

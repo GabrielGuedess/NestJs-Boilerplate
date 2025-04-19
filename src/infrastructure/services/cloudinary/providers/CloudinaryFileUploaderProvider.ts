@@ -1,13 +1,15 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { I18nService } from 'nestjs-i18n';
+import { Injectable } from '@nestjs/common';
 
-import { GraphQLError } from 'graphql';
+import { type I18nTranslations } from '@root/i18n/generated';
 import {
   v2 as cloudinary,
-  type UploadApiResponse,
-  type UploadApiErrorResponse,
+  UploadApiResponse,
+  UploadApiErrorResponse,
 } from 'cloudinary';
 
 import { UploaderProvider } from 'domain/providers/UploaderProvider';
+import { AppError, StatusCode } from 'domain/shared/errors/AppError';
 import {
   DeletedFileRequestDTO,
   UploadedFileRequestDTO,
@@ -22,7 +24,7 @@ type CloudinaryResponseProps = UploadApiResponse | UploadApiErrorResponse;
 export class CloudinaryFileUploaderProvider implements UploaderProvider {
   private client = cloudinary;
 
-  constructor() {
+  constructor(private readonly i18n: I18nService<I18nTranslations>) {
     this.client.config(v2Config);
   }
 
@@ -37,8 +39,9 @@ export class CloudinaryFileUploaderProvider implements UploaderProvider {
       `nestJs-boilerplate/${folder}/${publicId}`,
       error => {
         if (error) {
-          throw new GraphQLError('Image not deleted', {
-            extensions: { code: HttpStatus.INTERNAL_SERVER_ERROR },
+          throw new AppError({
+            statusCode: StatusCode.INTERNAL_SERVER_ERROR,
+            message: this.i18n.t('providers.ERROR_DELETE_UPLOAD_FILE'),
           });
         }
       },
@@ -65,8 +68,9 @@ export class CloudinaryFileUploaderProvider implements UploaderProvider {
             (error, result) => {
               if (error) {
                 return reject(
-                  new GraphQLError('Image not uploaded!', {
-                    extensions: { code: HttpStatus.INTERNAL_SERVER_ERROR },
+                  new AppError({
+                    statusCode: StatusCode.INTERNAL_SERVER_ERROR,
+                    message: this.i18n.t('providers.ERROR_UPLOAD_FILE'),
                   }),
                 );
               }

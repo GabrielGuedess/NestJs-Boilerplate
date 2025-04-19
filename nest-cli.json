@@ -4,6 +4,15 @@
   "sourceRoot": "src",
   "entryFile": "infrastructure/main",
   "compilerOptions": {
-    "deleteOutDir": true
+    "builder": "swc",
+    "typeCheck": true,
+    "deleteOutDir": true,
+    "assets": [
+      {
+        "include": "../i18n/locales/**/*",
+        "outDir": "dist/i18n",
+        "watchAssets": true
+      }
+    ]
   }
 }

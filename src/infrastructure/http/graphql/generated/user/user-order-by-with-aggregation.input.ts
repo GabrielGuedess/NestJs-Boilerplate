@@ -11,37 +11,37 @@ import { UserMinOrderByAggregateInput } from './user-min-order-by-aggregate.inpu
 export class UserOrderByWithAggregationInput {
 
     @Field(() => SortOrder, {nullable:true})
-    id?: keyof typeof SortOrder;
+    id?: `${SortOrder}`;
 
     @Field(() => SortOrder, {nullable:true})
-    email?: keyof typeof SortOrder;
+    email?: `${SortOrder}`;
 
     @Field(() => SortOrder, {nullable:true})
-    full_name?: keyof typeof SortOrder;
+    full_name?: `${SortOrder}`;
 
     @Field(() => SortOrder, {nullable:true})
-    document?: keyof typeof SortOrder;
+    document?: `${SortOrder}`;
 
     @Field(() => SortOrderInput, {nullable:true})
     avatar_url?: SortOrderInput;
 
     @Field(() => SortOrder, {nullable:true})
-    role?: keyof typeof SortOrder;
+    role?: `${SortOrder}`;
 
     @Field(() => SortOrder, {nullable:true})
-    validated?: keyof typeof SortOrder;
+    validated?: `${SortOrder}`;
 
     @Field(() => SortOrder, {nullable:true})
-    active?: keyof typeof SortOrder;
+    active?: `${SortOrder}`;
 
     @Field(() => SortOrder, {nullable:true})
-    created_at?: keyof typeof SortOrder;
+    created_at?: `${SortOrder}`;
 
     @Field(() => SortOrder, {nullable:true})
-    updated_at?: keyof typeof SortOrder;
+    updated_at?: `${SortOrder}`;
 
     @HideField()
-    password?: keyof typeof SortOrder;
+    password?: `${SortOrder}`;
 
     @Field(() => UserCountOrderByAggregateInput, {nullable:true})
     _count?: UserCountOrderByAggregateInput;

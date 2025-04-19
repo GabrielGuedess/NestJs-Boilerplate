@@ -7,8 +7,8 @@ import { NullsOrder } from './nulls-order.enum';
 export class SortOrderInput {
 
     @Field(() => SortOrder, {nullable:false})
-    sort!: keyof typeof SortOrder;
+    sort!: `${SortOrder}`;
 
     @Field(() => NullsOrder, {nullable:true})
-    nulls?: keyof typeof NullsOrder;
+    nulls?: `${NullsOrder}`;
 }

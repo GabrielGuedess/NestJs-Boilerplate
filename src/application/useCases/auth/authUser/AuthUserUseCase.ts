@@ -9,7 +9,7 @@ import {
 
 @Injectable()
 export class AuthUserUseCase {
-  constructor(private authRepository: AuthRepository) {}
+  constructor(private readonly authRepository: AuthRepository) {}
 
   async execute(
     request: AuthUserUseCaseRequestDTO,

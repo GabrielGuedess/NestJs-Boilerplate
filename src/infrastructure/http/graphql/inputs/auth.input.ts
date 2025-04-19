@@ -1,19 +1,26 @@
 import { Field, InputType } from '@nestjs/graphql';
+import { i18nValidationMessage } from 'nestjs-i18n';
 
+import { IsEmail, MinLength } from 'class-validator';
 import { GraphQLEmailAddress } from 'graphql-scalars';
-import { IsEmail, IsString, MinLength } from 'class-validator';
+import { I18nTranslations } from '@root/i18n/generated';
 
-import { type AuthRequestDTO } from 'infrastructure/http/dtos/auth/AuthRequestDTO';
+import { AuthRequestDTO } from 'infrastructure/http/dtos/auth/AuthRequestDTO';
 
 @InputType()
 export class AuthUserInput implements AuthRequestDTO {
-  @Field()
-  @IsString()
-  @MinLength(8)
+  @Field(() => String)
+  @MinLength(8, {
+    message: i18nValidationMessage<I18nTranslations>('validation.MIN_LENGTH'),
+  })
   password: string;
 
-  @Field(() => GraphQLEmailAddress, { nullable: false })
-  @IsEmail()
-  @IsString()
+  @Field(() => GraphQLEmailAddress)
+  @IsEmail(
+    {},
+    {
+      message: i18nValidationMessage<I18nTranslations>('validation.IS_EMAIL'),
+    },
+  )
   email: string;
 }

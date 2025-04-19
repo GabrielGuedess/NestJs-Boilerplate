@@ -1,0 +1,9 @@
+{
+  "package.json": "pnpm sort:package",
+  "src/**/*.ts": [
+    "bash -c tsc --noEmit",
+    "pnpm find-deadcode",
+    "pnpm lint --no-warn-ignored",
+    "pnpm jest --findRelatedTests --bail --passWithNoTests --config ./jest.config.husky.ts"
+  ]
+}

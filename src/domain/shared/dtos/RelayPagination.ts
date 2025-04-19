@@ -1,10 +1,10 @@
 import { type Edge } from 'domain/shared/dtos/Edge';
-import { type PageInfo } from 'domain/shared/dtos/PageInfo';
+import { type PageInfoCursor } from 'domain/shared/dtos/PageInfoCursor';
 
 export abstract class RelayPagination<T> {
   nodes: T[];
   count: number;
   edges: Edge<T>[];
-  pageInfo: PageInfo;
   totalCount: number;
+  pageInfo: PageInfoCursor;
 }

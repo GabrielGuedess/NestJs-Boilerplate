@@ -9,7 +9,7 @@ import {
 
 @Injectable()
 export class RefreshTokenUseCase {
-  constructor(private authRepository: AuthRepository) {}
+  constructor(private readonly authRepository: AuthRepository) {}
 
   async execute(
     request: RefreshTokenUseCaseRequestDTO,

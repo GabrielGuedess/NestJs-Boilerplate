@@ -1,0 +1,5 @@
+{
+  "ERROR_UPLOAD_FILE": "Falha ao enviar o arquivo",
+  "ERROR_DELETE_UPLOAD_FILE": "Falha ao excluir o arquivo",
+  "ERROR_DELETE_UPLOAD_FOLDER": "Falha ao excluir a pasta"
+}

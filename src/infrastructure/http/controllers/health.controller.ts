@@ -22,20 +22,31 @@ export class HealthController {
     private readonly database: PrismaHealthIndicator,
   ) {}
 
+  @Get('/')
+  @ApiOkResponse()
+  @HealthCheck()
+  async checkHealth(@Req() request: Request): Promise<HealthCheckResult> {
+    const { protocol } = request;
+
+    const host = 'nginx';
+
+    const query = `${protocol}://${host}/graphql?query=%7B__typename%7D`;
+
+    return this.health.check([() => this.http.pingCheck('apollo', query)]);
+  }
+
   @Get('readiness')
   @ApiOkResponse()
   @HealthCheck()
   async checkReadiness(@Req() request: Request): Promise<HealthCheckResult> {
     const { protocol } = request;
 
-    const host = request.get('host');
+    const host = 'nginx';
+
+    const query = `${protocol}://${host}/graphql?query=%7B__typename%7D`;
 
     return this.health.check([
-      () =>
-        this.http.pingCheck(
-          'apollo',
-          `${protocol}://${host}/graphql?query=%7B__typename%7D`,
-        ),
+      () => this.http.pingCheck('apollo', query),
       () => this.database.pingCheck('prisma'),
       () => this.memory.checkHeap('memory_heap', 300 * 1024 * 1024),
       () => this.memory.checkRSS('memory_rss', 300 * 1024 * 1024),

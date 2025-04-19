@@ -1,36 +1,31 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
-    "sourceMap": true,
-    "noEmit": false,
-    "outDir": "./dist",
     "baseUrl": "./src",
-    "skipLibCheck": true,
-    "strict": true,
-    "strictNullChecks": false,
-    "noImplicitAny": true,
-    "strictBindCallApply": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": false,
-    "strictPropertyInitialization": false,
+    "declaration": true,
+    "emitDecoratorMetadata": true,
     "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "commonjs",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
+    "noEmit": false,
+    "noFallthroughCasesInSwitch": false,
+    "noImplicitAny": true,
+    "outDir": "./dist",
     "paths": {
-      "@test/*": [
-        "../test/*"
-      ],
+      "@root/*": ["../*"],
+      "@test/*": ["../test/*"]
     },
+    "removeComments": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "strictBindCallApply": true,
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
+    "target": "ES2024"
   },
-  "exclude": [
-    "dist",
-    "node_modules"
-  ]
+  "exclude": ["dist", "node_modules"]
 }

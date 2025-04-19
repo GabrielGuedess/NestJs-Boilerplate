@@ -1,0 +1,26 @@
+{
+  "$schema": "https://swc.rs/schema.json",
+  "exclude": ["dist", "node_modules"],
+  "jsc": {
+    "baseUrl": "./src",
+    "keepClassNames": true,
+    "loose": false,
+    "parser": {
+      "decorators": true,
+      "syntax": "typescript"
+    },
+    "paths": {
+      "@root/*": ["../*"],
+      "@test/*": ["../test/*"]
+    },
+    "target": "es2024",
+    "transform": {
+      "decoratorMetadata": true
+    }
+  },
+  "module": {
+    "strict": true,
+    "type": "commonjs"
+  },
+  "sourceMaps": true
+}

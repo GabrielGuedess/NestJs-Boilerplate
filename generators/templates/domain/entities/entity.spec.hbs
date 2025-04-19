@@ -1,125 +1,82 @@
 import { {{pascalCase name}} } from 'domain/entities/{{camelCase name}}/{{pascalCase name}}';
 
 describe('{{pascalCase name}}', () => {
-  it('should be able to create a {{convertToLowerWords name}} with entity', () => {
+  it('should create {{dashCase name}} with only required fields and check defaults', () => {
     const {{camelCase name}} = new {{pascalCase name}}({
-    {{#each data}}
-    {{#notStartsWithUppercase name}}
-    {{#isNotPrismaType type}}
-    {{#if (eq (typeWithoutQuestion type) "String")}}
-      {{snakeCase name}}: 'Test',
-    {{else if (eq (typeWithoutQuestion type) "Int")}}
-      {{snakeCase name}}: 1,
-    {{else if (eq (typeWithoutQuestion type) "Float")}}
-      {{snakeCase name}}: 1.0,
-    {{else if (eq (typeWithoutQuestion type) "Boolean")}}
-      {{snakeCase name}}: true,
-    {{else if (eq (typeWithoutQuestion type) "DateTime")}}
-      {{snakeCase name}}: new Date('2003-03-21'),
-    {{else}}
-      {{snakeCase name}}: null,
-    {{/if}}
-    {{/isNotPrismaType}}
-    {{/notStartsWithUppercase}}
-    {{/each}}
+      {{#each fields}}
+        {{#unless (or this.hasDefault (eq this.name "created_at") (eq this.name "updated_at"))}}
+          {{#unless this.isOptional}}
+            {{snakeCase this.name}}: {{#if (eq this.type "string")}}'valid-{{snakeCase this.name}}'{{else if (eq this.type "number")}}123{{else if (eq this.type "boolean")}}true{{else if (eq this.type "Date")}}new Date(){{else}}'valid'{{/if}},
+          {{/unless}}
+        {{/unless}}
+      {{/each}}
     });
 
     expect({{camelCase name}}).toBeTruthy();
+    {{#each fields}}
+      {{#if this.hasDefault}}
+        {{#if (eq this.defaultValue 'false')}}
+    expect({{camelCase ../name}}.{{camelCase this.name}}).toBeFalsy();
+        {{else if (eq this.defaultValue 'true')}}
+    expect({{camelCase ../name}}.{{camelCase this.name}}).toBeTruthy();
+        {{else if (eq this.defaultValue 'now(')}}
+    expect({{camelCase ../name}}.{{camelCase this.name}}).toBeInstanceOf(Date);
+        {{else}}
+    expect({{camelCase ../name}}.{{camelCase this.name}}).toBe({{{this.defaultValue}}});
+        {{/if}}
+      {{/if}}
+    {{/each}}
   });
 
-  it('should be able to set and get props {{convertToLowerWords name}} with entity', () => {
+  it('should be able to set and get props {{dashCase name}} with entity', () => {
     const {{camelCase name}} = new {{pascalCase name}}({
-    {{#each data}}
-    {{#notStartsWithUppercase name}}
-    {{#isNotPrismaType type}}
-    {{#if (eq (typeWithoutQuestion type) "String")}}
-      {{snakeCase name}}: 'Test',
-    {{else if (eq (typeWithoutQuestion type) "Int")}}
-      {{snakeCase name}}: 1,
-    {{else if (eq (typeWithoutQuestion type) "Float")}}
-      {{snakeCase name}}: 1.0,
-    {{else if (eq (typeWithoutQuestion type) "Boolean")}}
-      {{snakeCase name}}: true,
-    {{else if (eq (typeWithoutQuestion type) "DateTime")}}
-      {{snakeCase name}}: new Date('21-03-2003'),
-    {{else}}
-      {{snakeCase name}}: '123';
-    {{/if}}
-    {{/isNotPrismaType}}
-    {{/notStartsWithUppercase}}
-    {{/each}}
+      {{#each fields}}
+        {{#unless (or (eq this.name "created_at") (eq this.name "updated_at") (eq this.name "active"))}}
+          {{snakeCase this.name}}: {{#if (eq this.type "string")}}'test-{{snakeCase this.name}}'{{else if (eq this.type "number")}}123{{else if (eq this.type "boolean")}}true{{else if (eq this.type "Date")}}new Date(){{else}}'test'{{/if}},
+        {{/unless}}
+      {{/each}}
     });
 
-    {{#each data}}
-    {{#notStartsWithUppercase name}}
-    {{#isNotPrismaType type}}
-      expect({{camelCase ../name}}.{{camelCase name}}).toBeTruthy();
-    {{/isNotPrismaType}}
-    {{/notStartsWithUppercase}}
+    expect({{camelCase name}}.id).toBeTruthy();
+    {{#each fields}}
+      expect({{camelCase ../name}}.{{camelCase this.name}}).toBeTruthy();
     {{/each}}
 
-
-    {{#each data}}
-    {{#notStartsWithUppercase name}}
-    {{#isNotPrismaType type}}
-    {{#unless (or (eq name "id") (eq name "created_at"))}}
-      {{#if (eq (typeWithoutQuestion type) "String")}}
-        {{camelCase ../name}}.{{camelCase name}} = 'Test 2';
-      {{else if (eq (typeWithoutQuestion type) "Int")}}
-        {{camelCase ../name}}.{{camelCase name}} = 2;
-      {{else if (eq (typeWithoutQuestion type) "Float")}}
-        {{camelCase ../name}}.{{camelCase name}} = 2.0;
-      {{else if (eq (typeWithoutQuestion type) "Boolean")}}
-        {{camelCase ../name}}.{{camelCase name}} = false;
-      {{else if (eq (typeWithoutQuestion type) "DateTime")}}
-        {{camelCase ../name}}.{{camelCase name}} = new Date('2003-03-22');
-      {{else}}
-        {{camelCase ../name}}.{{camelCase name}} = '321';
-      {{/if}}
-    {{/unless}}
-    {{/isNotPrismaType}}
-    {{/notStartsWithUppercase}}
-    {{/each}}
-
-    {{#each data}}
-    {{#notStartsWithUppercase name}}
-    {{#isNotPrismaType type}}
-    {{#unless (or (eq name "id") (eq name "created_at"))}}
-      {{#if (eq (typeWithoutQuestion type) "String")}}
-        expect({{camelCase ../name}}.{{camelCase name}}).toBe('Test 2');
-      {{else if (eq (typeWithoutQuestion type) "Int")}}
-        expect({{camelCase ../name}}.{{camelCase name}}).toBe(2);
-      {{else if (eq (typeWithoutQuestion type) "Float")}}
-        expect({{camelCase ../name}}.{{camelCase name}}).toBe(2.0);
-      {{else if (eq (typeWithoutQuestion type) "Boolean")}}
-        expect({{camelCase ../name}}.{{camelCase name}}).toBe(false);
-      {{else if (eq (typeWithoutQuestion type) "DateTime")}}
-        expect({{camelCase ../name}}.{{camelCase name}}).toEqual(new Date('2003-03-22'));
-      {{else}}
-        expect({{camelCase ../name}}.{{camelCase name}}).toBe('321');
-      {{/if}}
-    {{/unless}}
-    {{/isNotPrismaType}}
-    {{/notStartsWithUppercase}}
+    // Test setters
+    {{#each fields}}
+      {{#unless (or (eq this.name "id") (eq this.name "created_at"))}}
+        {{#if (eq this.type "string")}}
+          {{camelCase ../name}}.{{camelCase this.name}} = 'new-{{snakeCase this.name}}';
+          expect({{camelCase ../name}}.{{camelCase this.name}}).toBe('new-{{snakeCase this.name}}');
+        {{else if (eq this.type "number")}}
+          {{camelCase ../name}}.{{camelCase this.name}} = 456;
+          expect({{camelCase ../name}}.{{camelCase this.name}}).toBe(456);
+        {{else if (eq this.type "boolean")}}
+          {{camelCase ../name}}.{{camelCase this.name}} = false;
+          expect({{camelCase ../name}}.{{camelCase this.name}}).toBe(false);
+        {{else if (eq this.type "Date")}}
+          {{camelCase ../name}}.{{camelCase this.name}} = new Date('2000-01-01');
+          expect({{camelCase ../name}}.{{camelCase this.name}}).toStrictEqual(new Date('2000-01-01'));
+        {{else}}
+          {{camelCase ../name}}.{{camelCase this.name}} = 'new-value';
+          expect({{camelCase ../name}}.{{camelCase this.name}}).toBe('new-value');
+        {{/if}}
+      {{/unless}}
     {{/each}}
   });
 
-  it('should not be able to create a {{convertToLowerWords name}} with entity with error', () => {
+  it('should not be able to create a {{dashCase name}} with entity with error', () => {
     expect(() => {
       new {{pascalCase name}}({
-    {{#each data}}
-    {{#notStartsWithUppercase name}}
-    {{#isNotPrismaType type}}
-      {{#if (eq (typeWithoutQuestion type) "String")}}
-        {{snakeCase name}}: '',
-      {{else if (eq (typeWithoutQuestion type) "Int")}}
-       {{snakeCase name}}: 0,
-      {{else if (eq (typeWithoutQuestion type) "Float")}}
-        {{snakeCase name}}: 2.0,
-      {{/if}}
-    {{/isNotPrismaType}}
-    {{/notStartsWithUppercase}}
-    {{/each}}
+        {{#each fields}}
+          {{#if (or (eq this.name "document") (eq this.name "password") (eq this.name "email"))}}
+            {{snakeCase this.name}}: '',
+          {{else}}
+            {{#unless (or (eq this.name "created_at") (eq this.name "updated_at") (eq this.name "active"))}}
+              {{snakeCase this.name}}: {{#if (eq this.type "string")}}''{{else if (eq this.type "number")}}0{{else if (eq this.type "boolean")}}false{{else if (eq this.type "Date")}}new Date(){{else}}''{{/if}},
+            {{/unless}}
+          {{/if}}
+        {{/each}}
       });
     }).toThrow();
   });

@@ -1,17 +1,19 @@
 import { extname } from 'node:path';
+import { Readable } from 'node:stream';
 import { randomUUID } from 'node:crypto';
-import { type Readable } from 'node:stream';
 
+import { I18nService } from 'nestjs-i18n';
 import { Injectable } from '@nestjs/common';
 
 import { S3 } from '@aws-sdk/client-s3';
+import { I18nTranslations } from '@root/i18n/generated';
 
-import { AppError } from 'domain/shared/errors/AppError';
-import { type UploaderProvider } from 'domain/providers/UploaderProvider';
+import { AppError, StatusCode } from 'domain/shared/errors/AppError';
+import { UploaderProvider } from 'domain/providers/UploaderProvider';
 import {
-  type DeletedFileRequestDTO,
-  type UploadedFileRequestDTO,
-  type UploadedFileResponseDTO,
+  DeletedFileRequestDTO,
+  UploadedFileRequestDTO,
+  UploadedFileResponseDTO,
 } from 'domain/dtos/providers/UploaderProviderDTO';
 
 import { s3Config } from 'infrastructure/services/aws/config/S3';
@@ -22,7 +24,7 @@ export class AwsUploaderProvider implements UploaderProvider {
 
   private readonly bucketName = s3Config.bucketName;
 
-  constructor() {
+  constructor(private readonly i18n: I18nService<I18nTranslations>) {
     this.client = new S3({
       region: s3Config.defaultRegion,
       credentials: {
@@ -67,7 +69,10 @@ export class AwsUploaderProvider implements UploaderProvider {
 
       return { path };
     } catch {
-      throw new AppError('Error uploading file to S3', 401);
+      throw new AppError({
+        statusCode: StatusCode.UNAUTHORIZED,
+        message: this.i18n.t('providers.ERROR_UPLOAD_FILE'),
+      });
     }
   }
 
@@ -96,7 +101,10 @@ export class AwsUploaderProvider implements UploaderProvider {
           },
         });
       } catch {
-        throw new AppError('Error deleting folder from S3', 401);
+        throw new AppError({
+          statusCode: StatusCode.UNAUTHORIZED,
+          message: this.i18n.t('providers.ERROR_DELETE_UPLOAD_FOLDER'),
+        });
       }
 
       return;
@@ -108,7 +116,10 @@ export class AwsUploaderProvider implements UploaderProvider {
         Bucket: this.bucketName,
       });
     } catch {
-      throw new AppError('Error deleting folder from S3', 401);
+      throw new AppError({
+        statusCode: StatusCode.UNAUTHORIZED,
+        message: this.i18n.t('providers.ERROR_DELETE_UPLOAD_FOLDER'),
+      });
     }
   }
 }

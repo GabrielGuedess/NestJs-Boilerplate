@@ -23,13 +23,13 @@ export class User {
     @Field(() => String, {nullable:true})
     avatar_url!: string | null;
 
-    @Field(() => Role, {nullable:false,defaultValue:'USER'})
-    role!: keyof typeof Role;
+    @Field(() => Role, {defaultValue:'USER',nullable:false})
+    role!: `${Role}`;
 
-    @Field(() => Boolean, {nullable:false,defaultValue:false})
+    @Field(() => Boolean, {defaultValue:false,nullable:false})
     validated!: boolean;
 
-    @Field(() => Boolean, {nullable:false,defaultValue:true})
+    @Field(() => Boolean, {defaultValue:true,nullable:false})
     active!: boolean;
 
     @Field(() => Date, {nullable:false})

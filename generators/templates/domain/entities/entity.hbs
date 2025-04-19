@@ -1,36 +1,51 @@
-import { randomUUID } from 'node:crypto';
+import { uuidv7 } from 'uuidv7';
 
 import { Entity } from 'domain/shared/entities/Entity';
 import { type Replace } from 'domain/shared/helpers/Replace';
 import { NotificationError } from 'domain/shared/notification/NotificationError';
 
 interface I{{pascalCase name}} {
-  {{generateInterface data}}
+ {{#each fields}}
+    {{#if this.isOptional}}
+      {{snakeCase this.name}}?: {{this.type}};
+    {{else}}
+      {{snakeCase this.name}}: {{this.type}};
+    {{/if}}
+  {{/each}}
 }
 
 export class {{pascalCase name}} extends Entity {
   private _id: string;
+
   private props: I{{pascalCase name}};
 
-  constructor(
+constructor(
     props: Replace<
       I{{pascalCase name}},
       {
-        active?: boolean;
-        updated_at?: Date;
-        created_at?: Date;
+        {{#each fields}}
+          {{#if this.hasDefault}}
+            {{snakeCase this.name}}?: {{this.type}};
+          {{/if}}
+        {{/each}}
       }
     >,
     id?: string,
   ) {
     super();
 
-    this._id = id ?? randomUUID();
+    this._id = id ?? uuidv7();
     this.props = {
       ...props,
-      active: props.active ?? false,
-      updated_at: props.updated_at ?? new Date(),
-      created_at: props.created_at ?? new Date(),
+      {{#each fields}}
+        {{#if this.hasDefault}}
+          {{#if (eq this.defaultValue 'now(')}}
+            {{snakeCase this.name}}: props.{{snakeCase this.name}} ?? new Date(),
+          {{else}}
+            {{snakeCase this.name}}: props.{{snakeCase this.name}} ?? {{{this.defaultValue}}},
+          {{/if}}
+        {{/if}}
+      {{/each}}
     };
 
     this.validate();
@@ -43,48 +58,49 @@ export class {{pascalCase name}} extends Entity {
   }
 
   private validate() {
-    {{#each data}}
-    {{#notContains "?" type}}
-    {{#notStartsWithUppercase name}}
-    {{#isNotPrismaType type}}
-    {{#if (isString type)}}
-    {{#unless (or (eq name "updated_at") (eq name "created_at") (eq name "id") (eq name "active"))}}
-    if (this.{{camelCase name}} === undefined || this.{{camelCase name}} === null {{#if (isString type)}}|| this.{{camelCase name}} === ''{{/if}}) {
-      this.notification.addError({
-        context: '{{camelCase ../name}}',
-        message: '{{snakeCaseToSpace name}} is required!',
-      });
-    }
-
+  {{#each fields}}
+    {{#unless isOptional}}
+      {{#unless hasDefault}}
+        {{#if (eq type 'string')}}
+          if (
+            this.props.{{name}} === undefined ||
+            this.props.{{name}} === null ||
+            this.props.{{name}}.trim() === ''
+          ) {
+            this.notification.addError({
+              context: '{{snakeCase ../name}}',
+              message: '{{name}} is required!',
+            });
+          }
+        {{else}}
+          if (
+            this.props.{{name}} === undefined ||
+            this.props.{{name}} === null
+          ) {
+            this.notification.addError({
+              context: '{{snakeCase ../name}}',
+              message: '{{name}} is required!',
+            });
+          }
+        {{/if}}
+      {{/unless}}
     {{/unless}}
-    {{/if}}
-    {{/isNotPrismaType}}
-    {{/notStartsWithUppercase}}
-    {{/notContains}}
-    {{/each}}
+  {{/each}}
   }
 
- {{#each data}}
- {{#isNotPrismaType type}}
- {{#notStartsWithUppercase name}}
- {{#if (eq name "id")}}
-  public get {{camelcase name}}(): {{convertPrismaType type}} {
+  {{#each fields}}
+    {{#unless (eq this.name "created_at")}}
+    public set {{camelCase this.name}}({{snakeCase this.name}}: {{this.type}}) {
+      this.props.{{snakeCase this.name}} = {{snakeCase this.name}};
+    }
+    {{/unless}}
+
+    public get {{camelCase this.name}}(): {{this.type}} {
+      return this.props.{{snakeCase this.name}};
+    }
+  {{/each}}
+
+  public get id(): string {
     return this._id;
   }
-  {{/if}}
-  {{#unless (eq name "id")}}
-  public get {{camelcase name}}(): {{convertPrismaType type}} {
-    return this.props.{{name}};
-  }
-  {{/unless}}
-
-  {{#unless (or (eq name "id") (eq name "created_at"))}}
-  public set {{camelcase name}}({{camelcase name}}: {{convertPrismaType type}}) {
-    this.props.{{name}} = {{camelcase name}};
-  }
-{{/unless}}
-{{/notStartsWithUppercase}}
-{{/isNotPrismaType}}
-{{/each}}
-
 }

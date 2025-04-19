@@ -6,13 +6,13 @@ import { User } from 'domain/entities/user/User';
 import { UserRepository } from 'domain/repositories/UserRepository';
 import { UploaderProvider } from 'domain/providers/UploaderProvider';
 
-import { type CreateUserUseCaseRequestDTO } from 'application/dtos/user/CreateUserUseCaseDTO';
+import { CreateUserUseCaseRequestDTO } from 'application/dtos/user/CreateUserUseCaseDTO';
 
 @Injectable()
 export class CreateUserUseCase {
   constructor(
-    private userRepository: UserRepository,
-    private uploaderProvider: UploaderProvider,
+    private readonly userRepository: UserRepository,
+    private readonly uploaderProvider: UploaderProvider,
   ) {}
 
   async execute(request: CreateUserUseCaseRequestDTO): Promise<User> {

@@ -1,3 +1,5 @@
+import { type WhereUserUniqueDTO } from 'domain/dtos/repositories/UserRepositoryDTO';
+
 export abstract class DeleteUserUseCaseRequestDTO {
-  id: string;
+  where: WhereUserUniqueDTO;
 }

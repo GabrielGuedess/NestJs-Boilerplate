@@ -2,5 +2,8 @@
   "trailingComma": "all",
   "semi": true,
   "singleQuote": true,
-  "arrowParens": "avoid"
+  "arrowParens": "avoid",
+  "plugins": ["prettier-plugin-sort-json"],
+  "jsonSortOrder": "{\"*\": \"lexical\"}",
+  "jsonRecursiveSort": true
 }

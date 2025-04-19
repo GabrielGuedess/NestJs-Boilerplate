@@ -9,11 +9,11 @@ services:
       - .:/usr/src/app
     env_file:
       - .env
-    command: pnpm start:dev
-    ports:
-      - ${API_PORT}:${API_PORT}
+    command: sh -c "npx prisma migrate dev && pnpm start:dev"
     depends_on:
       - db
+    networks:
+      - backend
 
   db:
     image: postgres:latest
@@ -30,7 +30,45 @@ services:
       - ${DB_PORT}:${DB_PORT}
     volumes:
       - pgdata:/data/postgres
+    networks:
+      - backend
+
+  redis:
+    container_name: redis_nestjs_boilerplate
+    image: redis:7.0-alpine
+    env_file:
+      - .env
+    networks:
+      - backend
+    ports:
+      - ${REDIS_PORT}:6379
+    volumes:
+      - redis_data:/data
+    restart: always
+    command: redis-server --loglevel warning
+
+  nginx:
+    container_name: nginx_nestjs_boilerplate
+    image: nginx:1.25-alpine
+    env_file:
+      - .env
+    depends_on:
+      - app
+    ports:
+      - ${NGINX_PORT}:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    restart: always
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
 
 volumes:
   pgdata:
+    driver: local
+
+  redis_data:
     driver: local

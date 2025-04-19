@@ -2,51 +2,53 @@ import { Injectable } from '@nestjs/common';
 
 import { hash } from 'bcrypt';
 
-import { type User } from 'domain/entities/user/User';
+import { User } from 'domain/entities/user/User';
 import { UserRepository } from 'domain/repositories/UserRepository';
 import { UploaderProvider } from 'domain/providers/UploaderProvider';
 
-import { type UpdateUserUseCaseRequestDTO } from 'application/dtos/user/UpdateUserUseCaseDTO';
+import { UpdateUserUseCaseRequestDTO } from 'application/dtos/user/UpdateUserUseCaseDTO';
 
 @Injectable()
 export class UpdateUserUseCase {
   constructor(
-    private userRepository: UserRepository,
-    private uploaderProvider: UploaderProvider,
+    private readonly userRepository: UserRepository,
+    private readonly uploaderProvider: UploaderProvider,
   ) {}
 
   async execute(request: UpdateUserUseCaseRequestDTO): Promise<User> {
-    if (request.avatar) {
+    if (request?.data?.avatar?.filename) {
       const currentUser = await this.userRepository.findUnique({
-        where: { id: request.id },
+        where: request.where,
       });
 
       const { path } = await this.uploaderProvider.upload({
-        file: request.avatar,
+        file: request.data.avatar,
         filename: currentUser.document,
         folder: `users/${currentUser.document}/avatar`,
       });
 
       await this.userRepository.update({
-        id: request.id,
-        avatar_url: path,
+        where: request.where,
+        data: {
+          avatar_url: path,
+        },
       });
     }
 
-    if (request.password) {
-      const passwordHash = await hash(request.password, 10);
+    if (request?.data?.password) {
+      const passwordHash = await hash(request.data.password, 10);
 
       await this.userRepository.update({
-        id: request.id,
-        password: passwordHash,
+        where: request.where,
+        data: {
+          password: passwordHash,
+        },
       });
     }
 
     const updateUser = await this.userRepository.update({
-      id: request.id,
-      email: request.email,
-      document: request.document,
-      full_name: request.full_name,
+      data: request.data,
+      where: request.where,
     });
 
     return updateUser;

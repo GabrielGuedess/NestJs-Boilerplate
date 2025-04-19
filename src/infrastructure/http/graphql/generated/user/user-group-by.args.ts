@@ -21,7 +21,7 @@ export class UserGroupByArgs {
     orderBy?: Array<UserOrderByWithAggregationInput>;
 
     @Field(() => [UserScalarFieldEnum], {nullable:false})
-    by!: Array<keyof typeof UserScalarFieldEnum>;
+    by!: Array<`${UserScalarFieldEnum}`>;
 
     @Field(() => UserScalarWhereWithAggregatesInput, {nullable:true})
     having?: UserScalarWhereWithAggregatesInput;

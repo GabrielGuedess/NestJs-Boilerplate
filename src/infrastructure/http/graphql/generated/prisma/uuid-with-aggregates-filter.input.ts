@@ -30,7 +30,7 @@ export class UuidWithAggregatesFilter {
     gte?: string;
 
     @Field(() => QueryMode, {nullable:true})
-    mode?: keyof typeof QueryMode;
+    mode?: `${QueryMode}`;
 
     @Field(() => NestedUuidWithAggregatesFilter, {nullable:true})
     not?: NestedUuidWithAggregatesFilter;

@@ -1,35 +1,28 @@
 {
-  "version": "0.2.0",
+  "compounds": [
+    {
+      "configurations": ["Nest: Node", "Nest: Chrome"],
+      "name": "Nest: Full"
+    }
+  ],
   "configurations": [
     {
-      "type": "chrome",
-      "request": "launch",
       "name": "Nest: Chrome",
+      "request": "launch",
+      "type": "chrome",
       "url": "http://localhost:3002",
       "webRoot": "${workspaceFolder}"
     },
     {
-      "type": "node",
-      "request": "launch",
+      "args": ["dev"],
+      "autoAttachChildProcesses": true,
+      "console": "integratedTerminal",
       "name": "Nest: Node",
       "program": "${workspaceFolder}/node_modules/.bin/next",
-      "args": [
-        "dev"
-      ],
-      "autoAttachChildProcesses": true,
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "console": "integratedTerminal"
+      "request": "launch",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
     }
   ],
-  "compounds": [
-    {
-      "name": "Nest: Full",
-      "configurations": [
-        "Nest: Node",
-        "Nest: Chrome"
-      ]
-    }
-  ]
+  "version": "0.2.0"
 }

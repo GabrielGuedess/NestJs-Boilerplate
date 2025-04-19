@@ -6,5 +6,5 @@ import { Role } from './role.enum';
 export class EnumRoleFieldUpdateOperationsInput {
 
     @Field(() => Role, {nullable:true})
-    set?: keyof typeof Role;
+    set?: `${Role}`;
 }

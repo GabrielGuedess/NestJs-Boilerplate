@@ -1,0 +1,10 @@
+{
+  "ERROR_NOT_FOUND": "{name} not found",
+  "ERROR_INVALID_TOKEN": "Token inválido",
+  "ERROR_NOT_DELETED": "Failed to delete {name}",
+  "ERROR_NOT_UPDATED": "Failed to update {name}",
+  "ERROR_NOT_CREATED": "Failed to create {name}",
+  "ERROR_ALREADY_EXISTS": "{name} already exists",
+  "ERROR_PASSWORD_INCORRECT": "Password incorrect",
+  "ERROR_SORT_MULTIPLE_PARAMS": "Only a single sort parameter is allowed"
+}

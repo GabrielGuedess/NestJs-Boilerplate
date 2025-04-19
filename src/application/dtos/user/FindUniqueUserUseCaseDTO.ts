@@ -1,11 +1,5 @@
-import { WhereDTO } from 'domain/shared/dtos/WhereDTO';
-
-abstract class WhereUserUnique extends WhereDTO {
-  id?: string;
-  email?: string;
-  document?: string;
-}
+import { type WhereUserUniqueDTO } from 'domain/dtos/repositories/UserRepositoryDTO';
 
 export abstract class FindUniqueUserUseCaseRequestDTO {
-  where?: WhereUserUnique;
+  where?: WhereUserUniqueDTO;
 }

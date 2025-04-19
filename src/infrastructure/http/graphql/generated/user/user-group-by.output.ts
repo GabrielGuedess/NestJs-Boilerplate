@@ -26,7 +26,7 @@ export class UserGroupBy {
     avatar_url?: string;
 
     @Field(() => Role, {nullable:false})
-    role!: keyof typeof Role;
+    role!: `${Role}`;
 
     @Field(() => Boolean, {nullable:false})
     validated!: boolean;

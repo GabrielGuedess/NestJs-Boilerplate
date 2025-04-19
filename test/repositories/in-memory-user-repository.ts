@@ -1,14 +1,22 @@
 import { type User } from 'domain/entities/user/User';
 import { type UserRepository } from 'domain/repositories/UserRepository';
 import { type RelayPagination } from 'domain/shared/dtos/RelayPagination';
+import { type OffsetPagination } from 'domain/shared/dtos/OffsetPagination';
 import {
-  type FindUserRequestDTO,
   type UpdateUserRequestDTO,
-  type FindAllUsersRequestDTO,
+  type DeleteUserRequestDTO,
+  type FindFirstUserRequestDTO,
+  type FindUniqueUserRequestDTO,
+  type PaginationOffsetUsersRequestDTO,
+  type PaginationCursorUsersRequestDTO,
 } from 'domain/dtos/repositories/UserRepositoryDTO';
 
 export class InMemoryUserRepository implements UserRepository {
   public users: User[] = [];
+
+  async findAll(): Promise<User[]> {
+    return this.users;
+  }
 
   async count(): Promise<number> {
     return this.users.length;
@@ -26,21 +34,21 @@ export class InMemoryUserRepository implements UserRepository {
     return user;
   }
 
-  async delete(id: string): Promise<User> {
-    const user = this.users.find(item => item.id === id);
+  async createMany(users: User[]): Promise<User[]> {
+    const existingUsers = users.filter(user =>
+      this.users.some(existingUser => existingUser.id === user.id),
+    );
 
-    if (!user) {
-      throw new Error('User not found!');
+    if (existingUsers.length > 0) {
+      throw new Error('Some users already exist!');
     }
 
-    const userIndex = this.users.findIndex(item => item.id === user.id);
+    this.users.push(...users);
 
-    this.users.splice(userIndex, 1);
-
-    return user;
+    return users;
   }
 
-  async findUnique(parameters: FindUserRequestDTO): Promise<User> {
+  async findUnique(parameters: FindUniqueUserRequestDTO): Promise<User> {
     const user = this.users.find(
       item =>
         item.id === parameters.where.id ||
@@ -55,11 +63,69 @@ export class InMemoryUserRepository implements UserRepository {
     return user;
   }
 
-  async deleteMany(ids: string[]): Promise<User[]> {
+  async activate(parameters: DeleteUserRequestDTO): Promise<User> {
+    const user = this.users.find(
+      item =>
+        item.id === parameters.where.id ||
+        item.email === parameters.where.email ||
+        item.document === parameters.where.document,
+    );
+
+    if (!user) {
+      throw new Error('User not found!');
+    }
+
+    user.active = true;
+
+    return user;
+  }
+
+  async deactivate(parameters: DeleteUserRequestDTO): Promise<User> {
+    const user = this.users.find(
+      item =>
+        item.id === parameters.where.id ||
+        item.email === parameters.where.email ||
+        item.document === parameters.where.document,
+    );
+
+    if (!user) {
+      throw new Error('User not found!');
+    }
+
+    user.active = false;
+
+    return user;
+  }
+
+  async delete(parameters: DeleteUserRequestDTO): Promise<User> {
+    const user = this.users.find(
+      item =>
+        item.id === parameters.where.id ||
+        item.email === parameters.where.email ||
+        item.document === parameters.where.document,
+    );
+
+    if (!user) {
+      throw new Error('User not found!');
+    }
+
+    const userIndex = this.users.findIndex(item => item.id === user.id);
+
+    this.users.splice(userIndex, 1);
+
+    return user;
+  }
+
+  async deleteMany(parameters: DeleteUserRequestDTO[]): Promise<User[]> {
     const users: User[] = [];
 
-    for (const id of ids) {
-      const user = this.users.find(item => item.id === id);
+    for (const { where } of parameters) {
+      const user = this.users.find(
+        item =>
+          item.id === where.id ||
+          item.email === where.email ||
+          item.document === where.document,
+      );
 
       if (!user) {
         throw new Error('User not found!');
@@ -76,7 +142,12 @@ export class InMemoryUserRepository implements UserRepository {
   }
 
   async update(parameters: UpdateUserRequestDTO): Promise<User> {
-    const user = this.users.find(item => item.id === parameters.id);
+    const user = this.users.find(
+      item =>
+        item.id === parameters.where.id ||
+        item.email === parameters.where.email ||
+        item.document === parameters.where.document,
+    );
 
     if (!user) {
       throw new Error('User not found!');
@@ -84,11 +155,44 @@ export class InMemoryUserRepository implements UserRepository {
 
     const userIndex = this.users.findIndex(item => item.id === user.id);
 
-    user.document = parameters?.document ?? user.document;
-    user.password = parameters?.password ?? user.password;
-    user.avatarUrl = parameters?.avatar_url ?? user.avatarUrl;
+    user.document = parameters?.data?.document ?? user.document;
+    user.password = parameters?.data?.password ?? user.password;
+    user.avatarUrl = parameters?.data?.avatar_url ?? user.avatarUrl;
 
     this.users[userIndex] = user;
+
+    return user;
+  }
+
+  async findFirst(parameters: FindFirstUserRequestDTO): Promise<User> {
+    const user = this.users.find(currentUser => {
+      if (
+        parameters.where?.id &&
+        currentUser.id !== parameters.where.id.equals
+      ) {
+        return true;
+      }
+
+      if (
+        parameters.where?.email &&
+        currentUser.email !== parameters.where.email.equals
+      ) {
+        return true;
+      }
+
+      if (
+        parameters.where?.document &&
+        currentUser.document !== parameters.where.document.equals
+      ) {
+        return true;
+      }
+
+      return false;
+    });
+
+    if (!user) {
+      throw new Error('User not found!');
+    }
 
     return user;
   }
@@ -97,7 +201,12 @@ export class InMemoryUserRepository implements UserRepository {
     const users: User[] = [];
 
     for (const current of parameters) {
-      const user = this.users.find(item => item.id === current.id);
+      const user = this.users.find(
+        item =>
+          item.id === current.where.id ||
+          item.email === current.where.email ||
+          item.document === current.where.document,
+      );
 
       if (!user) {
         throw new Error('User not found!');
@@ -105,11 +214,11 @@ export class InMemoryUserRepository implements UserRepository {
 
       const userIndex = this.users.findIndex(item => item.id === user.id);
 
-      user.email = current.email;
-      user.document = current.document;
-      user.password = current.password;
-      user.fullName = current.full_name;
-      user.avatarUrl = current.avatar_url;
+      user.email = current.data.email;
+      user.document = current.data.document;
+      user.password = current.data.password;
+      user.fullName = current.data.full_name;
+      user.avatarUrl = current.data.avatar_url;
 
       this.users[userIndex] = user;
 
@@ -119,8 +228,8 @@ export class InMemoryUserRepository implements UserRepository {
     return users;
   }
 
-  async findAll(
-    parameters: FindAllUsersRequestDTO,
+  async paginationCursor(
+    parameters: PaginationCursorUsersRequestDTO,
   ): Promise<RelayPagination<User>> {
     const relay: RelayPagination<User> = {
       nodes: this.users,
@@ -156,6 +265,55 @@ export class InMemoryUserRepository implements UserRepository {
         hasNextPage: relay.pageInfo.hasNextPage,
         startCursor: relay.pageInfo.startCursor,
         hasPreviousPage: relay.pageInfo.hasPreviousPage,
+      },
+    };
+  }
+
+  async paginationOffset(
+    parameters: PaginationOffsetUsersRequestDTO,
+  ): Promise<OffsetPagination<User>> {
+    const { where, order, page = 1, limit = 10 } = parameters;
+
+    const filteredUsers = this.users.filter(user => {
+      if (where?.email && user.email !== where.email.equals) {
+        return false;
+      }
+
+      if (where?.document && user.document !== where.document.equals) {
+        return false;
+      }
+
+      return true;
+    });
+
+    const orderedUsers = filteredUsers.sort((a, b) => {
+      if (!order) return 0;
+
+      for (const [key, direction] of Object.entries(order)) {
+        const fieldA = a[key as keyof User];
+        const fieldB = b[key as keyof User];
+
+        if (fieldA < fieldB) return direction === 'asc' ? -1 : 1;
+        if (fieldA > fieldB) return direction === 'asc' ? 1 : -1;
+      }
+
+      return 0;
+    });
+
+    const offset = (page - 1) * limit;
+
+    const paginatedUsers = orderedUsers.slice(offset, offset + limit);
+
+    return {
+      nodes: paginatedUsers,
+      count: paginatedUsers.length,
+      totalCount: filteredUsers.length,
+      pageInfo: {
+        currentPage: page,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        isFirstPage: page === 1,
+        isLastPage: offset + limit >= filteredUsers.length,
       },
     };
   }
