@@ -1,9 +1,9 @@
 import path, { join } from 'node:path';
 
-import { INQUIRER } from '@nestjs/core';
+import { Module } from '@nestjs/common';
 import { LoggerModule } from 'nestjs-pino';
 import { GraphQLModule } from '@nestjs/graphql';
-import { Scope, Module, Logger } from '@nestjs/common';
+import { CacheModule } from '@nestjs/cache-manager';
 import { ApolloDriver, type ApolloDriverConfig } from '@nestjs/apollo';
 import {
   I18nModule,
@@ -15,27 +15,24 @@ import {
   GraphQLWebsocketResolver,
 } from 'nestjs-i18n';
 
+import { createKeyv } from '@keyv/redis';
 import { ApolloServerPluginInlineTrace } from '@apollo/server/plugin/inlineTrace';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
+import { env } from 'infrastructure/env';
 import { HttpModule } from 'infrastructure/http/http.module';
-import { CacheModule } from 'infrastructure/cache/cache.module';
 import { DatabaseModule } from 'infrastructure/database/database.module';
 
 @Module({
-  providers: [
-    {
-      provide: Logger,
-      inject: [INQUIRER],
-      scope: Scope.TRANSIENT,
-      useFactory: (parentClass: object) =>
-        new Logger(parentClass.constructor.name),
-    },
-  ],
+  providers: [],
   imports: [
     HttpModule,
-    CacheModule,
     DatabaseModule,
+    CacheModule.register({
+      ttl: 3600,
+      isGlobal: true,
+      stores: [createKeyv(`redis://${env.REDIS_HOST}:${env.REDIS_PORT}`)],
+    }),
     I18nModule.forRoot({
       fallbackLanguage: 'en-US',
       fallbacks: {

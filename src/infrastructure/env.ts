@@ -30,8 +30,10 @@ const envSchema = z.object({
   API_PORT: z.string().default('3000'),
   DB_PORT: z.string().default('5432'),
 
-  NGINX_PORT: z.string().default('80'),
+  REDIS_HOST: z.string().min(1),
   REDIS_PORT: z.string().default('6379'),
+
+  NGINX_PORT: z.string().default('80'),
 });
 
 export const env = envSchema.parse(process.env);
