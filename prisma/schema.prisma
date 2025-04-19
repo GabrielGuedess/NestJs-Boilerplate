@@ -59,24 +59,3 @@ model User {
 
   @@map("users")
 }
-
-model Permission {
-  id                String  @id @default(uuid(7)) @db.Uuid
-  original_file     String
-  edited_file       String?
-  result_file       String?
-  result_audit_file String?
-  title             String
-  description       String
-  step              Int
-  status            Int
-  step_edited_file  String?
-
-  active            Boolean   @default(true)
-  is_follow_filling Boolean   @default(true)
-  concluded_at      DateTime?
-  created_at        DateTime  @default(now())
-  updated_at        DateTime  @default(now()) @updatedAt
-
-  @@map("documents")
-}
