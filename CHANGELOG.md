@@ -1,3 +1,15 @@
+# [1.4.0](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.3.0...v1.4.0) (2025-04-19)
+
+
+### Bug Fixes
+
+* remove extra model prisma ([00dda86](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/00dda8600e7b12f777a27fcb559e0ef5a701aed0))
+
+
+### Features
+
+* add new generators ([9dee144](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/9dee1440b6fdac95a66d53ccf333be8466f6149b))
+
 # [1.3.0](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.2.0...v1.3.0) (2025-04-19)
 
 
