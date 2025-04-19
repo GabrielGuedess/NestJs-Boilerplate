@@ -1,3 +1,5 @@
+import { type Where{{ pascalCase name }}UniqueDTO } from 'domain/dtos/repositories/{{ pascalCase name }}RepositoryDTO';
+
 export abstract class Delete{{ pascalCase name }}UseCaseRequestDTO {
-  id: string;
+  where: Where{{ pascalCase name }}UniqueDTO;
 }

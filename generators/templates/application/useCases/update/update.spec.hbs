@@ -1,28 +1,58 @@
-import { InMemory{{ pascalCase name }}Repository } from '@test/repositories/in-memory-{{ kebabCase name }}-repository';
+import { InMemory{{ pascalCase name }}Repository } from '@test/repositories/in-memory-{{ camelCase name }}-repository';
 
 import { {{ pascalCase name }} } from 'domain/entities/{{ camelCase name }}/{{ pascalCase name }}';
 
 import { Update{{ pascalCase name }}UseCase } from 'application/useCases/{{ camelCase name }}/update{{ pascalCase name }}/Update{{ pascalCase name }}UseCase';
 
 describe('Update {{ pascalCase name }}', () => {
-  it('should be able to update a {{convertToLowerWords name}} with use case', async () => {
+  it('should be able to update a {{ pascalCase name }} with use case', async () => {
     const {{ camelCase name }}Repository = new InMemory{{ pascalCase name }}Repository();
 
     const {{ camelCase name }} = new {{ pascalCase name }}({
-      description: 'Test',
+      {{#each fields}}
+        {{#unless (or this.hasDefault (eq this.name "created_at") (eq this.name "updated_at"))}}
+          {{#unless this.isOptional}}
+            {{snakeCase this.name}}: {{#if (eq this.type "string")}}'valid-{{snakeCase this.name}}'{{else if (eq this.type "number")}}123{{else if (eq this.type "boolean")}}true{{else if (eq this.type "Date")}}new Date(){{else}}'valid'{{/if}},
+          {{/unless}}
+        {{/unless}}
+      {{/each}}
     });
 
     await {{ camelCase name }}Repository.create({{ camelCase name }});
 
-    const update{{ pascalCase name }}UseCase = new Update{{ pascalCase name }}UseCase({{ camelCase name }}Repository);
+    const update{{ pascalCase name }}UseCase = new Update{{ pascalCase name }}UseCase(
+      {{ camelCase name }}Repository,
+    );
 
-    const newDescription = 'Test2';
+    {{#each fields}}
+      {{#if (and (not (eq this.name "id")) (not (eq this.name "created_at")) (not (eq this.name "updated_at")))}}
+        {{#if @first}}
+          const new{{ pascalCase name }} = {{#if (eq type "string")}}'Test2'{{else if (eq type "number")}}999{{else if (eq type "boolean")}}false{{else if (eq type "Date")}}new Date('2023-01-01'){{else}}'newValue'{{/if}};
+        {{/if}}
+      {{/if}}
+    {{/each}}
 
     await update{{ pascalCase name }}UseCase.execute({
-      id: {{ camelCase name }}.id,
-      description: newDescription,
+      where: { id: {{ camelCase name }}.id },
+      data: {
+        {{#each fields}}
+          {{#if (and (not (eq this.name "id")) (not (eq this.name "created_at")) (not (eq this.name "updated_at")))}}
+            {{#if @first}}
+              {{ camelCase name }}: new{{ pascalCase name }},
+            {{/if}}
+          {{/if}}
+        {{/each}}
+       },
     });
 
-    expect({{ camelCase name }}Repository.{{ camelCasePlural name }}[0].description).toEqual(newDescription);
+    {{#each fields}}
+      {{#if (and (not (eq this.name "id")) (not (eq this.name "created_at")) (not (eq this.name "updated_at")))}}
+        {{#if @first}}
+          expect({{ camelCase ../name }}Repository.{{ camelCasePlural ../name }}[0].{{ camelCase name }}).toEqual(
+            new{{ pascalCase name }},
+          );
+        {{/if}}
+      {{/if}}
+    {{/each}}
   });
 });

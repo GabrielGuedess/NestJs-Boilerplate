@@ -5,28 +5,26 @@ import { User } from 'domain/entities/user/User';
 import { ActivateUserUseCase } from 'application/useCases/user/activateUser/ActivateUserUseCase';
 
 describe('Activate User', () => {
-  it('should be able to activate user with use case', async () => {
-    const usersRepository = new InMemoryUserRepository();
+  it('should be able to activate User with use case', async () => {
+    const userRepository = new InMemoryUserRepository();
 
     const user = new User({
-      password: '123456789',
-      document: '44754358899',
-      full_name: 'Gabriel Guedes',
-      email: 'gabrielrguedess@gmail.com',
-      avatar_url: 'https://github.com/GabrielGuedess.png',
-      active: false,
+      email: 'valid-email',
+      document: 'valid-document',
+      password: 'valid-password',
+      full_name: 'valid-full_name',
     });
 
-    await usersRepository.create(user);
+    await userRepository.create(user);
 
-    const activateUserUseCase = new ActivateUserUseCase(usersRepository);
+    const activateUserUseCase = new ActivateUserUseCase(userRepository);
 
     await activateUserUseCase.execute({
       where: {
-        document: '44754358899',
+        id: user.id,
       },
     });
 
-    expect(usersRepository.users[0].active).toBeTruthy();
+    expect(userRepository.users[0].active).toBeTruthy();
   });
 });

@@ -141,29 +141,6 @@ export class InMemoryUserRepository implements UserRepository {
     return users;
   }
 
-  async update(parameters: UpdateUserRequestDTO): Promise<User> {
-    const user = this.users.find(
-      item =>
-        item.id === parameters.where.id ||
-        item.email === parameters.where.email ||
-        item.document === parameters.where.document,
-    );
-
-    if (!user) {
-      throw new Error('User not found!');
-    }
-
-    const userIndex = this.users.findIndex(item => item.id === user.id);
-
-    user.document = parameters?.data?.document ?? user.document;
-    user.password = parameters?.data?.password ?? user.password;
-    user.avatarUrl = parameters?.data?.avatar_url ?? user.avatarUrl;
-
-    this.users[userIndex] = user;
-
-    return user;
-  }
-
   async findFirst(parameters: FindFirstUserRequestDTO): Promise<User> {
     const user = this.users.find(currentUser => {
       if (
@@ -197,6 +174,33 @@ export class InMemoryUserRepository implements UserRepository {
     return user;
   }
 
+  async update(parameters: UpdateUserRequestDTO): Promise<User> {
+    const user = this.users.find(
+      item =>
+        item.id === parameters.where.id ||
+        item.email === parameters.where.email ||
+        item.document === parameters.where.document,
+    );
+
+    if (!user) {
+      throw new Error('User not found!');
+    }
+
+    const userIndex = this.users.findIndex(item => item.id === user.id);
+
+    user.email = parameters?.data?.email ?? user.email;
+    user.fullName = parameters?.data?.full_name ?? user.fullName;
+    user.document = parameters?.data?.document ?? user.document;
+    user.avatarUrl = parameters?.data?.avatar_url ?? user.avatarUrl;
+    user.role = parameters?.data?.role ?? user.role;
+    user.validated = parameters?.data?.validated ?? user.validated;
+    user.password = parameters?.data?.password ?? user.password;
+
+    this.users[userIndex] = user;
+
+    return user;
+  }
+
   async updateMany(parameters: UpdateUserRequestDTO[]): Promise<User[]> {
     const users: User[] = [];
 
@@ -214,11 +218,13 @@ export class InMemoryUserRepository implements UserRepository {
 
       const userIndex = this.users.findIndex(item => item.id === user.id);
 
-      user.email = current.data.email;
-      user.document = current.data.document;
-      user.password = current.data.password;
-      user.fullName = current.data.full_name;
-      user.avatarUrl = current.data.avatar_url;
+      user.email = current?.data?.email ?? user.email;
+      user.fullName = current?.data?.full_name ?? user.fullName;
+      user.document = current?.data?.document ?? user.document;
+      user.avatarUrl = current?.data?.avatar_url ?? user.avatarUrl;
+      user.role = current?.data?.role ?? user.role;
+      user.validated = current?.data?.validated ?? user.validated;
+      user.password = current?.data?.password ?? user.password;
 
       this.users[userIndex] = user;
 
@@ -275,12 +281,16 @@ export class InMemoryUserRepository implements UserRepository {
     const { where, order, page = 1, limit = 10 } = parameters;
 
     const filteredUsers = this.users.filter(user => {
+      if (where?.id && user.id !== where.id.equals) {
+        return true;
+      }
+
       if (where?.email && user.email !== where.email.equals) {
-        return false;
+        return true;
       }
 
       if (where?.document && user.document !== where.document.equals) {
-        return false;
+        return true;
       }
 
       return true;

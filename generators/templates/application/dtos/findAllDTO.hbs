@@ -1,29 +1,9 @@
-import { WhereDTO } from 'domain/shared/dtos/WhereDTO';
-import { type BoolFilterDTO } from 'domain/shared/dtos/BoolFilterDTO';
-import { type StringFilterDTO } from 'domain/shared/dtos/StringFilterDTO';
-import { type DateTimeFilterDTO } from 'domain/shared/dtos/DateTimeFilterDTO';
-
-export abstract class Where{{ pascalCase name }}DTO extends WhereDTO {
-  id?: StringFilterDTO;
-  description?: StringFilterDTO;
-  active?: BoolFilterDTO;
-  created_at?: DateTimeFilterDTO;
-  updated_at?: DateTimeFilterDTO;
-}
-
-abstract class OrderBy{{ pascalCase name }}DTO {
-  id?: 'asc' | 'desc';
-  description?: 'asc' | 'desc';
-  active?: 'asc' | 'desc';
-  created_at?: 'asc' | 'desc';
-  updated_at?: 'asc' | 'desc';
-}
+import {
+  type Where{{ pascalCase name }}DTO,
+  type OrderBy{{ pascalCase name }}DTO,
+} from 'domain/dtos/repositories/{{ pascalCase name }}RepositoryDTO';
 
 export abstract class FindAll{{ pascalCasePlural name }}UseCaseRequestDTO {
-  last?: number;
-  after?: string;
-  first?: number;
-  before?: string;
   where?: Where{{ pascalCase name }}DTO;
   order?: OrderBy{{ pascalCase name }}DTO;
 }

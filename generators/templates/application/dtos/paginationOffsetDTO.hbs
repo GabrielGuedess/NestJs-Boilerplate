@@ -1,0 +1,11 @@
+import {
+  type Where{{ pascalCase name }}DTO,
+  type OrderBy{{ pascalCase name }}DTO,
+} from 'domain/dtos/repositories/{{ pascalCase name }}RepositoryDTO';
+
+export abstract class PaginationOffset{{ pascalCasePlural name }}UseCaseRequestDTO {
+  page?: number;
+  limit?: number;
+  where?: Where{{ pascalCase name }}DTO;
+  order?: OrderBy{{ pascalCase name }}DTO;
+}

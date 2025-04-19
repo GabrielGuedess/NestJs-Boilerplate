@@ -1,46 +1,120 @@
 import { WhereDTO } from 'domain/shared/dtos/WhereDTO';
-import { type BoolFilterDTO } from 'domain/shared/dtos/BoolFilterDTO';
-import { type StringFilterDTO } from 'domain/shared/dtos/StringFilterDTO';
-import { type DateTimeFilterDTO } from 'domain/shared/dtos/DateTimeFilterDTO';
+{{#if (some fields "isEnum")}}import { type EnumDTO } from 'domain/shared/dtos/EnumDTO';{{/if}}
 
-abstract class Where{{ pascalCase name }}UniqueDTO extends WhereDTO {
-  id?: string;
-}
+{{#each fields}}
+{{#if this.isEnum}}
+import { type {{pascalCase this.name}}Props } from 'domain/entities/{{camelCase ../name}}/{{pascalCase ../name}}';
+{{/if}}
+{{/each}}
 
-abstract class Where{{ pascalCase name }}DTO extends WhereDTO {
+{{#if (some fields "type" "boolean")}}import { type BoolFilterDTO } from 'domain/shared/dtos/BoolFilterDTO';{{/if}}
+{{#if (some fields "type" "string")}}import { type StringFilterDTO } from 'domain/shared/dtos/StringFilterDTO';{{/if}}
+{{#if (some fields "type" "Date")}}import { type DateTimeFilterDTO } from 'domain/shared/dtos/DateTimeFilterDTO';{{/if}}
+{{#if (some fields "isOptional")}}import { type SortOrderInputDTO } from 'domain/shared/dtos/SortOrderInputDTO';{{/if}}
+import { type RequireAtLeastOne } from 'domain/shared/helpers/RequireAtLeastOne';
+
+export type Where{{pascalCase name}}UniqueDTO = RequireAtLeastOne<
+  {
+    id?: string;
+    {{#each fields}}
+    {{#if isUnique}}
+    {{name}}?: {{type}};
+    {{/if}}
+    {{/each}}
+  },
+  {{#if (hasMoreUniques fields)}}
+    'id' | {{{uniqueUnion fields}}}
+  {{else}}
+    'id'
+  {{/if}}
+>;
+
+export abstract class Where{{pascalCase name}}DTO extends WhereDTO {
   id?: StringFilterDTO;
-  description?: StringFilterDTO;
-  active?: BoolFilterDTO;
-  created_at?: DateTimeFilterDTO;
-  updated_at?: DateTimeFilterDTO;
+  {{#each fields}}
+  {{#unless isHideField}}
+    {{#if (eq type "string")}}
+  {{name}}?: StringFilterDTO;
+    {{/if}}
+    {{#if (eq type "boolean")}}
+  {{name}}?: BoolFilterDTO;
+    {{/if}}
+    {{#if (eq type "Date")}}
+  {{name}}?: DateTimeFilterDTO;
+    {{/if}}
+    {{#if isEnum}}
+  {{name}}?: EnumDTO<{{pascalCase this.name}}Props>;
+    {{/if}}
+    {{#if (eq type "int")}}
+  {{name}}?: IntNullableFilterDTO;
+    {{/if}}
+  {{/unless}}
+  {{/each}}
 }
 
-abstract class OrderBy{{ pascalCase name }}DTO {
+export abstract class OrderBy{{pascalCase name}}DTO {
   id?: 'asc' | 'desc';
-  description?: 'asc' | 'desc';
-  active?: 'asc' | 'desc';
-  created_at?: 'asc' | 'desc';
-  updated_at?: 'asc' | 'desc';
+  {{#each fields}}
+  {{#unless isHideField}}
+  {{name}}?: {{#if isOptional}}SortOrderInputDTO{{else}}'asc' | 'desc'{{/if}};
+  {{/unless}}
+  {{/each}}
 }
 
-export abstract class Find{{ pascalCase name }}RequestDTO {
-  where?: Where{{ pascalCase name }}UniqueDTO;
-}
-
-export abstract class FindAll{{ pascalCasePlural name }}RequestDTO {
+export abstract class PaginationCursor{{pascalCasePlural name}}RequestDTO {
   last?: number;
   after?: string;
   first?: number;
   before?: string;
-  where?: Where{{ pascalCase name }}DTO;
-  order?: OrderBy{{ pascalCase name }}DTO;
+  where?: Where{{pascalCase name}}DTO;
+  order?: OrderBy{{pascalCase name}}DTO;
 }
 
-export abstract class Count{{ pascalCasePlural name }}RequestDTO {
-  where?: Where{{ pascalCase name }}DTO;
+export abstract class PaginationOffset{{pascalCasePlural name}}RequestDTO {
+  page?: number;
+  limit?: number;
+  where?: Where{{pascalCase name}}DTO;
+  order?: OrderBy{{pascalCase name}}DTO;
 }
 
-export abstract class Update{{ pascalCase name }}RequestDTO {
-  id: string;
-  description?: string;
+export abstract class FindAll{{pascalCasePlural name}}RequestDTO {
+  where?: Where{{pascalCase name}}DTO;
+  order?: OrderBy{{pascalCase name}}DTO;
+}
+
+export abstract class FindUnique{{pascalCase name}}RequestDTO {
+  returnError?: boolean;
+  where?: Where{{pascalCase name}}UniqueDTO;
+}
+
+export abstract class FindFirst{{pascalCase name}}RequestDTO {
+  where?: Where{{pascalCase name}}DTO;
+  returnError?: boolean;
+}
+
+export abstract class Count{{pascalCasePlural name}}RequestDTO {
+  where?: Where{{pascalCase name}}DTO;
+}
+
+export abstract class Activate{{pascalCase name}}RequestDTO {
+  where?: Where{{pascalCase name}}UniqueDTO;
+}
+
+export abstract class Deactivate{{pascalCase name}}RequestDTO {
+  where?: Where{{pascalCase name}}UniqueDTO;
+}
+
+export abstract class Delete{{pascalCase name}}RequestDTO {
+  where?: Where{{pascalCase name}}UniqueDTO;
+}
+
+export abstract class Update{{pascalCase name}}RequestDTO {
+  where: Where{{pascalCase name}}UniqueDTO;
+  data: {
+    {{#each fields}}
+      {{#unless (or (eq this.name "created_at") (eq this.name "updated_at") (eq this.name "active"))}}
+        {{this.name}}?: {{#if this.isEnum}}{{pascalCase this.name}}Props{{else}}{{this.type}}{{/if}};
+      {{/unless}}
+    {{/each}}
+  };
 }

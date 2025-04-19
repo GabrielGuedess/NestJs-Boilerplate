@@ -1,0 +1,28 @@
+import { InMemoryUserRepository } from '@test/repositories/in-memory-{{ kebabCase name }}-repository';
+
+import { CreateMany{{ pascalCasePlural name }}UseCase } from 'application/useCases/{{ camelCase name }}/createMany{{ pascalCasePlural name }}/CreateMany{{ pascalCasePlural name }}UseCase';
+
+describe('Create {{ pascalCasePlural name }}', () => {
+  it('should be able to create {{ pascalCasePlural name }} with use case', async () => {
+    const {{ camelCase name }}Repository = new InMemoryUserRepository();
+
+    const createMany{{ pascalCasePlural name }}UseCase = new CreateMany{{ pascalCasePlural name }}UseCase(
+      {{ camelCase name }}Repository,
+    );
+
+    const {{ camelCasePlural name }} = await createMany{{ pascalCasePlural name }}UseCase.execute([
+      {
+        {{#each fields}}
+          {{#unless (or this.hasDefault (eq this.name "created_at") (eq this.name "updated_at"))}}
+            {{#unless this.isOptional}}
+              {{snakeCase this.name}}: {{#if (eq this.type "string")}}'valid-{{snakeCase this.name}}'{{else if (eq this.type "number")}}123{{else if (eq this.type "boolean")}}true{{else if (eq this.type "Date")}}new Date(){{else}}'valid'{{/if}},
+            {{/unless}}
+          {{/unless}}
+        {{/each}}
+      },
+    ]);
+
+    expect({{ camelCase name }}Repository.{{ camelCasePlural name }}).toHaveLength(1);
+    expect({{ camelCase name }}Repository.{{ camelCasePlural name }}[0]).toEqual({{ camelCasePlural name }}[0]);
+  });
+});

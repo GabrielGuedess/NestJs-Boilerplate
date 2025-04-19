@@ -5,21 +5,20 @@ import { User } from 'domain/entities/user/User';
 import { PaginationOffsetUsersUseCase } from 'application/useCases/user/paginationOffsetUsers/PaginationOffsetUsersUseCase';
 
 describe('Pagination Offset Users', () => {
-  it('should be able to pagination offset users with use case', async () => {
-    const usersRepository = new InMemoryUserRepository();
+  it('should be able to pagination offset Users with use case', async () => {
+    const userRepository = new InMemoryUserRepository();
 
-    const userExist = await usersRepository.create(
+    const userExist = await userRepository.create(
       new User({
-        password: '123456789',
-        document: '44754358899',
-        full_name: 'Gabriel Guedes',
-        email: 'gabrielrguedess@gmail.com',
-        avatar_url: 'https://github.com/GabrielGuedess.png',
+        email: 'valid-email',
+        document: 'valid-document',
+        password: 'valid-password',
+        full_name: 'valid-full_name',
       }),
     );
 
     const paginationOffsetUsersUseCase = new PaginationOffsetUsersUseCase(
-      usersRepository,
+      userRepository,
     );
 
     const foundUsers = await paginationOffsetUsersUseCase.execute({});

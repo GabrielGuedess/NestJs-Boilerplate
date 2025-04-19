@@ -1,0 +1,17 @@
+import { Injectable } from '@nestjs/common';
+
+import { type {{ pascalCase name }} } from 'domain/entities/{{ camelCase name }}/{{ pascalCase name }}';
+import { {{ pascalCase name }}Repository } from 'domain/repositories/{{ pascalCase name }}Repository';
+
+import { type Activate{{ pascalCase name }}UseCaseRequestDTO } from 'application/dtos/{{ camelCase name }}/Activate{{ pascalCase name }}UseCaseDTO';
+
+@Injectable()
+export class Activate{{ pascalCase name }}UseCase {
+  constructor(private readonly {{ camelCase name }}Repository: {{ pascalCase name }}Repository) {}
+
+  async execute(request: Activate{{ pascalCase name }}UseCaseRequestDTO): Promise<{{ pascalCase name }}> {
+    const {{ camelCase name }} = await this.{{ camelCase name }}Repository.activate({ where: request.where });
+
+    return {{ camelCase name }};
+  }
+}

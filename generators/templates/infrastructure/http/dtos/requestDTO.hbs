@@ -1,3 +1,21 @@
+{{#each fields}}
+{{#if this.isEnum}}
+import { type {{pascalCase this.name}}Props } from 'domain/entities/{{camelCase ../name}}/{{pascalCase ../name}}';
+{{/if}}
+{{/each}}
+
 export abstract class {{pascalCase name}}RequestDTO {
-  description: string;
+  {{#each fields}}
+   {{#unless (or (eq this.name "created_at") (eq this.name "updated_at") (eq this.name "active"))}}
+    {{#if this.isEnum}}
+      {{snakeCase this.name}}?: {{pascalCase this.name}}Props;
+    {{else}}
+      {{#if this.isOptional}}
+        {{snakeCase this.name}}?: {{this.type}};
+      {{else}}
+        {{snakeCase this.name}}: {{this.type}};
+      {{/if}}
+    {{/if}}
+    {{/unless}}
+  {{/each}}
 }

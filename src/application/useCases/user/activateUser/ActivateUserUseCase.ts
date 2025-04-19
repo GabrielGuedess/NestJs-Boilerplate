@@ -7,7 +7,7 @@ import { type ActivateUserUseCaseRequestDTO } from 'application/dtos/user/Activa
 
 @Injectable()
 export class ActivateUserUseCase {
-  constructor(private userRepository: UserRepository) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async execute(request: ActivateUserUseCaseRequestDTO): Promise<User> {
     const user = await this.userRepository.activate({ where: request.where });

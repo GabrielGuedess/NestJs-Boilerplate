@@ -4,17 +4,23 @@ import { {{ pascalCase name }} } from 'domain/entities/{{ camelCase name }}/{{ p
 
 import { FindUnique{{ pascalCase name }}UseCase } from 'application/useCases/{{ camelCase name }}/findUnique{{ pascalCase name }}/FindUnique{{ pascalCase name }}UseCase';
 
-describe('Find {{ pascalCase name }} By Id', () => {
-  it('should be able to find a {{convertToLowerWords name}} with use case', async () => {
-    const {{ camelCasePlural name }}Repository = new InMemory{{ pascalCase name }}Repository();
+describe('Find Unique {{ pascalCase name }}', () => {
+  it('should be able to find a unique {{ pascalCase name }} with use case', async () => {
+    const {{ camelCase name }}Repository = new InMemory{{ pascalCase name }}Repository();
 
     const {{ camelCase name }} = new {{ pascalCase name }}({
-      description: 'Test'
+      {{#each fields}}
+        {{#unless (or this.hasDefault (eq this.name "created_at") (eq this.name "updated_at"))}}
+          {{#unless this.isOptional}}
+            {{snakeCase this.name}}: {{#if (eq this.type "string")}}'valid-{{snakeCase this.name}}'{{else if (eq this.type "number")}}123{{else if (eq this.type "boolean")}}true{{else if (eq this.type "Date")}}new Date(){{else}}'valid'{{/if}},
+          {{/unless}}
+        {{/unless}}
+      {{/each}}
     });
 
-    await {{ camelCasePlural name }}Repository.create({{ camelCase name }});
+    await {{ camelCase name }}Repository.create({{ camelCase name }});
 
-    const findUnique{{ pascalCase name }}UseCase = new FindUnique{{ pascalCase name }}UseCase({{ camelCasePlural name }}Repository);
+    const findUnique{{ pascalCase name }}UseCase = new FindUnique{{ pascalCase name }}UseCase({{ camelCase name }}Repository);
 
     const found{{ pascalCase name }} = await findUnique{{ pascalCase name }}UseCase.execute({
       where: { id: {{ camelCase name }}.id },

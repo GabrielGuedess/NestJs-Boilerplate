@@ -1,0 +1,33 @@
+import { InMemory{{ pascalCase name }}Repository } from '@test/repositories/in-memory-{{ kebabCase name }}-repository';
+
+import { {{ pascalCase name }} } from 'domain/entities/{{ camelCase name }}/{{ pascalCase name }}';
+
+import { FindFirst{{ pascalCase name }}UseCase } from 'application/useCases/{{ camelCase name }}/findFirst{{ pascalCase name }}/FindFirst{{ pascalCase name }}UseCase';
+
+describe('Find First {{ pascalCase name }}', () => {
+  it('should be able to find first {{ pascalCase name }} with use case', async () => {
+    const {{ camelCase name }}Repository = new InMemory{{ pascalCase name }}Repository();
+
+    const {{ camelCase name }}Exist = await {{ camelCase name }}Repository.create(
+      new {{ pascalCase name }}({
+        {{#each fields}}
+          {{#unless (or this.hasDefault (eq this.name "created_at") (eq this.name "updated_at"))}}
+            {{#unless this.isOptional}}
+              {{snakeCase this.name}}: {{#if (eq this.type "string")}}'valid-{{snakeCase this.name}}'{{else if (eq this.type "number")}}123{{else if (eq this.type "boolean")}}true{{else if (eq this.type "Date")}}new Date(){{else}}'valid'{{/if}},
+            {{/unless}}
+          {{/unless}}
+        {{/each}}
+      }),
+    );
+
+    const findFirst{{ pascalCase name }}sUseCase = new FindFirst{{ pascalCase name }}UseCase({{ camelCase name }}Repository);
+
+    const found{{ pascalCase name }}s = await findFirst{{ pascalCase name }}sUseCase.execute({
+      where: {
+        id: { contains: {{camelCase name}}Exist.id },
+      }
+    });
+
+    expect(found{{ pascalCase name }}s).toEqual({{ camelCase name }}Exist);
+  });
+});

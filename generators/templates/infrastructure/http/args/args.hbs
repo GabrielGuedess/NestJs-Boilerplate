@@ -1,7 +1,7 @@
 import { Field, ArgsType } from '@nestjs/graphql';
 
 import { Type } from 'class-transformer';
-import { IsOptional } from 'class-validator';
+import { IsOptional, ValidateNested } from 'class-validator';
 
 import { {{ pascalCase name }}WhereUniqueInput } from 'infrastructure/http/graphql/inputs/{{kebabCase name}}.input';
 import {
@@ -10,7 +10,7 @@ import {
 } from 'infrastructure/http/graphql/generated/{{kebabCase name}}';
 
 @ArgsType()
-export class Count{{ pascalCasePlural name }}Args {
+export class {{ pascalCasePlural name }}CountArgs {
   @Field(() => {{ pascalCase name }}WhereInput, { nullable: true })
   @Type(() => {{ pascalCase name }}WhereInput)
   @IsOptional()
@@ -18,15 +18,37 @@ export class Count{{ pascalCasePlural name }}Args {
 }
 
 @ArgsType()
-export class {{ pascalCase name }}Args {
+export class {{ pascalCase name }}FirstArgs {
+  @Field(() => {{ pascalCase name }}WhereInput, { nullable: true })
+  @Type(() => {{ pascalCase name }}WhereInput)
+  @IsOptional()
+  where?: {{ pascalCase name }}WhereInput;
+}
+
+@ArgsType()
+export class {{ pascalCase name }}UniqueArgs {
   @Field(() => {{ pascalCase name }}WhereUniqueInput, { nullable: true })
   @Type(() => {{ pascalCase name }}WhereUniqueInput)
+  @ValidateNested()
   @IsOptional()
   where?: {{ pascalCase name }}WhereUniqueInput;
 }
 
 @ArgsType()
 export class {{ pascalCasePlural name }}Args {
+  @Field(() => {{ pascalCase name }}WhereInput, { nullable: true })
+  @Type(() => {{ pascalCase name }}WhereInput)
+  @IsOptional()
+  where?: {{ pascalCase name }}WhereInput;
+
+  @Field(() => {{ pascalCase name }}OrderByWithRelationInput, { nullable: true })
+  @Type(() => {{ pascalCase name }}OrderByWithRelationInput)
+  @IsOptional()
+  order?: {{ pascalCase name }}OrderByWithRelationInput;
+}
+
+@ArgsType()
+export class Pagination{{ pascalCasePlural name }}CursorArgs {
   @Field(() => Number, { nullable: true })
   @IsOptional()
   last?: number;
@@ -42,6 +64,27 @@ export class {{ pascalCasePlural name }}Args {
   @Field(() => String, { nullable: true })
   @IsOptional()
   before?: string;
+
+  @Field(() => {{ pascalCase name }}WhereInput, { nullable: true })
+  @Type(() => {{ pascalCase name }}WhereInput)
+  @IsOptional()
+  where?: {{ pascalCase name }}WhereInput;
+
+  @Field(() => {{ pascalCase name }}OrderByWithRelationInput, { nullable: true })
+  @Type(() => {{ pascalCase name }}OrderByWithRelationInput)
+  @IsOptional()
+  order?: {{ pascalCase name }}OrderByWithRelationInput;
+}
+
+@ArgsType()
+export class Pagination{{ pascalCasePlural name }}OffsetArgs {
+  @Field(() => Number, { nullable: true })
+  @IsOptional()
+  page?: number;
+
+  @Field(() => Number, { nullable: true, defaultValue: 10 })
+  @IsOptional()
+  limit?: number;
 
   @Field(() => {{ pascalCase name }}WhereInput, { nullable: true })
   @Type(() => {{ pascalCase name }}WhereInput)

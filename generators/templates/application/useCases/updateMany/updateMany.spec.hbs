@@ -9,22 +9,44 @@ describe('Update {{ pascalCase name }}', () => {
     const {{ camelCase name }}Repository = new InMemory{{ pascalCase name }}Repository();
 
     const {{ camelCase name }} = new {{ pascalCase name }}({
-      description: 'Test',
+      {{#each fields}}
+        {{#unless (or this.hasDefault (eq this.name "created_at") (eq this.name "updated_at"))}}
+          {{#unless this.isOptional}}
+            {{snakeCase this.name}}: {{#if (eq this.type "string")}}'valid-{{snakeCase this.name}}'{{else if (eq this.type "number")}}123{{else if (eq this.type "boolean")}}true{{else if (eq this.type "Date")}}new Date(){{else}}'valid'{{/if}},
+          {{/unless}}
+        {{/unless}}
+      {{/each}}
     });
 
     await {{ camelCase name }}Repository.create({{ camelCase name }});
 
     const updateMany{{ pascalCasePlural name }}UseCase = new UpdateMany{{ pascalCasePlural name }}UseCase({{ camelCase name }}Repository);
 
-    const newDescription = 'Test2';
+    {{#each fields}}
+      {{#if (and (not (eq this.name "id")) (not (eq this.name "created_at")) (not (eq this.name "updated_at")))}}
+        {{#if @first}}
+          const new{{ pascalCase name }} = {{#if (eq type "string")}}'Test2'{{else if (eq type "number")}}999{{else if (eq type "boolean")}}false{{else if (eq type "Date")}}new Date('2023-01-01'){{else}}'newValue'{{/if}};
+        {{/if}}
+      {{/if}}
+    {{/each}}
 
     await updateMany{{ pascalCasePlural name }}UseCase.execute([
       {
-        id: {{ camelCase name }}.id,
-        description: newDescription,
+        where: { id: {{ camelCase name }}.id },
+        data: {
+          {{#each fields}}
+            {{#if (and (not (eq this.name "id")) (not (eq this.name "created_at")) (not (eq this.name "updated_at")))}}
+              {{#if @first}}
+                {{camelCase name}}: new{{ pascalCase name }},
+              {{/if}}
+            {{/if}}
+          {{/each}}
+        },
       },
     ]);
 
-    expect({{ camelCase name }}Repository.{{ camelCasePlural name }}[0].description).toEqual(newDescription);
+      expect({{ camelCase name }}Repository.{{ camelCasePlural name }}[0].{{#each fields}}{{#if (and (not (eq this.name "id")) (not (eq this.name "created_at")) (not (eq this.name "updated_at")))}}{{#if @first}}{{camelCase name}}{{/if}}{{/if}}{{/each}}).toEqual(
+      new{{#each fields}}{{#if (and (not (eq this.name "id")) (not (eq this.name "created_at")) (not (eq this.name "updated_at")))}}{{#if @first}}{{ pascalCase name }}{{/if}}{{/if}}{{/each}},
+    );
   });
 });

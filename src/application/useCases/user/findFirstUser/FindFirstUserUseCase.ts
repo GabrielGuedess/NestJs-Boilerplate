@@ -12,6 +12,7 @@ export class FindFirstUserUseCase {
   async execute(request: FindFirstUserUseCaseRequestDTO): Promise<User> {
     const user = await this.userRepository.findFirst({
       where: request.where,
+      returnError: request.returnError,
     });
 
     return user;

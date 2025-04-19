@@ -3,16 +3,22 @@ import { InMemory{{ pascalCase name }}Repository } from '@test/repositories/in-m
 import { Create{{ pascalCase name }}UseCase } from 'application/useCases/{{ camelCase name }}/create{{ pascalCase name }}/Create{{ pascalCase name }}UseCase';
 
 describe('Create {{ pascalCase name }}', () => {
-  it('should be able to create a {{convertToLowerWords name}} with use case', async () => {
-    const {{ camelCasePlural name }}Repository = new InMemory{{ pascalCase name }}Repository();
+  it('should be able to create a {{pascalCase name}} with use case', async () => {
+    const {{ camelCase name }}Repository = new InMemory{{ pascalCase name }}Repository();
 
-    const create{{ pascalCase name }}UseCase = new Create{{ pascalCase name }}UseCase({{ camelCasePlural name }}Repository);
+    const create{{ pascalCase name }}UseCase = new Create{{ pascalCase name }}UseCase({{ camelCase name }}Repository);
 
     const {{ camelCase name }} = await create{{ pascalCase name }}UseCase.execute({
-      description: 'Test',
+      {{#each fields}}
+        {{#unless (or this.hasDefault (eq this.name "created_at") (eq this.name "updated_at"))}}
+          {{#unless this.isOptional}}
+            {{snakeCase this.name}}: {{#if (eq this.type "string")}}'valid-{{snakeCase this.name}}'{{else if (eq this.type "number")}}123{{else if (eq this.type "boolean")}}true{{else if (eq this.type "Date")}}new Date(){{else}}'valid'{{/if}},
+          {{/unless}}
+        {{/unless}}
+      {{/each}}
     });
 
-    expect({{ camelCasePlural name }}Repository.{{ camelCasePlural name }}).toHaveLength(1);
-    expect({{ camelCasePlural name }}Repository.{{ camelCasePlural name }}[0]).toEqual({{ camelCase name }});
+    expect({{ camelCase name }}Repository.{{ camelCasePlural name }}).toHaveLength(1);
+    expect({{ camelCase name }}Repository.{{ camelCasePlural name }}[0]).toEqual({{ camelCase name }});
   });
 });

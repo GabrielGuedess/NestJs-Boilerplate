@@ -6,7 +6,7 @@ import { type Count{{ pascalCasePlural name }}UseCaseRequestDTO } from 'applicat
 
 @Injectable()
 export class Count{{ pascalCasePlural name }}UseCase {
-  constructor(private {{ camelCase name }}Repository: {{ pascalCase name }}Repository) {}
+  constructor(private readonly {{ camelCase name }}Repository: {{ pascalCase name }}Repository) {}
 
   async execute(request: Count{{ pascalCasePlural name }}UseCaseRequestDTO): Promise<number> {
     const {{ camelCase name }} = await this.{{ camelCase name }}Repository.count({ where: request.where });

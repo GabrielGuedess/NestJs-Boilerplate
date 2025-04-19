@@ -5,15 +5,14 @@ import { User } from 'domain/entities/user/User';
 import { CountUsersUseCase } from 'application/useCases/user/countUsers/CountUsersUseCase';
 
 describe('Count Users', () => {
-  it('should be able to count all users with use case', async () => {
+  it('should be able to count all user with use case', async () => {
     const usersRepository = new InMemoryUserRepository();
 
     const user = new User({
-      password: '123456789',
-      document: '44754358899',
-      full_name: 'Gabriel Guedes',
-      email: 'gabrielrguedess@gmail.com',
-      avatar_url: 'https://github.com/GabrielGuedess.png',
+      email: 'valid-email',
+      document: 'valid-document',
+      password: 'valid-password',
+      full_name: 'valid-full_name',
     });
 
     await usersRepository.create(user);

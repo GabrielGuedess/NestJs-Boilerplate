@@ -5,7 +5,7 @@ import { {{ pascalCase name }} } from 'domain/entities/{{ camelCase name }}/{{ p
 import { Delete{{ pascalCase name }}UseCase } from 'application/useCases/{{ camelCase name }}/delete{{ pascalCase name }}/Delete{{ pascalCase name }}UseCase';
 
 describe('Delete {{ pascalCase name }}', () => {
-  it('should be able to delete a {{convertToLowerWords name}} with use case', async () => {
+  it('should be able to delete a {{ pascalCase name }} with use case', async () => {
     const {{ camelCase name }}Repository = new InMemory{{ pascalCase name }}Repository();
 
     const delete{{ pascalCase name }}UseCase = new Delete{{ pascalCase name }}UseCase(
@@ -13,13 +13,21 @@ describe('Delete {{ pascalCase name }}', () => {
     );
 
     const {{ camelCase name }} = new {{ pascalCase name }}({
-      description: 'Test',
+      {{#each fields}}
+        {{#unless (or this.hasDefault (eq this.name "created_at") (eq this.name "updated_at"))}}
+          {{#unless this.isOptional}}
+            {{snakeCase this.name}}: {{#if (eq this.type "string")}}'valid-{{snakeCase this.name}}'{{else if (eq this.type "number")}}123{{else if (eq this.type "boolean")}}true{{else if (eq this.type "Date")}}new Date(){{else}}'valid'{{/if}},
+          {{/unless}}
+        {{/unless}}
+      {{/each}}
     });
 
     await {{ camelCase name }}Repository.create({{ camelCase name }});
 
     const delete{{ pascalCase name }} = await delete{{ pascalCase name }}UseCase.execute({
-      id: {{ camelCase name }}.id,
+      where: {
+        id: {{ camelCase name }}.id,
+      },
     });
 
     expect(delete{{ pascalCase name }}).toBe({{ camelCase name }});

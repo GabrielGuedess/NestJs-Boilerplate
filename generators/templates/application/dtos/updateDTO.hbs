@@ -1,4 +1,12 @@
+import { type Where{{ pascalCase name }}UniqueDTO } from 'domain/dtos/repositories/{{ pascalCase name }}RepositoryDTO';
+
 export abstract class Update{{ pascalCase name }}UseCaseRequestDTO {
-  id: string;
-  description?: string;
+  where: Where{{ pascalCase name }}UniqueDTO;
+  data: {
+    {{#each fields}}
+      {{#unless (or (eq this.name "created_at") (eq this.name "updated_at") (eq this.name "active"))}}
+        {{this.name}}?: {{#if this.isEnum}}{{pascalCase this.name}}Props{{else}}{{this.type}}{{/if}};
+      {{/unless}}
+    {{/each}}
+  };
 }

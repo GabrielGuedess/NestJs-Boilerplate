@@ -1,16 +1,23 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { I18nService } from 'nestjs-i18n';
+import { Injectable } from '@nestjs/common';
 
-import { GraphQLError } from 'graphql';
+import { I18nTranslations } from '@root/i18n/generated';
 import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
 
 import { {{ pascalCase name }} } from 'domain/entities/{{ camelCase name }}/{{ pascalCase name }}';
+import { {{ pascalCase name }}Repository } from 'domain/repositories/{{ pascalCase name }}Repository';
 import { RelayPagination } from 'domain/shared/dtos/RelayPagination';
-import { type {{ pascalCase name }}Repository } from 'domain/repositories/{{ pascalCase name }}Repository';
+import { AppError, StatusCode } from 'domain/shared/errors/AppError';
+import { OffsetPagination } from 'domain/shared/dtos/OffsetPagination';
 import {
-  Find{{ pascalCase name }}RequestDTO,
-  type Count{{ pascalCasePlural name }}RequestDTO,
-  type Update{{ pascalCase name }}RequestDTO,
-  type FindAll{{ pascalCasePlural name }}RequestDTO,
+  Count{{ pascalCasePlural name }}RequestDTO,
+  Update{{ pascalCase name }}RequestDTO,
+  Delete{{ pascalCase name }}RequestDTO,
+  FindAll{{ pascalCasePlural name }}RequestDTO,
+  FindFirst{{ pascalCase name }}RequestDTO,
+  FindUnique{{ pascalCase name }}RequestDTO,
+  PaginationOffset{{ pascalCasePlural name }}RequestDTO,
+  PaginationCursor{{ pascalCasePlural name }}RequestDTO,
 } from 'domain/dtos/repositories/{{ pascalCase name }}RepositoryDTO';
 
 import { PrismaService } from 'infrastructure/database/prisma/prisma.service';
@@ -18,22 +25,78 @@ import { Prisma{{ pascalCase name }}Mapper } from 'infrastructure/database/prism
 
 @Injectable()
 export class Prisma{{ pascalCase name }}Repository implements {{ pascalCase name }}Repository {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly i18n: I18nService<I18nTranslations>,
+  ) {}
 
-  async count(params: Count{{ pascalCasePlural name }}RequestDTO): Promise<number> {
-    const count = this.prisma.{{ camelCase name }}.count({ where: params.where });
+  async count(parameters: Count{{ pascalCasePlural name }}RequestDTO): Promise<number> {
+    const count = await this.prisma.{{ camelCase name }}.count({
+      where: parameters.where,
+    });
 
     return count;
   }
 
+  async findAll(parameters: FindAll{{ pascalCasePlural name }}RequestDTO): Promise<{{ pascalCase name }}[]> {
+    const {{ camelCasePlural name }} = await this.prisma.{{ camelCase name }}.findMany({
+      where: parameters.where,
+    });
+
+    return {{ camelCasePlural name }}.map({{ camelCase name }} => Prisma{{ pascalCase name }}Mapper.toDomain({{ camelCase name }}));
+  }
+
+  async findFirst({
+    where,
+    returnError = true,
+  }: FindFirst{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}> {
+    const {{ camelCase name }} = await this.prisma.{{ camelCase name }}.findFirst({
+      where,
+    });
+
+    if (!{{ camelCase name }} && returnError) {
+      throw new AppError({
+        statusCode: StatusCode.NOT_FOUND,
+        message: this.i18n.t('repositories.ERROR_NOT_FOUND', {
+          args: { name: '{{ pascalCase name }}' },
+        }),
+      });
+    }
+
+    return {{ camelCase name }} ? Prisma{{ pascalCase name }}Mapper.toDomain({{ camelCase name }}) : null;
+  }
+
+  async findUnique({
+    where,
+    returnError = true,
+  }: FindUnique{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}> {
+    const {{ camelCase name }} = await this.prisma.{{ camelCase name }}.findUnique({
+      where,
+    });
+
+    if (!{{ camelCase name }} && returnError) {
+      throw new AppError({
+        statusCode: StatusCode.NOT_FOUND,
+        message: this.i18n.t('repositories.ERROR_NOT_FOUND', {
+          args: { name: '{{ pascalCase name }}' },
+        }),
+      });
+    }
+
+    return {{ camelCase name }} ? Prisma{{ pascalCase name }}Mapper.toDomain({{ camelCase name }}) : null;
+  }
+
   async create({{ camelCase name }}: {{ pascalCase name }}): Promise<{{ pascalCase name }}> {
     const {{ camelCase name }}Exist = await this.prisma.{{ camelCase name }}.findUnique({
-      where: { id: {{ camelCase name }}.id },
+      where: { document: {{ camelCase name }}.document },
     });
 
     if ({{ camelCase name }}Exist) {
-      throw new GraphQLError('{{ pascalCase name }} already exists!', {
-        extensions: { code: HttpStatus.CONFLICT },
+      throw new AppError({
+        statusCode: StatusCode.CONFLICT,
+        message: this.i18n.t('repositories.ERROR_ALREADY_EXISTS', {
+          args: { name: '{{ pascalCase name }}' },
+        }),
       });
     }
 
@@ -46,24 +109,58 @@ export class Prisma{{ pascalCase name }}Repository implements {{ pascalCase name
     return {{ camelCase name }}Domain;
   }
 
-  async delete(id: string): Promise<{{ pascalCase name }}> {
+  async paginationOffset(
+    parameters: PaginationOffset{{ pascalCasePlural name }}RequestDTO,
+  ): Promise<OffsetPagination<{{ pascalCase name }}>> {
+    const [{{ camelCasePlural name }}, pageInfo] = await this.prisma.prismaExtended.{{ camelCase name }}
+      .paginate({
+        where: parameters.where,
+        orderBy: parameters.order,
+      })
+      .withPages({
+        page: parameters.page,
+        includePageCount: true,
+        limit: parameters?.limit ?? 10,
+      });
+
+    const nodes = {{ camelCasePlural name }}.map({{ camelCase name }} => new {{ pascalCase name }}({{ camelCase name }}, {{ camelCase name }}.id));
+
+    const totalCount = await this.prisma.{{ camelCase name }}.count({
+      where: parameters.where,
+    });
+
+    return {
+      nodes,
+      pageInfo,
+      totalCount,
+      count: {{ camelCasePlural name }}?.length ?? 0,
+    };
+  }
+
+  async delete(parameters: Delete{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}> {
     const {{ camelCase name }} = await this.prisma.{{ camelCase name }}.findUnique({
-      where: { id },
+      where: parameters.where,
     });
 
     if (!{{ camelCase name }}) {
-      throw new GraphQLError('{{ pascalCase name }} not found!', {
-        extensions: { code: HttpStatus.NOT_FOUND },
+      throw new AppError({
+        statusCode: StatusCode.NOT_FOUND,
+        message: this.i18n.t('repositories.ERROR_NOT_FOUND', {
+          args: { name: '{{ pascalCase name }}' },
+        }),
       });
     }
 
     const {{ camelCase name }}Prisma = await this.prisma.{{ camelCase name }}.delete({
-      where: { id },
+      where: parameters.where,
     });
 
     if (!{{ camelCase name }}Prisma) {
-      throw new GraphQLError('{{ pascalCase name }} not deleted!', {
-        extensions: { code: HttpStatus.BAD_REQUEST },
+      throw new AppError({
+        statusCode: StatusCode.BAD_REQUEST,
+        message: this.i18n.t('repositories.ERROR_NOT_DELETED', {
+          args: { name: '{{ pascalCase name }}' },
+        }),
       });
     }
 
@@ -72,28 +169,62 @@ export class Prisma{{ pascalCase name }}Repository implements {{ pascalCase name
     return {{ camelCase name }}Domain;
   }
 
-  async update(params: Update{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}> {
+  async createMany({{ camelCasePlural name }}: {{ pascalCase name }}[]): Promise<{{ pascalCase name }}[]> {
+    const created{{ pascalCasePlural name }}: {{ pascalCase name }}[] = [];
+
+    await Promise.all(
+      {{ camelCasePlural name }}.map(async {{ camelCase name }} => {
+        const {{ camelCase name }}Exist = await this.prisma.{{ camelCase name }}.findUnique({
+          where: { document: {{ camelCase name }}.document },
+        });
+
+        if ({{ camelCase name }}Exist) {
+          throw new AppError({
+            statusCode: StatusCode.CONFLICT,
+            message: this.i18n.t('repositories.ERROR_ALREADY_EXISTS', {
+              args: { name: '{{ pascalCase name }}' },
+            }),
+          });
+        }
+
+        const {{ camelCase name }}Prisma = await this.prisma.{{ camelCase name }}.create({
+          data: Prisma{{ pascalCase name }}Mapper.toPrisma({{ camelCase name }}),
+        });
+
+        const {{ camelCase name }}Domain = Prisma{{ pascalCase name }}Mapper.toDomain({{ camelCase name }}Prisma);
+
+        created{{ pascalCasePlural name }}.push({{ camelCase name }}Domain);
+      }),
+    );
+
+    return created{{ pascalCasePlural name }};
+  }
+
+  async update(parameters: Update{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}> {
     const {{ camelCase name }} = await this.prisma.{{ camelCase name }}.findUnique({
-      where: { id: params.id },
+      where: parameters.where,
     });
 
     if (!{{ camelCase name }}) {
-      throw new GraphQLError('{{ pascalCase name }} not found!', {
-        extensions: { code: HttpStatus.NOT_FOUND },
+      throw new AppError({
+        statusCode: StatusCode.NOT_FOUND,
+        message: this.i18n.t('repositories.ERROR_NOT_FOUND', {
+          args: { name: '{{ pascalCase name }}' },
+        }),
       });
     }
 
     const {{ camelCase name }}Prisma = await this.prisma.{{ camelCase name }}.update({
-      where: { id: params.id },
-      data: {
-        ...params,
-        updated_at: new Date(),
-      },
+      data: parameters.data,
+      where: parameters.where,
     });
 
     if (!{{ camelCase name }}Prisma) {
-      throw new GraphQLError('{{ pascalCase name }} not updated!', {
-        extensions: { code: HttpStatus.BAD_REQUEST },
+      throw new AppError({
+        statusCode: StatusCode.BAD_REQUEST,
+        message: this.i18n.t('repositories.ERROR_NOT_UPDATED', {
+          args: { name: '{{ pascalCase name }}' },
+        }),
       });
     }
 
@@ -102,28 +233,100 @@ export class Prisma{{ pascalCase name }}Repository implements {{ pascalCase name
     return {{ camelCase name }}Domain;
   }
 
-  async deleteMany(ids: string[]): Promise<{{ pascalCase name }}[]> {
+  async activate(parameters: Delete{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}> {
+    const {{ camelCase name }} = await this.prisma.{{ camelCase name }}.findUnique({
+      where: parameters.where,
+    });
+
+    if (!{{ camelCase name }}) {
+      throw new AppError({
+        statusCode: StatusCode.NOT_FOUND,
+        message: this.i18n.t('repositories.ERROR_NOT_FOUND', {
+          args: { name: '{{ pascalCase name }}' },
+        }),
+      });
+    }
+
+    const {{ camelCase name }}Prisma = await this.prisma.{{ camelCase name }}.update({
+      data: { active: true },
+      where: parameters.where,
+    });
+
+    if (!{{ camelCase name }}Prisma) {
+      throw new AppError({
+        statusCode: StatusCode.BAD_REQUEST,
+        message: this.i18n.t('repositories.ERROR_NOT_UPDATED', {
+          args: { name: '{{ pascalCase name }}' },
+        }),
+      });
+    }
+
+    const {{ camelCase name }}Domain = Prisma{{ pascalCase name }}Mapper.toDomain({{ camelCase name }}Prisma);
+
+    return {{ camelCase name }}Domain;
+  }
+
+  async deactivate(parameters: Delete{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}> {
+    const {{ camelCase name }} = await this.prisma.{{ camelCase name }}.findUnique({
+      where: parameters.where,
+    });
+
+    if (!{{ camelCase name }}) {
+      throw new AppError({
+        statusCode: StatusCode.NOT_FOUND,
+        message: this.i18n.t('repositories.ERROR_NOT_FOUND', {
+          args: { name: '{{ pascalCase name }}' },
+        }),
+      });
+    }
+
+    const {{ camelCase name }}Prisma = await this.prisma.{{ camelCase name }}.update({
+      data: { active: false },
+      where: parameters.where,
+    });
+
+    if (!{{ camelCase name }}Prisma) {
+      throw new AppError({
+        statusCode: StatusCode.BAD_REQUEST,
+        message: this.i18n.t('repositories.ERROR_NOT_UPDATED', {
+          args: { name: '{{ pascalCase name }}' },
+        }),
+      });
+    }
+
+    const {{ camelCase name }}Domain = Prisma{{ pascalCase name }}Mapper.toDomain({{ camelCase name }}Prisma);
+
+    return {{ camelCase name }}Domain;
+  }
+
+  async deleteMany(parameters: Delete{{ pascalCase name }}RequestDTO[]): Promise<{{ pascalCase name }}[]> {
     const {{ camelCasePlural name }}: {{ pascalCase name }}[] = [];
 
     await Promise.all(
-      ids.map(async id => {
+      parameters.map(async ({ where }) => {
         const {{ camelCase name }} = await this.prisma.{{ camelCase name }}.findUnique({
-          where: { id },
+          where,
         });
 
         if (!{{ camelCase name }}) {
-          throw new GraphQLError('{{ pascalCase name }} not found!', {
-            extensions: { code: HttpStatus.NOT_FOUND },
+          throw new AppError({
+            statusCode: StatusCode.NOT_FOUND,
+            message: this.i18n.t('repositories.ERROR_NOT_FOUND', {
+              args: { name: '{{ pascalCase name }}' },
+            }),
           });
         }
 
         const {{ camelCase name }}Prisma = await this.prisma.{{ camelCase name }}.delete({
-          where: { id },
+          where,
         });
 
         if (!{{ camelCase name }}Prisma) {
-          throw new GraphQLError('{{ pascalCase name }} not deleted!', {
-            extensions: { code: HttpStatus.BAD_REQUEST },
+          throw new AppError({
+            statusCode: StatusCode.BAD_REQUEST,
+            message: this.i18n.t('repositories.ERROR_NOT_DELETED', {
+              args: { name: '{{ pascalCase name }}' },
+            }),
           });
         }
 
@@ -136,57 +339,38 @@ export class Prisma{{ pascalCase name }}Repository implements {{ pascalCase name
     return {{ camelCasePlural name }};
   }
 
-  async findUnique(params: Find{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}> {
-    if (!params?.where?.id) {
-      throw new GraphQLError(
-        'At least one field (id, email, or document) must be provided.',
-        {
-          extensions: { code: HttpStatus.BAD_REQUEST },
-        },
-      );
-    }
-
-    const {{ camelCase name }} = await this.prisma.{{ camelCase name }}.findUnique({
-      where: {
-        ...(params?.where?.id && { id: params.where.id }),
-      },
-    });
-
-    if (!{{ camelCase name }}) {
-      throw new GraphQLError('{{ pascalCase name }} not found!', {
-        extensions: { code: HttpStatus.NOT_FOUND },
-      });
-    }
-
-    return Prisma{{ pascalCase name }}Mapper.toDomain({{ camelCase name }});
-  }
-
-  async updateMany(params: Update{{ pascalCase name }}RequestDTO[]): Promise<{{ pascalCase name }}[]> {
+  async updateMany(parameters: Update{{ pascalCase name }}RequestDTO[]): Promise<{{ pascalCase name }}[]> {
     const {{ camelCasePlural name }}: {{ pascalCase name }}[] = [];
 
     await Promise.all(
-      params.map(async item => {
+      parameters.map(async ({ data, where }) => {
         const {{ camelCase name }} = await this.prisma.{{ camelCase name }}.findUnique({
-          where: { id: item.id },
+          where,
         });
 
         if (!{{ camelCase name }}) {
-          throw new GraphQLError(`{{ pascalCase name }} with id "${item.id}" not found!`, {
-            extensions: { code: HttpStatus.NOT_FOUND },
+          throw new AppError({
+            statusCode: StatusCode.NOT_FOUND,
+            message: this.i18n.t('repositories.ERROR_NOT_FOUND', {
+              args: { name: '{{ pascalCase name }}' },
+            }),
           });
         }
 
         const {{ camelCase name }}Prisma = await this.prisma.{{ camelCase name }}.update({
-          where: { id: item.id },
+          where,
           data: {
-            ...item,
+            ...data,
             updated_at: new Date(),
           },
         });
 
         if (!{{ camelCase name }}Prisma) {
-          throw new GraphQLError(`{{ pascalCase name }} with id "${item.id}" not updated!`, {
-            extensions: { code: HttpStatus.BAD_REQUEST },
+          throw new AppError({
+            statusCode: StatusCode.BAD_REQUEST,
+            message: this.i18n.t('repositories.ERROR_NOT_UPDATED', {
+              args: { name: '{{ pascalCase name }}' },
+            }),
           });
         }
 
@@ -199,14 +383,15 @@ export class Prisma{{ pascalCase name }}Repository implements {{ pascalCase name
     return {{ camelCasePlural name }};
   }
 
-  async findAll(
-    params: FindAll{{ pascalCasePlural name }}RequestDTO,
+  async paginationCursor(
+    parameters: PaginationCursor{{ pascalCasePlural name }}RequestDTO,
   ): Promise<RelayPagination<{{ pascalCase name }}>> {
-    const keys = Object.keys(params.order ?? {});
+    const keys = Object.keys(parameters.order ?? {});
 
     if (keys?.length > 1) {
-      throw new GraphQLError('Only a single sort parameter can be passed!', {
-        extensions: { code: HttpStatus.CONFLICT },
+      throw new AppError({
+        statusCode: StatusCode.CONFLICT,
+        message: this.i18n.t('repositories.ERROR_SORT_MULTIPLE_PARAMS'),
       });
     }
 
@@ -214,15 +399,15 @@ export class Prisma{{ pascalCase name }}Repository implements {{ pascalCase name
       args =>
         this.prisma.{{ camelCase name }}.findMany({
           ...args,
-          where: params.where,
-          orderBy: params.order,
+          where: parameters.where,
+          orderBy: parameters.order,
         }),
       () => this.prisma.{{ camelCase name }}.count(),
       {
-        last: params.last,
-        first: params.first,
-        after: params.after,
-        before: params.before,
+        last: parameters.last,
+        first: parameters.first,
+        after: parameters.after,
+        before: parameters.before,
       },
       {
         getCursor: record => ({ id: record.id }),

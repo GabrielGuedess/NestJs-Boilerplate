@@ -5,11 +5,17 @@ import { {{ pascalCase name }} } from 'domain/entities/{{ camelCase name }}/{{ p
 import { Count{{ pascalCasePlural name }}UseCase } from 'application/useCases/{{ camelCase name }}/count{{ pascalCasePlural name }}/Count{{ pascalCasePlural name }}UseCase';
 
 describe('Count {{ pascalCasePlural name }}', () => {
-  it('should be able to count all {{convertToLowerWords name}} with use case', async () => {
+  it('should be able to count all {{pascalCasePlural name}} with use case', async () => {
     const {{ camelCasePlural name }}Repository = new InMemory{{ pascalCase name }}Repository();
 
     const {{ camelCase name }} = new {{ pascalCase name }}({
-      description: 'Test',
+      {{#each fields}}
+        {{#unless (or this.hasDefault (eq this.name "created_at") (eq this.name "updated_at"))}}
+          {{#unless this.isOptional}}
+            {{snakeCase this.name}}: {{#if (eq this.type "string")}}'valid-{{snakeCase this.name}}'{{else if (eq this.type "number")}}123{{else if (eq this.type "boolean")}}true{{else if (eq this.type "Date")}}new Date(){{else}}'valid'{{/if}},
+          {{/unless}}
+        {{/unless}}
+      {{/each}}
     });
 
     await {{ camelCasePlural name }}Repository.create({{ camelCase name }});

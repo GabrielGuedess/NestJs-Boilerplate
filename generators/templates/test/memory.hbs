@@ -1,14 +1,22 @@
 import { type {{ pascalCase name }} } from 'domain/entities/{{ camelCase name }}/{{ pascalCase name }}';
 import { type {{ pascalCase name }}Repository } from 'domain/repositories/{{ pascalCase name }}Repository';
 import { type RelayPagination } from 'domain/shared/dtos/RelayPagination';
+import { type OffsetPagination } from 'domain/shared/dtos/OffsetPagination';
 import {
-  type Find{{ pascalCase name }}RequestDTO,
   type Update{{ pascalCase name }}RequestDTO,
-  type FindAll{{ pascalCasePlural name }}RequestDTO,
+  type Delete{{ pascalCase name }}RequestDTO,
+  type FindFirst{{ pascalCase name }}RequestDTO,
+  type FindUnique{{ pascalCase name }}RequestDTO,
+  type PaginationOffset{{ pascalCasePlural name }}RequestDTO,
+  type PaginationCursor{{ pascalCasePlural name }}RequestDTO,
 } from 'domain/dtos/repositories/{{ pascalCase name }}RepositoryDTO';
 
 export class InMemory{{ pascalCase name }}Repository implements {{ pascalCase name }}Repository {
   public {{ camelCasePlural name }}: {{ pascalCase name }}[] = [];
+
+  async findAll(): Promise<{{ pascalCase name }}[]> {
+    return this.{{ camelCasePlural name }};
+  }
 
   async count(): Promise<number> {
     return this.{{ camelCasePlural name }}.length;
@@ -26,8 +34,84 @@ export class InMemory{{ pascalCase name }}Repository implements {{ pascalCase na
     return {{ camelCase name }};
   }
 
-  async delete(id: string): Promise<{{ pascalCase name }}> {
-    const {{ camelCase name }} = this.{{ camelCasePlural name }}.find(item => item.id === id);
+  async createMany({{ camelCasePlural name }}: {{ pascalCase name }}[]): Promise<{{ pascalCase name }}[]> {
+    const existing{{ pascalCasePlural name }} = {{ camelCasePlural name }}.filter({{ camelCase name }} =>
+      this.{{ camelCasePlural name }}.some(existing{{ pascalCase name }} => existing{{ pascalCase name }}.id === {{ camelCase name }}.id),
+    );
+
+    if (existing{{ pascalCasePlural name }}.length > 0) {
+      throw new Error('Some {{ camelCasePlural name }} already exist!');
+    }
+
+    this.{{ camelCasePlural name }}.push(...{{ camelCasePlural name }});
+
+    return {{ camelCasePlural name }};
+  }
+
+  async findUnique(parameters: FindUnique{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}> {
+    const {{ camelCase name }} = this.{{ camelCasePlural name }}.find(
+      item =>
+      {{#if (hasMoreUniques fields)}}
+        item.id === parameters.where.id ||  {{join fields " || " "parameters.where"}}
+      {{else}}
+        item.id === parameters.where.id
+      {{/if}}
+    );
+
+    if (!{{ camelCase name }}) {
+      throw new Error('{{ pascalCase name }} not found!');
+    }
+
+    return {{ camelCase name }};
+  }
+
+  async activate(parameters: Delete{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}> {
+    const {{ camelCase name }} = this.{{ camelCasePlural name }}.find(
+      item =>
+      {{#if (hasMoreUniques fields)}}
+        item.id === parameters.where.id ||  {{join fields " || " "parameters.where"}}
+      {{else}}
+        item.id === parameters.where.id
+      {{/if}}
+    );
+
+    if (!{{ camelCase name }}) {
+      throw new Error('{{ pascalCase name }} not found!');
+    }
+
+    {{ camelCase name }}.active = true;
+
+    return {{ camelCase name }};
+  }
+
+  async deactivate(parameters: Delete{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}> {
+    const {{ camelCase name }} = this.{{ camelCasePlural name }}.find(
+      item =>
+      {{#if (hasMoreUniques fields)}}
+        item.id === parameters.where.id ||  {{join fields " || " "parameters.where"}}
+      {{else}}
+        item.id === parameters.where.id
+      {{/if}}
+    );
+
+    if (!{{ camelCase name }}) {
+      throw new Error('{{ pascalCase name }} not found!');
+    }
+
+    {{ camelCase name }}.active = false;
+
+    return {{ camelCase name }};
+  }
+
+  async delete(parameters: Delete{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}> {
+    const {{ camelCase name }} = this.{{ camelCasePlural name }}.find(
+      item =>
+      {{#if (hasMoreUniques fields)}}
+        item.id === parameters.where.id ||  {{join fields " || " "parameters.where"}}
+      {{else}}
+        item.id === parameters.where.id
+      {{/if}}
+    );
 
     if (!{{ camelCase name }}) {
       throw new Error('{{ pascalCase name }} not found!');
@@ -40,40 +124,18 @@ export class InMemory{{ pascalCase name }}Repository implements {{ pascalCase na
     return {{ camelCase name }};
   }
 
-  async findUnique(params: Find{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}> {
-    const {{ camelCase name }} = this.{{ camelCasePlural name }}.find(
-      item =>
-        item.id === params.where.id
-    );
-
-    if (!{{ camelCase name }}) {
-      throw new Error('{{ pascalCase name }} not found!');
-    }
-
-    return {{ camelCase name }};
-  }
-
-  async update(params: Update{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}> {
-    const {{ camelCase name }} = this.{{ camelCasePlural name }}.find(item => item.id === params.id);
-
-    if (!{{ camelCase name }}) {
-      throw new Error('{{ pascalCase name }} not found!');
-    }
-
-    const {{ camelCase name }}Index = this.{{ camelCasePlural name }}.findIndex(item => item.id === {{ camelCase name }}.id);
-
-    {{ camelCase name }}.description = params.description;
-
-    this.{{ camelCasePlural name }}[{{ camelCase name }}Index] = {{ camelCase name }};
-
-    return {{ camelCase name }};
-  }
-
-  async deleteMany(ids: string[]): Promise<{{ pascalCase name }}[]> {
+  async deleteMany(parameters: Delete{{ pascalCase name }}RequestDTO[]): Promise<{{ pascalCase name }}[]> {
     const {{ camelCasePlural name }}: {{ pascalCase name }}[] = [];
 
-    for (const id of ids) {
-      const {{ camelCase name }} = this.{{ camelCasePlural name }}.find(item => item.id === id);
+    for (const { where } of parameters) {
+      const {{ camelCase name }} = this.{{ camelCasePlural name }}.find(
+        item =>
+        {{#if (hasMoreUniques fields)}}
+          item.id === where.id ||  {{join fields " || " "where"}}
+        {{else}}
+          item.id === where.id
+        {{/if}}
+      );
 
       if (!{{ camelCase name }}) {
         throw new Error('{{ pascalCase name }} not found!');
@@ -89,11 +151,76 @@ export class InMemory{{ pascalCase name }}Repository implements {{ pascalCase na
     return {{ camelCasePlural name }};
   }
 
-  async updateMany(params: Update{{ pascalCase name }}RequestDTO[]): Promise<{{ pascalCase name }}[]> {
+  async update(parameters: Update{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}> {
+    const {{ camelCase name }} = this.{{ camelCasePlural name }}.find(
+      item =>
+      {{#if (hasMoreUniques fields)}}
+        item.id === parameters.where.id ||  {{join fields " || " "parameters.where"}}
+      {{else}}
+        item.id === parameters.where.id
+      {{/if}}
+    );
+
+    if (!{{ camelCase name }}) {
+      throw new Error('{{ pascalCase name }} not found!');
+    }
+
+    const {{ camelCase name }}Index = this.{{ camelCasePlural name }}.findIndex(item => item.id === {{ camelCase name }}.id);
+
+    {{#each fields}}
+      {{#unless (or (eq this.name "id") (eq this.name "created_at") (eq this.name "updated_at") (eq this.name "active"))}}
+        {{camelCase ../name}}.{{camelCase name}} = parameters?.data?.{{snakeCase name}} ?? {{camelCase ../name}}.{{camelCase name}};
+      {{/unless}}
+    {{/each}}
+
+
+    this.{{ camelCasePlural name }}[{{ camelCase name }}Index] = {{ camelCase name }};
+
+    return {{ camelCase name }};
+  }
+
+  async findFirst(parameters: FindFirst{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}> {
+    const {{ camelCase name }} = this.{{ camelCasePlural name }}.find(current{{ pascalCase name }} => {
+      if (
+          parameters.where?.id &&
+            current{{ pascalCase name }}.id !== parameters.where.id.equals
+        ) {
+          return true;
+        }
+
+      {{#each fields}}
+        {{#if isUnique}}
+          if (
+            parameters.where?.{{ camelCase name }} &&
+            current{{ pascalCase ../name }}.{{ camelCase name }} !== parameters.where.{{ camelCase name }}.equals
+          ) {
+            return true;
+          }
+        {{/if}}
+      {{/each}}
+
+      return false;
+    });
+
+    if (!{{ camelCase name }}) {
+      throw new Error('{{ pascalCase name }} not found!');
+    }
+
+    return {{ camelCase name }};
+  }
+
+  async updateMany(parameters: Update{{ pascalCase name }}RequestDTO[]): Promise<{{ pascalCase name }}[]> {
     const {{ camelCasePlural name }}: {{ pascalCase name }}[] = [];
 
-    for (const current of params) {
-      const {{ camelCase name }} = this.{{ camelCasePlural name }}.find(item => item.id === current.id);
+    for (const current of parameters) {
+      const {{ camelCase name }} = this.{{ camelCasePlural name }}.find(
+        item =>
+        {{#if (hasMoreUniques fields)}}
+          item.id === current.where.id ||  {{join fields " || " "current.where"}}
+        {{else}}
+          item.id === current.where.id
+        {{/if}}
+      );
 
       if (!{{ camelCase name }}) {
         throw new Error('{{ pascalCase name }} not found!');
@@ -101,17 +228,22 @@ export class InMemory{{ pascalCase name }}Repository implements {{ pascalCase na
 
       const {{ camelCase name }}Index = this.{{ camelCasePlural name }}.findIndex(item => item.id === {{ camelCase name }}.id);
 
-      {{ camelCase name }}.description = current.description;
+      {{#each fields}}
+        {{#unless (or (eq this.name "id") (eq this.name "created_at") (eq this.name "updated_at") (eq this.name "active"))}}
+          {{camelCase ../name}}.{{camelCase name}} = current?.data?.{{snakeCase name}} ?? {{camelCase ../name}}.{{camelCase name}};
+        {{/unless}}
+      {{/each}}
 
       this.{{ camelCasePlural name }}[{{ camelCase name }}Index] = {{ camelCase name }};
+
       {{ camelCasePlural name }}.push({{ camelCase name }});
     }
 
     return {{ camelCasePlural name }};
   }
 
-  async findAll(
-    params: FindAll{{ pascalCasePlural name }}RequestDTO,
+  async paginationCursor(
+    parameters: PaginationCursor{{ pascalCasePlural name }}RequestDTO,
   ): Promise<RelayPagination<{{ pascalCase name }}>> {
     const relay: RelayPagination<{{ pascalCase name }}> = {
       nodes: this.{{ camelCasePlural name }},
@@ -124,8 +256,9 @@ export class InMemory{{ pascalCase name }}Repository implements {{ pascalCase na
       pageInfo: {
         hasNextPage: false,
         hasPreviousPage: false,
-        startCursor: this.{{ camelCasePlural name }}.slice(params.first, params.last)[0].id,
-        endCursor: this.{{ camelCasePlural name }}.slice(params.first, params.last).at(-1).id,
+        startCursor: this.{{ camelCasePlural name }}.slice(parameters.first, parameters.last)[0].id,
+        endCursor: this.{{ camelCasePlural name }}.slice(parameters.first, parameters.last).at(-1)
+          .id,
       },
     };
 
@@ -146,6 +279,65 @@ export class InMemory{{ pascalCase name }}Repository implements {{ pascalCase na
         hasNextPage: relay.pageInfo.hasNextPage,
         startCursor: relay.pageInfo.startCursor,
         hasPreviousPage: relay.pageInfo.hasPreviousPage,
+      },
+    };
+  }
+
+  async paginationOffset(
+    parameters: PaginationOffset{{ pascalCasePlural name }}RequestDTO,
+  ): Promise<OffsetPagination<{{ pascalCase name }}>> {
+    const { where, order, page = 1, limit = 10 } = parameters;
+
+    const filtered{{ pascalCasePlural name }} = this.{{ camelCasePlural name }}.filter({{ camelCase name }} => {
+        if (
+          where?.id &&
+            {{ camelCase name }}.id !== where.id.equals
+        ) {
+          return true;
+        }
+
+      {{#each fields}}
+        {{#if isUnique}}
+          if (
+            where?.{{ camelCase name }} &&
+            {{ camelCase ../name }}.{{ camelCase name }} !== where.{{ camelCase name }}.equals
+          ) {
+            return true;
+          }
+        {{/if}}
+      {{/each}}
+
+      return true;
+    });
+
+    const ordered{{ pascalCasePlural name }} = filtered{{ pascalCasePlural name }}.sort((a, b) => {
+      if (!order) return 0;
+
+      for (const [key, direction] of Object.entries(order)) {
+        const fieldA = a[key as keyof {{ pascalCase name }}];
+        const fieldB = b[key as keyof {{ pascalCase name }}];
+
+        if (fieldA < fieldB) return direction === 'asc' ? -1 : 1;
+        if (fieldA > fieldB) return direction === 'asc' ? 1 : -1;
+      }
+
+      return 0;
+    });
+
+    const offset = (page - 1) * limit;
+
+    const paginated{{ pascalCasePlural name }} = ordered{{ pascalCasePlural name }}.slice(offset, offset + limit);
+
+    return {
+      nodes: paginated{{ pascalCasePlural name }},
+      count: paginated{{ pascalCasePlural name }}.length,
+      totalCount: filtered{{ pascalCasePlural name }}.length,
+      pageInfo: {
+        currentPage: page,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        isFirstPage: page === 1,
+        isLastPage: offset + limit >= filtered{{ pascalCasePlural name }}.length,
       },
     };
   }

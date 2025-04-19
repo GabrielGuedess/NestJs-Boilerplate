@@ -4,16 +4,16 @@ import { Entity } from 'domain/shared/entities/Entity';
 import { type Replace } from 'domain/shared/helpers/Replace';
 import { NotificationError } from 'domain/shared/notification/NotificationError';
 
-export type UserRoleProps = 'USER' | 'ADMIN';
+export type RoleProps = 'USER' | 'ADMIN';
 
 interface IUser {
   email: string;
+  role: RoleProps;
   password: string;
   document: string;
   full_name: string;
   validated: boolean;
   avatar_url?: string;
-  role: UserRoleProps;
   active: boolean;
   updated_at: Date;
   created_at: Date;
@@ -28,8 +28,8 @@ export class User extends Entity {
     props: Replace<
       IUser,
       {
+        role?: RoleProps;
         validated?: boolean;
-        role?: UserRoleProps;
         active?: boolean;
         updated_at?: Date;
         created_at?: Date;
@@ -138,11 +138,11 @@ export class User extends Entity {
     return this.props.password;
   }
 
-  public set role(role: UserRoleProps) {
+  public set role(role: RoleProps) {
     this.props.role = role;
   }
 
-  public get role(): UserRoleProps {
+  public get role(): RoleProps {
     return this.props.role;
   }
 

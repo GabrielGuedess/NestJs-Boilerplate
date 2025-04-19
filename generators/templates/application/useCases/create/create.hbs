@@ -11,7 +11,11 @@ export class Create{{ pascalCase name }}UseCase {
 
   async execute(request: Create{{ pascalCase name }}UseCaseRequestDTO): Promise<{{ pascalCase name }}> {
     const create{{ pascalCase name }} = new {{ pascalCase name }}({
-      description: request.description
+      {{#each fields}}
+        {{#unless (or (eq this.name "created_at") (eq this.name "updated_at") (eq this.name "active"))}}
+            {{snakeCase this.name}}: request.{{snakeCase this.name}},
+        {{/unless}}
+      {{/each}}
     });
 
     const {{ camelCase name }} = await this.{{ camelCase name }}Repository.create(create{{ pascalCase name }});

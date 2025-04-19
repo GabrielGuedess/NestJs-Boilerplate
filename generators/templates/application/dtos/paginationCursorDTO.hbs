@@ -1,0 +1,13 @@
+import {
+  type Where{{ pascalCase name }}DTO,
+  type OrderBy{{ pascalCase name }}DTO,
+} from 'domain/dtos/repositories/{{ pascalCase name }}RepositoryDTO';
+
+export abstract class PaginationCursor{{ pascalCasePlural name }}UseCaseRequestDTO {
+  last?: number;
+  after?: string;
+  first?: number;
+  before?: string;
+  where?: Where{{ pascalCase name }}DTO;
+  order?: OrderBy{{ pascalCase name }}DTO;
+}

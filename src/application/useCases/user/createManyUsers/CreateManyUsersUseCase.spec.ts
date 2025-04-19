@@ -3,7 +3,7 @@ import { InMemoryUploaderProvider } from '@test/providers/in-memory-uploader-pro
 
 import { type FileUploadDTO } from 'domain/shared/dtos/FileUploadDTO';
 
-import { CreateManyUsersUseCase } from 'application/useCases/user/createManyUser/CreateManyUsersUseCase';
+import { CreateManyUsersUseCase } from 'application/useCases/user/createManyUsers/CreateManyUsersUseCase';
 
 describe('Create User', () => {
   it('should be able to create a user with use case', async () => {

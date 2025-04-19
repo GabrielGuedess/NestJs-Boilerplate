@@ -5,20 +5,19 @@ import { User } from 'domain/entities/user/User';
 import { FindFirstUserUseCase } from 'application/useCases/user/findFirstUser/FindFirstUserUseCase';
 
 describe('Find First User', () => {
-  it('should be able to find first user with use case', async () => {
-    const usersRepository = new InMemoryUserRepository();
+  it('should be able to find first User with use case', async () => {
+    const userRepository = new InMemoryUserRepository();
 
-    const userExist = await usersRepository.create(
+    const userExist = await userRepository.create(
       new User({
-        password: '123456789',
-        document: '44754358899',
-        full_name: 'Gabriel Guedes',
-        email: 'gabrielrguedess@gmail.com',
-        avatar_url: 'https://github.com/GabrielGuedess.png',
+        email: 'valid-email',
+        document: 'valid-document',
+        password: 'valid-password',
+        full_name: 'valid-full_name',
       }),
     );
 
-    const findFirstUsersUseCase = new FindFirstUserUseCase(usersRepository);
+    const findFirstUsersUseCase = new FindFirstUserUseCase(userRepository);
 
     const foundUsers = await findFirstUsersUseCase.execute({
       where: {

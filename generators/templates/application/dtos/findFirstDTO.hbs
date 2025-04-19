@@ -1,0 +1,6 @@
+import { type Where{{ pascalCase name }}DTO } from 'domain/dtos/repositories/{{ pascalCase name }}RepositoryDTO';
+
+export abstract class FindFirst{{ pascalCase name }}UseCaseRequestDTO {
+  returnError?: boolean;
+  where?: Where{{ pascalCase name }}DTO;
+}

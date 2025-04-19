@@ -10,7 +10,10 @@ export class FindUniqueUserUseCase {
   constructor(private readonly userRepository: UserRepository) {}
 
   async execute(request: FindUniqueUserUseCaseRequestDTO): Promise<User> {
-    const user = await this.userRepository.findUnique({ where: request.where });
+    const user = await this.userRepository.findUnique({
+      where: request.where,
+      returnError: request.returnError,
+    });
 
     return user;
   }

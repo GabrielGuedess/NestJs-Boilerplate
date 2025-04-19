@@ -1,0 +1,33 @@
+import { InMemory{{ pascalCase name }}Repository } from '@test/repositories/in-memory-{{kebabCase name}}-repository';
+
+import { {{ pascalCase name }} } from 'domain/entities/{{ camelCase name }}/{{ pascalCase name }}';
+
+import { Activate{{ pascalCase name }}UseCase } from 'application/useCases/{{ camelCase name }}/activate{{ pascalCase name }}/Activate{{ pascalCase name }}UseCase';
+
+describe('Activate {{ pascalCase name }}', () => {
+  it('should be able to activate {{ pascalCase name }} with use case', async () => {
+    const {{ camelCase name }}Repository = new InMemory{{ pascalCase name }}Repository();
+
+    const {{ camelCase name }} = new {{ pascalCase name }}({
+      {{#each fields}}
+        {{#unless (or this.hasDefault (eq this.name "created_at") (eq this.name "updated_at"))}}
+          {{#unless this.isOptional}}
+            {{snakeCase this.name}}: {{#if (eq this.type "string")}}'valid-{{snakeCase this.name}}'{{else if (eq this.type "number")}}123{{else if (eq this.type "boolean")}}true{{else if (eq this.type "Date")}}new Date(){{else}}'valid'{{/if}},
+          {{/unless}}
+        {{/unless}}
+      {{/each}}
+    });
+
+    await {{ camelCase name }}Repository.create({{ camelCase name }});
+
+    const activate{{ pascalCase name }}UseCase = new Activate{{ pascalCase name }}UseCase({{ camelCase name }}Repository);
+
+    await activate{{ pascalCase name }}UseCase.execute({
+      where: {
+        id: {{ camelCase name }}.id,
+      },
+    });
+
+    expect({{ camelCase name }}Repository.{{ camelCasePlural name }}[0].active).toBeTruthy();
+  });
+});

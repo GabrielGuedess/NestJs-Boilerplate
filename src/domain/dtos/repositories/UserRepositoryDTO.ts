@@ -1,6 +1,6 @@
 import { WhereDTO } from 'domain/shared/dtos/WhereDTO';
 import { type EnumDTO } from 'domain/shared/dtos/EnumDTO';
-import { type UserRoleProps } from 'domain/entities/user/User';
+import { type RoleProps } from 'domain/entities/user/User';
 import { type BoolFilterDTO } from 'domain/shared/dtos/BoolFilterDTO';
 import { type StringFilterDTO } from 'domain/shared/dtos/StringFilterDTO';
 import { type DateTimeFilterDTO } from 'domain/shared/dtos/DateTimeFilterDTO';
@@ -20,11 +20,11 @@ export abstract class WhereUserDTO extends WhereDTO {
   id?: StringFilterDTO;
   active?: BoolFilterDTO;
   email?: StringFilterDTO;
+  role?: EnumDTO<RoleProps>;
   validated?: BoolFilterDTO;
   document?: StringFilterDTO;
   full_name?: StringFilterDTO;
   avatar_url?: StringFilterDTO;
-  role?: EnumDTO<UserRoleProps>;
   created_at?: DateTimeFilterDTO;
   updated_at?: DateTimeFilterDTO;
 }
@@ -93,9 +93,11 @@ export abstract class UpdateUserRequestDTO {
   where: WhereUserUniqueDTO;
   data: {
     email?: string;
-    password?: string;
+    role?: RoleProps;
     document?: string;
+    password?: string;
     full_name?: string;
     avatar_url?: string;
+    validated?: boolean;
   };
 }

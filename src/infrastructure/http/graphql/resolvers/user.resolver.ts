@@ -17,7 +17,7 @@ import { ActivateUserUseCase } from 'application/useCases/user/activateUser/Acti
 import { FindFirstUserUseCase } from 'application/useCases/user/findFirstUser/FindFirstUserUseCase';
 import { FindUniqueUserUseCase } from 'application/useCases/user/findUniqueUser/FindUniqueUserUseCase';
 import { DeactivateUserUseCase } from 'application/useCases/user/deactivateUser/DeactivateUserUseCase';
-import { CreateManyUsersUseCase } from 'application/useCases/user/createManyUser/CreateManyUsersUseCase';
+import { CreateManyUsersUseCase } from 'application/useCases/user/createManyUsers/CreateManyUsersUseCase';
 import { UpdateManyUsersUseCase } from 'application/useCases/user/updateManyUsers/UpdateManyUsersUseCase';
 import { DeleteManyUsersUseCase } from 'application/useCases/user/deleteManyUsers/DeleteManyUsersUseCase';
 import { PaginationCursorUsersUseCase } from 'application/useCases/user/paginationCursorUsers/PaginationCursorUsersUseCase';

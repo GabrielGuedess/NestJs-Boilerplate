@@ -1,26 +1,44 @@
 import { ID, Field, ObjectType } from '@nestjs/graphql';
 
 import * as Relay from 'graphql-relay';
-import { PageInfo } from 'nestjs-graphql-relay';
+{{#if (some fields "type" "Date")}}
+import { GraphQLDateTimeISO } from 'graphql-scalars';
+{{/if}}
 
-import { type {{pascalCase name}}ResponseDTO } from 'infrastructure/http/dtos/{{camelCase name}}/{{pascalCase name}}ResponseDTO';
+import { OffsetPagination } from 'domain/shared/dtos/OffsetPagination';
+
+import { {{ pascalCase name }}ResponseDTO } from 'infrastructure/http/dtos/{{ camelCase name }}/{{ pascalCase name }}ResponseDTO';
+import { PageInfoCursor } from 'infrastructure/http/graphql/pagination/page-info';
+import { PageInfoOffset } from 'infrastructure/http/graphql/pagination/page-info-offset';
+
+{{#each fields}}
+{{#if this.isEnum}}
+import { {{pascalCase this.name}} } from 'infrastructure/http/graphql/generated/prisma/{{snakeCase this.name}}.enum';
+{{/if}}
+{{/each}}
 
 @ObjectType()
-export class {{pascalCase name}}Model implements {{pascalCase name}}ResponseDTO {
+export class {{ pascalCase name }}Model implements {{ pascalCase name }}ResponseDTO {
   @Field(() => ID)
   id: string;
 
-  @Field()
-  description: string;
+{{#each fields}}
+  {{#unless this.isHideField}}
+    {{#if this.isEnum}}
+  @Field(() => {{pascalCase this.name}})
+  {{snakeCase this.name}}: {{pascalCase this.name}};
 
-  @Field()
-  active: boolean;
+    {{else if (and this.isOptional (not this.hasDefault))}}
+  @Field(() => {{mapTypeToGraphQLClass this.type}}, { nullable: true })
+  {{snakeCase this.name}}?: {{this.type}};
 
-  @Field()
-  created_at: Date;
+    {{else}}
+  @Field(() => {{mapTypeToGraphQLClass this.type}})
+  {{snakeCase this.name}}: {{this.type}};
 
-  @Field()
-  updated_at: Date;
+    {{/if}}
+  {{/unless}}
+{{/each}}
 }
 
 @ObjectType({ isAbstract: true })
@@ -28,20 +46,20 @@ abstract class {{ pascalCasePlural name }}Edge implements Relay.Edge<{{ pascalCa
   @Field(() => {{ pascalCase name }}Model)
   readonly node: {{ pascalCase name }}Model;
 
-  @Field()
+  @Field(() => String)
   readonly cursor: Relay.ConnectionCursor;
 }
 
 @ObjectType()
-export class {{ pascalCasePlural name }}Connection implements Relay.Connection<{{ pascalCase name }}Model> {
-  @Field()
-  readonly pageInfo: PageInfo;
-
+export class {{ pascalCasePlural name }}CursorConnection implements Relay.Connection<{{ pascalCase name }}Model> {
   @Field(() => [{{ pascalCase name }}Model])
   nodes: {{ pascalCase name }}Model[];
 
   @Field(() => Number, { defaultValue: 0 })
   count: number = 0;
+
+  @Field(() => PageInfoCursor)
+  readonly pageInfo: PageInfoCursor;
 
   @Field(() => Number, { defaultValue: 0 })
   totalCount: number = 0;
@@ -50,3 +68,17 @@ export class {{ pascalCasePlural name }}Connection implements Relay.Connection<{
   readonly edges: Array<Relay.Edge<{{ pascalCase name }}Model>>;
 }
 
+@ObjectType()
+export class {{ pascalCasePlural name }}OffsetConnection implements OffsetPagination<{{ pascalCase name }}Model> {
+  @Field(() => [{{ pascalCase name }}Model])
+  nodes: {{ pascalCase name }}Model[];
+
+  @Field(() => Number, { defaultValue: 0 })
+  count: number = 0;
+
+  @Field(() => PageInfoOffset)
+  readonly pageInfo: PageInfoOffset;
+
+  @Field(() => Number, { defaultValue: 0 })
+  totalCount: number = 0;
+}

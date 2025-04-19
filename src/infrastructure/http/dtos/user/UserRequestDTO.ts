@@ -3,5 +3,4 @@ export abstract class UserRequestDTO {
   password: string;
   document: string;
   full_name: string;
-  avatar_url?: string;
 }

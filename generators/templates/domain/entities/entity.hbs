@@ -4,12 +4,25 @@ import { Entity } from 'domain/shared/entities/Entity';
 import { type Replace } from 'domain/shared/helpers/Replace';
 import { NotificationError } from 'domain/shared/notification/NotificationError';
 
+{{#each fields}}
+  {{#if this.isEnum}}
+    export type {{pascalCase this.name}}Props =
+      {{#each enumType}}
+        '{{this}}'{{#unless @last}} | {{/unless}}
+      {{/each}};
+  {{/if}}
+{{/each}}
+
 interface I{{pascalCase name}} {
- {{#each fields}}
-    {{#if this.isOptional}}
-      {{snakeCase this.name}}?: {{this.type}};
+  {{#each fields}}
+    {{#if this.isEnum}}
+      {{snakeCase this.name}}: {{pascalCase this.name}}Props;
     {{else}}
-      {{snakeCase this.name}}: {{this.type}};
+      {{#if this.isOptional}}
+        {{snakeCase this.name}}?: {{this.type}};
+      {{else}}
+        {{snakeCase this.name}}: {{this.type}};
+      {{/if}}
     {{/if}}
   {{/each}}
 }
@@ -20,18 +33,20 @@ export class {{pascalCase name}} extends Entity {
   private props: I{{pascalCase name}};
 
 constructor(
-    props: Replace<
-      I{{pascalCase name}},
-      {
-        {{#each fields}}
-          {{#if this.hasDefault}}
-            {{snakeCase this.name}}?: {{this.type}};
-          {{/if}}
-        {{/each}}
-      }
-    >,
-    id?: string,
-  ) {
+  props: Replace<
+    I{{pascalCase name}},
+    {
+      {{#each fields}}
+        {{#if this.isEnum}}
+          {{snakeCase this.name}}?: {{pascalCase this.name}}Props;
+        {{else if this.hasDefault}}
+          {{snakeCase this.name}}?: {{this.type}};
+        {{/if}}
+      {{/each}}
+    }
+  >,
+  id?: string,
+) {
     super();
 
     this._id = id ?? uuidv7();
@@ -39,7 +54,9 @@ constructor(
       ...props,
       {{#each fields}}
         {{#if this.hasDefault}}
-          {{#if (eq this.defaultValue 'now(')}}
+          {{#if this.isEnum}}
+            {{snakeCase this.name}}: props.{{snakeCase this.name}} ?? '{{{this.defaultValue}}}',
+          {{else if (eq this.defaultValue 'now(')}}
             {{snakeCase this.name}}: props.{{snakeCase this.name}} ?? new Date(),
           {{else}}
             {{snakeCase this.name}}: props.{{snakeCase this.name}} ?? {{{this.defaultValue}}},
@@ -88,7 +105,16 @@ constructor(
   {{/each}}
   }
 
-  {{#each fields}}
+{{#each fields}}
+  {{#if this.isEnum}}
+    public set {{camelCase this.name}}({{snakeCase this.name}}: {{pascalCase this.name}}Props) {
+      this.props.{{snakeCase this.name}} = {{snakeCase this.name}};
+    }
+
+    public get {{camelCase this.name}}(): {{pascalCase this.name}}Props {
+      return this.props.{{snakeCase this.name}};
+    }
+  {{else}}
     {{#unless (eq this.name "created_at")}}
     public set {{camelCase this.name}}({{snakeCase this.name}}: {{this.type}}) {
       this.props.{{snakeCase this.name}} = {{snakeCase this.name}};
@@ -98,7 +124,8 @@ constructor(
     public get {{camelCase this.name}}(): {{this.type}} {
       return this.props.{{snakeCase this.name}};
     }
-  {{/each}}
+  {{/if}}
+{{/each}}
 
   public get id(): string {
     return this._id;

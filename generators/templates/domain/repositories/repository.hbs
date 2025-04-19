@@ -1,21 +1,36 @@
 import { type {{ pascalCase name }} } from 'domain/entities/{{ camelCase name }}/{{ pascalCase name }}';
 import { type RelayPagination } from 'domain/shared/dtos/RelayPagination';
+import { type OffsetPagination } from 'domain/shared/dtos/OffsetPagination';
 import {
-  type Find{{ pascalCase name }}RequestDTO,
   type Count{{ pascalCasePlural name }}RequestDTO,
   type Update{{ pascalCase name }}RequestDTO,
+  type Delete{{ pascalCase name }}RequestDTO,
   type FindAll{{ pascalCasePlural name }}RequestDTO,
+  type Activate{{ pascalCase name }}RequestDTO,
+  type FindFirst{{ pascalCase name }}RequestDTO,
+  type FindUnique{{ pascalCase name }}RequestDTO,
+  type Deactivate{{ pascalCase name }}RequestDTO,
+  type PaginationCursor{{ pascalCasePlural name }}RequestDTO,
+  type PaginationOffset{{ pascalCasePlural name }}RequestDTO,
 } from 'domain/dtos/repositories/{{ pascalCase name }}RepositoryDTO';
 
 export abstract class {{ pascalCase name }}Repository {
   abstract create({{ camelCase name }}: {{ pascalCase name }}): Promise<{{ pascalCase name }}>;
-  abstract delete(id: string): Promise<{{ pascalCase name }}>;
-  abstract deleteMany(ids: string[]): Promise<{{ pascalCase name }}[]>;
-  abstract update(params: Update{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}>;
-  abstract count(params: Count{{ pascalCasePlural name }}RequestDTO): Promise<number>;
-  abstract findUnique(params: Find{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}>;
-  abstract updateMany(params: Update{{ pascalCase name }}RequestDTO[]): Promise<{{ pascalCase name }}[]>;
-  abstract findAll(
-    params: FindAll{{ pascalCasePlural name }}RequestDTO,
+  abstract createMany(users: {{ pascalCase name }}[]): Promise<{{ pascalCase name }}[]>;
+  abstract delete(parameters: Delete{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}>;
+  abstract update(parameters: Update{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}>;
+  abstract count(parameters: Count{{ pascalCasePlural name }}RequestDTO): Promise<number>;
+  abstract activate(parameters: Activate{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}>;
+  abstract findAll(parameters: FindAll{{ pascalCasePlural name }}RequestDTO): Promise<{{ pascalCase name }}[]>;
+  abstract findFirst(parameters: FindFirst{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}>;
+  abstract deactivate(parameters: Deactivate{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}>;
+  abstract findUnique(parameters: FindUnique{{ pascalCase name }}RequestDTO): Promise<{{ pascalCase name }}>;
+  abstract updateMany(parameters: Update{{ pascalCase name }}RequestDTO[]): Promise<{{ pascalCase name }}[]>;
+  abstract deleteMany(parameters: Delete{{ pascalCase name }}RequestDTO[]): Promise<{{ pascalCase name }}[]>;
+  abstract paginationCursor(
+    parameters: PaginationCursor{{ pascalCasePlural name }}RequestDTO,
   ): Promise<RelayPagination<{{ pascalCase name }}>>;
+  abstract paginationOffset(
+    parameters: PaginationOffset{{ pascalCasePlural name }}RequestDTO,
+  ): Promise<OffsetPagination<{{ pascalCase name }}>>;
 }

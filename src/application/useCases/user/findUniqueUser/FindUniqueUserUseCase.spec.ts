@@ -4,8 +4,8 @@ import { User } from 'domain/entities/user/User';
 
 import { FindUniqueUserUseCase } from 'application/useCases/user/findUniqueUser/FindUniqueUserUseCase';
 
-describe('Find User By Id', () => {
-  it('should be able to find a user with use case', async () => {
+describe('Find Unique User', () => {
+  it('should be able to find a unique user with use case', async () => {
     const usersRepository = new InMemoryUserRepository();
 
     const user = new User({

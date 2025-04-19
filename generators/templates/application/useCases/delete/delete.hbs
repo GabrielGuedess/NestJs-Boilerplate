@@ -12,7 +12,7 @@ export class Delete{{ pascalCase name }}UseCase {
   ) {}
 
   async execute(request: Delete{{ pascalCase name }}UseCaseRequestDTO): Promise<{{ pascalCase name }}> {
-    const {{ camelCase name }} = await this.{{ camelCase name }}Repository.delete(request.id);
+    const {{ camelCase name }} = await this.{{ camelCase name }}Repository.delete({ where: request.where });
 
     return {{ camelCase name }};
   }

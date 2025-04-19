@@ -1,7 +1,20 @@
+{{#each fields}}
+{{#if this.isEnum}}
+import { type {{pascalCase this.name}}Props } from 'domain/entities/{{camelCase ../name}}/{{pascalCase ../name}}';
+{{/if}}
+{{/each}}
+
 export abstract class {{pascalCase name}}ResponseDTO {
   id: string;
-  description: string;
-  active: boolean;
-  created_at: Date;
-  updated_at: Date;
+  {{#each fields}}
+    {{#unless isHideField}}
+      {{#if isEnum}}
+        {{snakeCase name}}: {{pascalCase name}}Props;
+      {{else if (and isOptional (not hasDefault))}}
+        {{snakeCase name}}?: {{type}};
+      {{else}}
+        {{snakeCase name}}: {{type}};
+      {{/if}}
+    {{/unless}}
+  {{/each}}
 }

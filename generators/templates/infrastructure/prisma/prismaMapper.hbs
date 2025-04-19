@@ -6,20 +6,18 @@ export class Prisma{{pascalCase name}}Mapper {
   static toPrisma({{camelCase name}}: {{pascalCase name}}): Raw{{pascalCase name}} {
     return {
       id: {{camelCase name}}.id,
-      description: {{camelCase name}}.description,
-      active: {{camelCase name}}.active,
-      created_at: {{camelCase name}}.createdAt,
-      updated_at: {{camelCase name}}.updatedAt,
+      {{#each fields}}
+      {{snakeCase this.name}}: {{camelCase ../name}}.{{camelCase this.name}},
+      {{/each}}
     };
   }
 
   static toDomain(raw: Raw{{pascalCase name}}): {{pascalCase name}} {
     const {{camelCase name}} = new {{pascalCase name}}(
       {
-        description: raw.description,
-        active: raw.active,
-        created_at: raw.created_at,
-        updated_at: raw.updated_at,
+        {{#each fields}}
+        {{snakeCase this.name}}: raw.{{snakeCase this.name}},
+        {{/each}}
       },
       raw.id,
     );

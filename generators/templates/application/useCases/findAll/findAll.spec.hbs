@@ -5,30 +5,25 @@ import { {{ pascalCase name }} } from 'domain/entities/{{ camelCase name }}/{{ p
 import { FindAll{{ pascalCasePlural name }}UseCase } from 'application/useCases/{{ camelCase name }}/findAll{{ pascalCasePlural name }}/FindAll{{ pascalCasePlural name }}UseCase';
 
 describe('Find All {{ pascalCasePlural name }}', () => {
-  it('should be able to find all {{convertToLowerWords name}} with use case', async () => {
-    const {{ camelCasePlural name }}Repository = new InMemory{{ pascalCase name }}Repository();
+  it('should be able to find all {{ pascalCasePlural name }} with use case', async () => {
+    const {{ camelCase name }}Repository = new InMemory{{ pascalCase name }}Repository();
 
-    const {{ camelCase name }}Exist = await {{ camelCasePlural name }}Repository.create(
+    const {{ camelCase name }}Exist = await {{ camelCase name }}Repository.create(
       new {{ pascalCase name }}({
-        description: 'Test',
+        {{#each fields}}
+          {{#unless (or this.hasDefault (eq this.name "created_at") (eq this.name "updated_at"))}}
+            {{#unless this.isOptional}}
+              {{snakeCase this.name}}: {{#if (eq this.type "string")}}'valid-{{snakeCase this.name}}'{{else if (eq this.type "number")}}123{{else if (eq this.type "boolean")}}true{{else if (eq this.type "Date")}}new Date(){{else}}'valid'{{/if}},
+            {{/unless}}
+          {{/unless}}
+        {{/each}}
       }),
     );
 
-    const findAll{{ pascalCasePlural name }}UseCase = new FindAll{{ pascalCasePlural name }}UseCase({{ camelCasePlural name }}Repository);
+    const findAll{{ pascalCasePlural name }}UseCase = new FindAll{{ pascalCasePlural name }}UseCase({{ camelCase name }}Repository);
 
     const found{{ pascalCasePlural name }} = await findAll{{ pascalCasePlural name }}UseCase.execute({});
 
-    expect(found{{ pascalCasePlural name }}).toEqual({
-      count: 1,
-      totalCount: 1,
-      nodes: [{{ camelCase name }}Exist],
-      edges: [{ node: {{ camelCase name }}Exist, cursor: {{ camelCase name }}Exist.id }],
-      pageInfo: {
-        hasNextPage: false,
-        hasPreviousPage: false,
-        endCursor: {{ camelCase name }}Exist.id,
-        startCursor: {{ camelCase name }}Exist.id,
-      },
-    });
+    expect(found{{ pascalCasePlural name }}).toEqual([{{ camelCase name }}Exist]);
   });
 });
