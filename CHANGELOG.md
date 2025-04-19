@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.25...v1.2.0) (2025-04-19)
+
+
+### Features
+
+* add swc builder ([151e275](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/151e275ea33a540029ea553148719cab81428a47))
+
 ## [1.1.25](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.1.24...v1.1.25) (2025-04-17)
 
 
