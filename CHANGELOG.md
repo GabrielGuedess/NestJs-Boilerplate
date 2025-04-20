@@ -1,3 +1,11 @@
+# [1.5.0](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.4.4...v1.5.0) (2025-04-20)
+
+
+### Features
+
+* add auto http module and database module plop ([1777aa9](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/1777aa983ee0e752755baccd9b2bfee42a31c5e3))
+* add plop e2e ([f9c64cc](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/f9c64cc14086f7b54877526550d4e9d24e3edf1f))
+
 ## [1.4.4](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.4.3...v1.4.4) (2025-04-20)
 
 
