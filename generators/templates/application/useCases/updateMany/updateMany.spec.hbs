@@ -4,8 +4,8 @@ import { {{ pascalCase name }} } from 'domain/entities/{{ camelCase name }}/{{ p
 
 import { UpdateMany{{ pascalCasePlural name }}UseCase } from 'application/useCases/{{ camelCase name }}/updateMany{{ pascalCasePlural name }}/UpdateMany{{ pascalCasePlural name }}UseCase';
 
-describe('Update {{ pascalCase name }}', () => {
-  it('should be able to update a {{convertToLowerWords name}} with use case', async () => {
+describe('Update Many {{ pascalCasePlural name }}', () => {
+  it('should be able to update many {{pascalCasePlural name}} with use case', async () => {
     const {{ camelCase name }}Repository = new InMemory{{ pascalCase name }}Repository();
 
     const {{ camelCase name }} = new {{ pascalCase name }}({

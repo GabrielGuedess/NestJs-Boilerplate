@@ -1,7 +1,7 @@
 import { {{pascalCase name}} } from 'domain/entities/{{camelCase name}}/{{pascalCase name}}';
 
 describe('{{pascalCase name}}', () => {
-  it('should create {{dashCase name}} with only required fields and check defaults', () => {
+  it('should create {{pascalCase name}} with only required fields and check defaults', () => {
     const {{camelCase name}} = new {{pascalCase name}}({
       {{#each fields}}
         {{#unless (or this.hasDefault (eq this.name "created_at") (eq this.name "updated_at"))}}
@@ -32,7 +32,7 @@ describe('{{pascalCase name}}', () => {
     {{/each}}
   });
 
-  it('should be able to set and get props {{dashCase name}} with entity', () => {
+  it('should be able to set and get props {{pascalCase name}} with entity', () => {
     const {{camelCase name}} = new {{pascalCase name}}({
     {{#each fields}}
       {{#unless (or (eq this.name "created_at") (eq this.name "updated_at") (eq this.name "active"))}}
@@ -101,7 +101,7 @@ describe('{{pascalCase name}}', () => {
     {{/each}}
   });
 
-  it('should not be able to create a {{dashCase name}} with entity with error', () => {
+  it('should not be able to create a {{pascalCase name}} with entity with error', () => {
     expect(() => {
       new {{pascalCase name}}({
         {{#each fields}}

@@ -92,7 +92,7 @@ export class Prisma{{ pascalCase name }}Repository implements {{ pascalCase name
         {{#if (some fields "isUnique")}}
           {{#each fields}}
             {{#if isUnique}}
-              {{snakeCase name}}: {{../camelCase name}}.{{camelCase name}},
+              {{snakeCase name}}: {{camelCase ../name}}.{{camelCase name}},
             {{/if}}
           {{/each}}
         {{else}}
@@ -189,7 +189,7 @@ export class Prisma{{ pascalCase name }}Repository implements {{ pascalCase name
             {{#if (some fields "isUnique")}}
               {{#each fields}}
                 {{#if isUnique}}
-                  {{snakeCase name}}: {{../camelCase name}}.{{camelCase name}},
+                  {{snakeCase name}}: {{camelCase ../name}}.{{camelCase name}},
                 {{/if}}
               {{/each}}
             {{else}}

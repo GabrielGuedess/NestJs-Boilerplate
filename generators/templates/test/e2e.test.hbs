@@ -1,0 +1,1119 @@
+import { type INestApplication } from '@nestjs/common';
+import { Test, type TestingModule } from '@nestjs/testing';
+
+import { print } from 'graphql';
+import request from 'supertest';
+import { gql } from 'apollo-server-express';
+
+import { {{ pascalCase name }} } from 'domain/entities/{{ camelCase name }}/{{ pascalCase name }}';
+
+import { AppModule } from 'infrastructure/app.module';
+import { GraphQLAuthGuard } from 'infrastructure/http/guard/graphql.guard';
+import { PrismaService } from 'infrastructure/database/prisma/prisma.service';
+import { type {{ pascalCase name }}ResponseDTO } from 'infrastructure/http/dtos/{{ camelCase name }}/{{ pascalCase name }}ResponseDTO';
+import { Prisma{{ pascalCase name }}Mapper } from 'infrastructure/database/prisma/mappers/Prisma{{ pascalCase name }}Mapper';
+
+const {{ camelCasePlural name }}: {{ pascalCase name }}[] = [
+  new {{ pascalCase name }}({
+    {{#each fields}}
+      {{#unless (or this.hasDefault (eq this.name "created_at") (eq this.name "updated_at"))}}
+        {{#unless this.isOptional}}
+          {{snakeCase this.name}}:
+          {{#if (eq this.type "string")}}
+            {{#if (includes this.name "email")}}
+              'example@example.com'
+            {{else if (includes this.name "document")}}
+              '12345678900'
+            {{else}}
+              'valid-{{snakeCase this.name}}'
+            {{/if}}
+          {{else if (eq this.type "number")}}
+            123
+          {{else if (eq this.type "boolean")}}
+            true
+          {{else if (eq this.type "Date")}}
+            new Date()
+          {{else}}
+            'valid'
+          {{/if}},
+        {{/unless}}
+      {{/unless}}
+    {{/each}}
+  }),
+];
+
+const graphql{{ pascalCasePlural name }} = {{ camelCasePlural name }}.map({{ camelCase name }} => ({
+  id: {{ camelCase name }}.id,
+  {{#each fields}}
+    {{#unless isHideField}}
+      {{#if (eq this.type "Date")}}
+        {{snakeCase this.name}}: new Date({{camelCase ../name}}.{{camelCase this.name}}).toISOString(),
+      {{else}}
+        {{snakeCase this.name}}: {{camelCase ../name}}.{{camelCase this.name}},
+      {{/if}}
+    {{/unless}}
+  {{/each}}
+}));
+
+const prisma{{ pascalCasePlural name }} = {{ camelCasePlural name }}.map({{ camelCase name }} => Prisma{{ pascalCase name }}Mapper.toPrisma({{ camelCase name }}));
+
+const mockPaginate = jest.fn().mockReturnValue({
+  withPages: jest.fn().mockResolvedValue([
+    prisma{{ pascalCasePlural name }},
+    {
+      pageCount: 1,
+      currentPage: 1,
+      nextPage: null,
+      isLastPage: true,
+      isFirstPage: true,
+      previousPage: null,
+    },
+  ]),
+});
+
+const mockPrismaService = {
+  prismaExtended: {
+    {{ camelCase name }}: {
+      paginate: mockPaginate,
+    },
+  },
+  {{ camelCase name }}: {
+    count: jest.fn().mockResolvedValue(1),
+    findMany: jest.fn().mockResolvedValue(prisma{{ pascalCasePlural name }}),
+    delete: jest.fn().mockResolvedValue(prisma{{ pascalCasePlural name }}[0]),
+    update: jest.fn().mockResolvedValue(prisma{{ pascalCasePlural name }}[0]),
+    create: jest.fn().mockResolvedValue(prisma{{ pascalCasePlural name }}[0]),
+    findFirst: jest.fn().mockResolvedValue(prisma{{ pascalCasePlural name }}[0]),
+    findUnique: jest.fn().mockResolvedValue(prisma{{ pascalCasePlural name }}[0]),
+  },
+};
+
+describe('GraphQL {{ pascalCase name }} Queries (E2E)', () => {
+  let app: INestApplication;
+
+  beforeAll(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    })
+      .overrideProvider(PrismaService)
+      .useValue(mockPrismaService)
+      .overrideGuard(GraphQLAuthGuard)
+      .useValue({ canActivate: () => true })
+      .compile();
+
+    app = moduleFixture.createNestApplication();
+
+    app.useLogger(false);
+
+    await app.init();
+  });
+
+  afterAll(async () => {
+    await app.close();
+  });
+
+  describe('{{ camelCasePlural name }}', () => {
+    it('should be able to find all {{ camelCasePlural name }}', () => {
+      const query = print(gql`
+        query {
+          {{ camelCasePlural name }} {
+            id
+            {{#each fields}}
+              {{#unless isHideField}}
+                {{snakeCase name}}
+              {{/unless}}
+            {{/each}}
+          }
+        }
+      `);
+
+      return request(app.getHttpServer() as string)
+        .post('/graphql')
+        .send({ query })
+        .expect(200)
+        .expect(response => {
+          const body = response.body as {
+            data: { {{ camelCasePlural name }}: {{ pascalCase name }}ResponseDTO[] };
+          };
+
+          expect(body.data.{{ camelCasePlural name }}).toHaveLength(graphql{{ pascalCasePlural name }}.length);
+        });
+    });
+  });
+
+  describe('{{ camelCase name }}', () => {
+    it('should be able to find {{ camelCase name }} by document using {{ camelCase name }} query', async () => {
+      const query = print(gql`
+        query {{ pascalCase name }}($where: {{ pascalCase name }}WhereUniqueInput) {
+          {{ camelCase name }}(where: $where) {
+            id
+            {{#each fields}}
+              {{#unless isHideField}}
+                {{snakeCase name}}
+              {{/unless}}
+            {{/each}}
+          }
+        }
+      `);
+
+      const variables = {
+        where: {
+          id: {{ camelCasePlural name }}[0].id,
+        },
+      };
+
+      return request(app.getHttpServer() as string)
+        .post('/graphql')
+        .send({ query, variables })
+        .expect(200)
+        .expect(response => {
+          const body = response.body as {
+            data: { {{ camelCase name }}: null | {{ pascalCase name }}ResponseDTO };
+          };
+
+          expect(body.data.{{ camelCase name }}).not.toBeNull();
+          expect(body.data.{{ camelCase name }}?.id).toBe({{ camelCasePlural name }}[0].id);
+        });
+    });
+  });
+
+  describe('{{ camelCase name }}First', () => {
+    it('should be able to find {{ camelCase name }} by document using {{ camelCase name }}First query', async () => {
+      const query = print(gql`
+        query {{ pascalCase name }}First($where: {{ pascalCase name }}WhereInput) {
+          {{ camelCase name }}First(where: $where) {
+            id
+            {{#each fields}}
+              {{#unless isHideField}}
+                {{snakeCase name}}
+              {{/unless}}
+            {{/each}}
+          }
+        }
+      `);
+
+      const variables = {
+        where: {
+          id: { equals: {{ camelCasePlural name }}[0].id },
+        },
+      };
+
+      return request(app.getHttpServer() as string)
+        .post('/graphql')
+        .send({ query, variables })
+        .expect(200)
+        .expect(response => {
+          const body = response.body as {
+            data: { {{ camelCase name }}First: null | {{ pascalCase name }}ResponseDTO };
+          };
+
+          expect(body.data.{{ camelCase name }}First).toBeDefined();
+          expect(body.data.{{ camelCase name }}First?.id).toContain({{ camelCasePlural name }}[0].id);
+        });
+    });
+  });
+
+  describe('{{ camelCasePlural name }}Count', () => {
+    it('should return the total number of {{ camelCasePlural name }}', async () => {
+      const query = print(gql`
+        query Query {
+          {{ camelCasePlural name }}Count
+        }
+      `);
+
+      return request(app.getHttpServer() as string)
+        .post('/graphql')
+        .send({ query })
+        .expect(200)
+        .expect(response => {
+          const body = response.body as {
+            data: { {{ camelCasePlural name }}Count: number };
+          };
+
+          expect(body.data.{{ camelCasePlural name }}Count).toBe(1);
+        });
+    });
+  });
+
+  describe('{{ camelCasePlural name }}PaginationCursor', () => {
+    it('should return paginated {{ camelCasePlural name }} with pagination metadata', async () => {
+      const query = print(gql`
+        query {{ pascalCasePlural name }}PaginationCursor(
+          $after: String
+          $before: String
+          $first: Float
+          $last: Float
+          $order: {{ pascalCase name }}OrderByWithRelationInput
+          $where: {{ pascalCase name }}WhereInput
+        ) {
+          {{ camelCasePlural name }}PaginationCursor(
+            after: $after
+            before: $before
+            first: $first
+            last: $last
+            order: $order
+            where: $where
+          ) {
+            count
+            edges {
+              cursor
+              node {
+              id
+              {{#each fields}}
+                {{#unless isHideField}}
+                  {{snakeCase name}}
+                {{/unless}}
+              {{/each}}
+              }
+            }
+            pageInfo {
+              endCursor
+              hasNextPage
+              hasPreviousPage
+              startCursor
+            }
+            totalCount
+          }
+        }
+      `);
+
+      return request(app.getHttpServer() as string)
+        .post('/graphql')
+        .send({ query })
+        .expect(200)
+        .expect(response => {
+          const body = response.body as {
+            data: {
+              {{ camelCasePlural name }}PaginationCursor: {
+                count: number;
+                totalCount: number;
+                edges: {
+                  cursor: string;
+                  node: {{ pascalCase name }}ResponseDTO;
+                }[];
+                pageInfo: {
+                  hasNextPage: boolean;
+                  endCursor: null | string;
+                  hasPreviousPage: boolean;
+                  startCursor: null | string;
+                };
+              };
+            };
+          };
+
+          const result = body.data.{{ camelCasePlural name }}PaginationCursor;
+
+          expect(result).toBeDefined();
+          expect(result.count).toBeGreaterThan(0);
+          expect(result.totalCount).toBeGreaterThan(0);
+          expect(result.edges).toHaveLength(graphql{{ pascalCasePlural name }}.length);
+
+          for (const { node } of result.edges) {
+            expect(node).toHaveProperty('id');
+            expect(node).toHaveProperty('document');
+          }
+
+          expect(result.pageInfo).toHaveProperty('hasNextPage');
+          expect(result.pageInfo).toHaveProperty('hasPreviousPage');
+        });
+    });
+  });
+
+  describe('{{ camelCasePlural name }}PaginationOffset', () => {
+    it('should return paginated {{ camelCasePlural name }} with offset pagination metadata', async () => {
+      const query = print(gql`
+        query {{ pascalCasePlural name }}PaginationOffset(
+          $limit: Float
+          $order: {{ pascalCase name }}OrderByWithRelationInput
+          $page: Float
+          $where: {{ pascalCase name }}WhereInput
+        ) {
+          {{ camelCasePlural name }}PaginationOffset(
+            limit: $limit
+            order: $order
+            page: $page
+            where: $where
+          ) {
+            count
+            nodes {
+            id
+            {{#each fields}}
+              {{#unless isHideField}}
+                {{snakeCase name}}
+              {{/unless}}
+            {{/each}}
+            }
+            pageInfo {
+              currentPage
+              isFirstPage
+              isLastPage
+              nextPage
+              previousPage
+            }
+            totalCount
+          }
+        }
+      `);
+
+      const variables = {
+        page: 1,
+        limit: 10,
+        order: {},
+        where: {},
+      };
+
+      return request(app.getHttpServer() as string)
+        .post('/graphql')
+        .send({ query, variables })
+        .expect(200)
+        .expect(response => {
+          const body = response.body as {
+            data: {
+              {{ camelCasePlural name }}PaginationOffset: {
+                count: number;
+                totalCount: number;
+                nodes: {{ pascalCase name }}ResponseDTO[];
+                pageInfo: {
+                  currentPage: number;
+                  isLastPage: boolean;
+                  isFirstPage: boolean;
+                  nextPage: null | number;
+                  previousPage: null | number;
+                };
+              };
+            };
+          };
+
+          const result = body.data.{{ camelCasePlural name }}PaginationOffset;
+
+          expect(result).toBeDefined();
+          expect(result.count).toBeGreaterThan(0);
+          expect(result.totalCount).toBeGreaterThan(0);
+          expect(Array.isArray(result.nodes)).toBe(true);
+          expect(result.pageInfo).toHaveProperty('currentPage', 1);
+          expect(result.pageInfo).toHaveProperty('isFirstPage');
+          expect(result.pageInfo).toHaveProperty('isLastPage');
+        });
+    });
+  });
+});
+
+describe('GraphQL {{ pascalCase name }} Mutations (E2E)', () => {
+  let app: INestApplication;
+
+  beforeAll(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    })
+      .overrideProvider(PrismaService)
+      .useValue(mockPrismaService)
+      .overrideGuard(GraphQLAuthGuard)
+      .useValue({ canActivate: () => true })
+      .compile();
+
+    app = moduleFixture.createNestApplication();
+
+    app.useLogger(false);
+
+    await app.init();
+  });
+
+  afterAll(async () => {
+    await app.close();
+  });
+
+  describe('activate{{ pascalCase name }}', () => {
+    it('should be able to activate a {{ camelCase name }} by document using activate{{ pascalCase name }} mutation', async () => {
+      const query = print(gql`
+        mutation Activate{{ pascalCase name }}($where: {{ pascalCase name }}WhereUniqueInput) {
+          activate{{ pascalCase name }}(where: $where) {
+            id
+            {{#each fields}}
+              {{#unless isHideField}}
+                {{snakeCase name}}
+              {{/unless}}
+            {{/each}}
+          }
+        }
+      `);
+
+      const variables = {
+        where: {
+          id: {{ camelCasePlural name }}[0].id,
+        },
+      };
+
+      return request(app.getHttpServer() as string)
+        .post('/graphql')
+        .send({ query, variables })
+        .expect(200)
+        .expect(response => {
+          const body = response.body as {
+            data: { activate{{ pascalCase name }}: {{ pascalCase name }}ResponseDTO };
+          };
+
+          const activated{{ pascalCase name }} = body.data.activate{{ pascalCase name }};
+
+          expect(activated{{ pascalCase name }}).toBeDefined();
+          expect(activated{{ pascalCase name }}.id).toBe({{ camelCasePlural name }}[0].id);
+          expect(activated{{ pascalCase name }}.active).toBe(true);
+        });
+    });
+  });
+
+  describe('deactivate{{ pascalCase name }}', () => {
+    it('should be able to deactivate a {{ camelCase name }} by document using deactivate{{ pascalCase name }} mutation', async () => {
+      const query = print(gql`
+        mutation Deactivate{{ pascalCase name }}($where: {{ pascalCase name }}WhereUniqueInput) {
+          deactivate{{ pascalCase name }}(where: $where) {
+            id
+            {{#each fields}}
+              {{#unless isHideField}}
+                {{snakeCase name}}
+              {{/unless}}
+            {{/each}}
+          }
+        }
+      `);
+
+      const variables = {
+        where: {
+          id: {{ camelCasePlural name }}[0].id,
+        },
+      };
+
+      mockPrismaService.{{ camelCase name }}.findUnique.mockResolvedValueOnce({
+        ...prisma{{ pascalCasePlural name }}[0],
+        active: true,
+      });
+
+      mockPrismaService.{{ camelCase name }}.update.mockResolvedValueOnce({
+        ...prisma{{ pascalCasePlural name }}[0],
+        active: false,
+      });
+
+      const response = await request(app.getHttpServer() as string)
+        .post('/graphql')
+        .send({ query, variables })
+        .expect(200);
+
+      expect(response.body.data.deactivate{{ pascalCase name }}.active).toBe(false);
+      expect(response.body.data.deactivate{{ pascalCase name }}.id).toBe({{ camelCasePlural name }}[0].id);
+    });
+  });
+
+  describe('createMany{{ pascalCasePlural name }}', () => {
+    it('should be able to create many {{ camelCasePlural name }} using createMany{{ pascalCasePlural name }} mutation', async () => {
+      const query = print(gql`
+        mutation CreateMany{{ pascalCasePlural name }}(${{ camelCase name }}: [Create{{ pascalCase name }}Input!]!) {
+          createMany{{ pascalCasePlural name }}({{ camelCase name }}: ${{ camelCase name }}) {
+            id
+            {{#each fields}}
+              {{#unless isHideField}}
+                {{snakeCase name}}
+              {{/unless}}
+            {{/each}}
+          }
+        }
+      `);
+
+      const variables = {
+        {{ camelCase name }}: [
+          {
+            {{#each fields}}
+              {{#unless (or this.hasDefault (eq this.name "created_at") (eq this.name "updated_at"))}}
+                {{#unless this.isOptional}}
+                  {{snakeCase this.name}}:
+                  {{#if (eq this.type "string")}}
+                    {{#if (includes this.name "email")}}
+                      'example@example.com'
+                    {{else if (includes this.name "document")}}
+                      '12345678900'
+                    {{else}}
+                      'valid-{{snakeCase this.name}}'
+                    {{/if}}
+                  {{else if (eq this.type "number")}}
+                    123
+                  {{else if (eq this.type "boolean")}}
+                    true
+                  {{else if (eq this.type "Date")}}
+                    new Date()
+                  {{else}}
+                    'valid'
+                  {{/if}},
+                {{/unless}}
+              {{/unless}}
+            {{/each}}
+          },
+        ],
+      };
+
+      const new{{ pascalCase name }} = Prisma{{ pascalCase name }}Mapper.toPrisma(new {{ pascalCase name }}(variables.{{ camelCase name }}[0]));
+
+      mockPrismaService.{{ camelCase name }}.create.mockResolvedValueOnce(new{{ pascalCase name }});
+
+      mockPrismaService.{{ camelCase name }}.findUnique.mockResolvedValueOnce(null);
+
+      return request(app.getHttpServer() as string)
+        .post('/graphql')
+        .send({ query, variables })
+        .expect(200)
+        .expect(response => {
+          const body = response.body as {
+            data: { createMany{{ pascalCasePlural name }}: {{ pascalCase name }}ResponseDTO[] };
+          };
+
+          const created{{ pascalCase name }} = body.data.createMany{{ pascalCasePlural name }}[0];
+
+          expect(created{{ pascalCase name }}).toBeDefined();
+          {{#each fields}}
+            {{#unless (or this.hasDefault this.isOptional (or (eq this.name "created_at") (eq this.name "updated_at")) this.isHideField)}}
+              {{#if this.isEnum}}
+                expect(created{{ pascalCase ../name }}.{{snakeCase this.name}}).toBe('{{defaultValue}}');
+              {{else if (eq this.type "string")}}
+                {{#if (includes this.name "email")}}
+                  expect(created{{ pascalCase ../name }}.{{snakeCase this.name}}).toBe('example@example.com');
+                {{else if (includes this.name "document")}}
+                  expect(created{{ pascalCase ../name }}.{{snakeCase this.name}}).toBe('12345678900');
+                {{else}}
+                  expect(created{{ pascalCase ../name }}.{{snakeCase this.name}}).toBe('valid-{{snakeCase this.name}}');
+                {{/if}}
+              {{else if (eq this.type "number")}}
+                expect(created{{ pascalCase ../name }}.{{snakeCase this.name}}).toBe(123);
+              {{else if (eq this.type "boolean")}}
+                expect(created{{ pascalCase ../name }}.{{snakeCase this.name}}).toBe(true);
+              {{else if (eq this.type "Date")}}
+                expect(new Date(created{{ pascalCase ../name }}.{{snakeCase this.name}}).toISOString()).toBe(new Date('2024-01-01T00:00:00Z').toISOString());
+              {{else}}
+                expect(created{{ pascalCase ../name }}.{{snakeCase this.name}}).toBe('value');
+              {{/if}}
+            {{/unless}}
+          {{/each}}
+        });
+    });
+
+    it('should throw error if {{ camelCase name }} already exists', async () => {
+      const query = print(gql`
+        mutation CreateMany{{ pascalCasePlural name }}(${{ camelCase name }}: [Create{{ pascalCase name }}Input!]!) {
+          createMany{{ pascalCasePlural name }}({{ camelCase name }}: ${{ camelCase name }}) {
+            id
+            {{#each fields}}
+              {{#unless isHideField}}
+                {{snakeCase name}}
+              {{/unless}}
+            {{/each}}
+          }
+        }
+      `);
+
+      const variables = {
+        {{ camelCase name }}: [
+          {
+            {{#each fields}}
+              {{#unless (or this.hasDefault (eq this.name "created_at") (eq this.name "updated_at"))}}
+                {{#unless this.isOptional}}
+                  {{snakeCase this.name}}:
+                  {{#if (eq this.type "string")}}
+                    {{#if (includes this.name "email")}}
+                      'example@example.com'
+                    {{else if (includes this.name "document")}}
+                      '12345678900'
+                    {{else}}
+                      'valid-{{snakeCase this.name}}'
+                    {{/if}}
+                  {{else if (eq this.type "number")}}
+                    123
+                  {{else if (eq this.type "boolean")}}
+                    true
+                  {{else if (eq this.type "Date")}}
+                    new Date()
+                  {{else}}
+                    'valid'
+                  {{/if}},
+                {{/unless}}
+              {{/unless}}
+            {{/each}}
+          },
+        ],
+      };
+
+      const new{{ pascalCase name }} = Prisma{{ pascalCase name }}Mapper.toPrisma(new {{ pascalCase name }}(variables.{{ camelCase name }}[0]));
+
+      mockPrismaService.{{ camelCase name }}.create.mockResolvedValueOnce(new{{ pascalCase name }});
+
+      mockPrismaService.{{ camelCase name }}.findUnique.mockResolvedValueOnce(prisma{{ pascalCasePlural name }}[0]);
+
+      await request(app.getHttpServer() as string)
+        .post('/graphql')
+        .send({ query, variables })
+        .expect(200)
+        .expect(response => {
+          expect(response.body.errors[0].status).toBe(409);
+        });
+    });
+  });
+
+  describe('create{{ pascalCase name }}', () => {
+    it('should be able to create a {{ camelCase name }} using create{{ pascalCase name }} mutation', async () => {
+      const query = print(gql`
+        mutation Create{{ pascalCase name }}(${{ camelCase name }}: Create{{ pascalCase name }}Input!) {
+          create{{ pascalCase name }}({{ camelCase name }}: ${{ camelCase name }}) {
+            id
+            {{#each fields}}
+              {{#unless isHideField}}
+                {{snakeCase name}}
+              {{/unless}}
+            {{/each}}
+          }
+        }
+      `);
+
+      const variables = {
+        {{ camelCase name }}: {
+            {{#each fields}}
+              {{#unless (or this.hasDefault (eq this.name "created_at") (eq this.name "updated_at"))}}
+                {{#unless this.isOptional}}
+                  {{snakeCase this.name}}:
+                  {{#if (eq this.type "string")}}
+                    {{#if (includes this.name "email")}}
+                      'example@example.com'
+                    {{else if (includes this.name "document")}}
+                      '12345678900'
+                    {{else}}
+                      'valid-{{snakeCase this.name}}'
+                    {{/if}}
+                  {{else if (eq this.type "number")}}
+                    123
+                  {{else if (eq this.type "boolean")}}
+                    true
+                  {{else if (eq this.type "Date")}}
+                    new Date()
+                  {{else}}
+                    'valid'
+                  {{/if}},
+                {{/unless}}
+              {{/unless}}
+            {{/each}}
+        },
+      };
+
+      const new{{ pascalCase name }} = Prisma{{ pascalCase name }}Mapper.toPrisma(new {{ pascalCase name }}(variables.{{ camelCase name }}));
+
+      mockPrismaService.{{ camelCase name }}.create.mockResolvedValueOnce(new{{ pascalCase name }});
+
+      mockPrismaService.{{ camelCase name }}.findUnique.mockResolvedValueOnce(null);
+
+      return request(app.getHttpServer() as string)
+        .post('/graphql')
+        .send({ query, variables })
+        .expect(200)
+        .expect(response => {
+          const body = response.body as {
+            data: {
+              create{{ pascalCase name }}: {{ pascalCase name }}ResponseDTO;
+            };
+          };
+
+          const {{ camelCase name }} = body.data.create{{ pascalCase name }};
+
+          expect({{ camelCase name }}).toBeDefined();
+          {{#each fields}}
+            {{#unless (or this.hasDefault this.isOptional (or (eq this.name "created_at") (eq this.name "updated_at")) this.isHideField)}}
+              {{#if this.isEnum}}
+                expect({{ camelCase ../name }}.{{snakeCase this.name}}).toBe('{{defaultValue}}');
+              {{else if (eq this.type "string")}}
+                {{#if (includes this.name "email")}}
+                  expect({{ camelCase ../name }}.{{snakeCase this.name}}).toBe('example@example.com');
+                {{else if (includes this.name "document")}}
+                  expect({{ camelCase ../name }}.{{snakeCase this.name}}).toBe('12345678900');
+                {{else}}
+                  expect({{ camelCase ../name }}.{{snakeCase this.name}}).toBe('valid-{{snakeCase this.name}}');
+                {{/if}}
+              {{else if (eq this.type "number")}}
+                expect({{ camelCase ../name }}.{{snakeCase this.name}}).toBe(123);
+              {{else if (eq this.type "boolean")}}
+                expect({{ camelCase ../name }}.{{snakeCase this.name}}).toBe(true);
+              {{else if (eq this.type "Date")}}
+                expect(new Date({{ camelCase ../name }}.{{snakeCase this.name}}).toISOString()).toBe(new Date('2024-01-01T00:00:00Z').toISOString());
+              {{else}}
+                expect({{ camelCase ../name }}.{{snakeCase this.name}}).toBe('value');
+              {{/if}}
+            {{/unless}}
+          {{/each}}
+        });
+    });
+
+    it('should throw error if {{ camelCase name }} already exists', async () => {
+      const query = print(gql`
+        mutation CreateMany{{ pascalCasePlural name }}(${{ camelCase name }}: [Create{{ pascalCase name }}Input!]!) {
+          createMany{{ pascalCasePlural name }}({{ camelCase name }}: ${{ camelCase name }}) {
+            id
+            {{#each fields}}
+              {{#unless isHideField}}
+                {{snakeCase name}}
+              {{/unless}}
+            {{/each}}
+          }
+        }
+      `);
+
+      const variables = {
+        {{ camelCase name }}: {
+            {{#each fields}}
+              {{#unless (or this.hasDefault (eq this.name "created_at") (eq this.name "updated_at"))}}
+                {{#unless this.isOptional}}
+                  {{snakeCase this.name}}:
+                  {{#if (eq this.type "string")}}
+                    {{#if (includes this.name "email")}}
+                      'example@example.com'
+                    {{else if (includes this.name "document")}}
+                      '12345678900'
+                    {{else}}
+                      'valid-{{snakeCase this.name}}'
+                    {{/if}}
+                  {{else if (eq this.type "number")}}
+                    123
+                  {{else if (eq this.type "boolean")}}
+                    true
+                  {{else if (eq this.type "Date")}}
+                    new Date()
+                  {{else}}
+                    'valid'
+                  {{/if}},
+                {{/unless}}
+              {{/unless}}
+            {{/each}}
+        },
+      };
+
+      const new{{ pascalCase name }} = Prisma{{ pascalCase name }}Mapper.toPrisma(new {{ pascalCase name }}(variables.{{ camelCase name }}));
+
+      mockPrismaService.{{ camelCase name }}.create.mockResolvedValueOnce(new{{ pascalCase name }});
+
+      mockPrismaService.{{ camelCase name }}.findUnique.mockResolvedValueOnce(prisma{{ pascalCasePlural name }}[0]);
+
+      await request(app.getHttpServer() as string)
+        .post('/graphql')
+        .send({ query, variables })
+        .expect(200)
+        .expect(response => {
+          expect(response.body.errors[0].status).toBe(409);
+        });
+    });
+  });
+
+  describe('update{{ pascalCase name }}', () => {
+    it('should be able to update a {{ camelCase name }} using update{{ pascalCase name }} mutation', async () => {
+      const query = print(gql`
+        mutation Update{{ pascalCase name }}(${{ camelCase name }}: Update{{ pascalCase name }}Input!) {
+          update{{ pascalCase name }}({{ camelCase name }}: ${{ camelCase name }}) {
+            id
+            {{#each fields}}
+              {{#unless isHideField}}
+                {{snakeCase name}}
+              {{/unless}}
+            {{/each}}
+          }
+        }
+      `);
+
+      const variables = {
+        {{ camelCase name }}: {
+          where: {
+            id: {{ camelCasePlural name }}[0].id,
+          },
+          data: {
+            {{#each fields}}
+              {{#unless (or this.hasDefault (eq this.name "created_at") (eq this.name "updated_at"))}}
+                {{#unless this.isOptional}}
+                  {{snakeCase this.name}}:
+                  {{#if (eq this.type "string")}}
+                    {{#if (includes this.name "email")}}
+                      'updated@example.com'
+                    {{else if (includes this.name "document")}}
+                      '98765432100'
+                    {{else}}
+                      'updated-{{snakeCase this.name}}'
+                    {{/if}}
+                  {{else if (eq this.type "number")}}
+                    456
+                  {{else if (eq this.type "boolean")}}
+                    false
+                  {{else if (eq this.type "Date")}}
+                    new Date('2025-01-01T00:00:00Z')
+                  {{else}}
+                    'updated-value'
+                  {{/if}},
+                {{/unless}}
+              {{/unless}}
+            {{/each}}
+          },
+        },
+      };
+
+      mockPrismaService.{{ camelCase name }}.findUnique.mockResolvedValueOnce(prisma{{ pascalCasePlural name }}[0]);
+
+      mockPrismaService.{{ camelCase name }}.update.mockResolvedValueOnce({
+        ...prisma{{ pascalCasePlural name }}[0],
+        {{#each fields}}
+          {{#unless (or this.hasDefault (or (eq this.name "created_at") (eq this.name "updated_at")))}}
+            {{#unless this.isOptional}}
+              {{snakeCase this.name}}:
+              {{#if (eq this.type "string")}}
+                {{#if (includes this.name "email")}}
+                  'updated@example.com',
+                {{else if (includes this.name "document")}}
+                  '98765432100',
+                {{else}}
+                  'updated-{{snakeCase this.name}}',
+                {{/if}}
+              {{else if (eq this.type "number")}}
+                456,
+              {{else if (eq this.type "boolean")}}
+                false,
+              {{else if (eq this.type "Date")}}
+                new Date('2025-01-01T00:00:00Z'),
+              {{else}}
+                'updated-value',
+              {{/if}}
+            {{/unless}}
+          {{/unless}}
+        {{/each}}
+      });
+
+      const response = await request(app.getHttpServer() as string)
+        .post('/graphql')
+        .send({ query, variables })
+        .expect(200);
+
+      const updated{{ pascalCase name }} = response.body.data.update{{ pascalCase name }};
+
+      expect(updated{{ pascalCase name }}.id).toBe({{ camelCasePlural name }}[0].id);
+      {{#each fields}}
+        {{#unless (or this.isHideField this.hasDefault (or (eq this.name "created_at") (eq this.name "updated_at")))}}
+          {{#unless this.isOptional}}
+            expect(updated{{ pascalCase ../name }}.{{snakeCase this.name}}).toBe(
+              {{#if (eq this.type "string")}}
+                {{#if (includes this.name "email")}}
+                  'updated@example.com'
+                {{else if (includes this.name "document")}}
+                  '98765432100'
+                {{else}}
+                  'updated-{{snakeCase this.name}}'
+                {{/if}}
+              {{else if (eq this.type "number")}}
+                456
+              {{else if (eq this.type "boolean")}}
+                false
+              {{else if (eq this.type "Date")}}
+                new Date('2025-01-01T00:00:00Z')
+              {{else}}
+                'updated-value'
+              {{/if}}
+            );
+        {{/unless}}
+      {{/unless}}
+    {{/each}}
+    });
+  });
+
+  describe('updateMany{{ pascalCasePlural name }}', () => {
+    it('should be able to update many {{ camelCasePlural name }} using updateMany{{ pascalCasePlural name }} mutation', async () => {
+      const query = print(gql`
+        mutation UpdateMany{{ pascalCasePlural name }}(${{ camelCasePlural name }}: [Update{{ pascalCase name }}Input!]!) {
+          updateMany{{ pascalCasePlural name }}({{ camelCasePlural name }}: ${{ camelCasePlural name }}) {
+            id
+            {{#each fields}}
+              {{#unless isHideField}}
+                {{snakeCase name}}
+              {{/unless}}
+            {{/each}}
+          }
+        }
+      `);
+
+      const variables = {
+        {{ camelCasePlural name }}: [
+          {
+            where: {
+              id: {{ camelCasePlural name }}[0].id,
+            },
+            data: {
+              {{#each fields}}
+                {{#unless (or this.hasDefault (eq this.name "created_at") (eq this.name "updated_at"))}}
+                  {{#unless this.isOptional}}
+                    {{snakeCase this.name}}:
+                    {{#if (eq this.type "string")}}
+                      {{#if (includes this.name "email")}}
+                        'updated@example.com'
+                      {{else if (includes this.name "document")}}
+                        '98765432100'
+                      {{else}}
+                        'updated-{{snakeCase this.name}}'
+                      {{/if}}
+                    {{else if (eq this.type "number")}}
+                      456
+                    {{else if (eq this.type "boolean")}}
+                      false
+                    {{else if (eq this.type "Date")}}
+                      new Date('2025-01-01T00:00:00Z')
+                    {{else}}
+                      'updated-value'
+                    {{/if}},
+                  {{/unless}}
+                {{/unless}}
+              {{/each}}
+            },
+          },
+        ],
+      };
+
+      mockPrismaService.{{ camelCase name }}.findUnique.mockResolvedValueOnce(prisma{{ pascalCasePlural name }}[0]);
+
+      mockPrismaService.{{ camelCase name }}.update.mockResolvedValueOnce({
+        ...prisma{{ pascalCasePlural name }}[0],
+        {{#each fields}}
+          {{#unless (or this.hasDefault (or (eq this.name "created_at") (eq this.name "updated_at")))}}
+            {{#unless this.isOptional}}
+              {{snakeCase this.name}}:
+              {{#if (eq this.type "string")}}
+                {{#if (includes this.name "email")}}
+                  'updated@example.com',
+                {{else if (includes this.name "document")}}
+                  '98765432100',
+                {{else}}
+                  'updated-{{snakeCase this.name}}',
+                {{/if}}
+              {{else if (eq this.type "number")}}
+                456,
+              {{else if (eq this.type "boolean")}}
+                false,
+              {{else if (eq this.type "Date")}}
+                new Date('2025-01-01T00:00:00Z'),
+              {{else}}
+                'updated-value',
+              {{/if}}
+            {{/unless}}
+          {{/unless}}
+        {{/each}}
+      });
+
+      const response = await request(app.getHttpServer() as string)
+        .post('/graphql')
+        .send({ query, variables })
+        .expect(200);
+
+      const updated{{ pascalCasePlural name }} = response.body.data.updateMany{{ pascalCasePlural name }};
+
+      expect(Array.isArray(updated{{ pascalCasePlural name }})).toBe(true);
+      {{#each fields}}
+        {{#unless (or this.isHideField this.hasDefault (or (eq this.name "created_at") (eq this.name "updated_at")))}}
+          {{#unless this.isOptional}}
+            expect(updated{{ pascalCasePlural ../name }}[0].{{snakeCase this.name}}).toBe(
+              {{#if (eq this.type "string")}}
+                {{#if (includes this.name "email")}}
+                  'updated@example.com'
+                {{else if (includes this.name "document")}}
+                  '98765432100'
+                {{else}}
+                  'updated-{{snakeCase this.name}}'
+                {{/if}}
+              {{else if (eq this.type "number")}}
+                456
+              {{else if (eq this.type "boolean")}}
+                false
+              {{else if (eq this.type "Date")}}
+                new Date('2025-01-01T00:00:00Z')
+              {{else}}
+                'updated-value'
+              {{/if}}
+            );
+        {{/unless}}
+      {{/unless}}
+    {{/each}}
+    });
+  });
+
+  describe('delete{{ pascalCase name }}', () => {
+    it('should be able to delete a {{ camelCase name }} using delete{{ pascalCase name }} mutation', async () => {
+      const query = print(gql`
+        mutation Delete{{ pascalCase name }}(${{ camelCase name }}: Delete{{ pascalCase name }}Input!) {
+          delete{{ pascalCase name }}({{ camelCase name }}: ${{ camelCase name }}) {
+            id
+            {{#each fields}}
+              {{#unless isHideField}}
+                {{snakeCase name}}
+              {{/unless}}
+            {{/each}}
+          }
+        }
+      `);
+
+      const variables = {
+        {{ camelCase name }}: {
+          where: {
+            id: {{ camelCasePlural name }}[0].id,
+          },
+        },
+      };
+
+      mockPrismaService.{{ camelCase name }}.findUnique.mockResolvedValueOnce(prisma{{ pascalCasePlural name }}[0]);
+
+      mockPrismaService.{{ camelCase name }}.update.mockResolvedValueOnce({
+        ...prisma{{ pascalCasePlural name }}[0],
+        active: false,
+      });
+
+      const response = await request(app.getHttpServer() as string)
+        .post('/graphql')
+        .send({ query, variables })
+        .expect(200);
+
+      const deleted{{ pascalCase name }} = response.body.data.delete{{ pascalCase name }};
+
+      expect(deleted{{ pascalCase name }}.id).toBe({{ camelCasePlural name }}[0].id);
+    });
+  });
+
+  describe('deleteMany{{ pascalCasePlural name }}', () => {
+    it('should be able to delete many {{ camelCasePlural name }} using deleteMany{{ pascalCasePlural name }} mutation', async () => {
+      const query = print(gql`
+        mutation DeleteMany{{ pascalCasePlural name }}(${{ camelCasePlural name }}: [Delete{{ pascalCase name }}Input!]!) {
+          deleteMany{{ pascalCasePlural name }}({{ camelCasePlural name }}: ${{ camelCasePlural name }}) {
+            id
+            {{#each fields}}
+              {{#unless isHideField}}
+                {{snakeCase name}}
+              {{/unless}}
+            {{/each}}
+          }
+        }
+      `);
+
+      const variables = {
+        {{ camelCasePlural name }}: [
+          {
+            where: { id: {{ camelCasePlural name }}[0].id },
+          },
+        ],
+      };
+
+      mockPrismaService.{{ camelCase name }}.findUnique.mockResolvedValueOnce(prisma{{ pascalCasePlural name }}[0]);
+
+      mockPrismaService.{{ camelCase name }}.update.mockResolvedValueOnce({
+        ...prisma{{ pascalCasePlural name }}[0],
+        active: false,
+      });
+
+      const response = await request(app.getHttpServer() as string)
+        .post('/graphql')
+        .send({ query, variables })
+        .expect(200);
+
+      expect(response.body.data.deleteMany{{ pascalCasePlural name }}).toHaveLength(1);
+      expect(response.body.data.deleteMany{{ pascalCasePlural name }}[0].id).toBe(
+        {{ camelCasePlural name }}[0].id,
+      );
+    });
+  });
+});

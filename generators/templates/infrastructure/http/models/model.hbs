@@ -13,7 +13,7 @@ import { PageInfoOffset } from 'infrastructure/http/graphql/pagination/page-info
 
 {{#each fields}}
 {{#if this.isEnum}}
-import { {{pascalCase this.type}} } from 'infrastructure/http/graphql/generated/prisma/{{dashCase this.type}}.enum';
+import { {{pascalCase this.type}} } from 'infrastructure/http/graphql/generated/prisma/{{kebabCase this.type}}.enum';
 {{/if}}
 {{/each}}
 
