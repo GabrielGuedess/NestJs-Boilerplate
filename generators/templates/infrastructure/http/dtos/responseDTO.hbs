@@ -1,6 +1,6 @@
 {{#each fields}}
 {{#if this.isEnum}}
-import { type {{pascalCase this.name}}Props } from 'domain/entities/{{camelCase ../name}}/{{pascalCase ../name}}';
+import { type {{pascalCase this.type}}Props } from 'domain/entities/{{camelCase ../name}}/{{pascalCase ../name}}';
 {{/if}}
 {{/each}}
 
@@ -9,7 +9,7 @@ export abstract class {{pascalCase name}}ResponseDTO {
   {{#each fields}}
     {{#unless isHideField}}
       {{#if isEnum}}
-        {{snakeCase name}}: {{pascalCase name}}Props;
+        {{snakeCase name}}: {{pascalCase this.type}}Props;
       {{else if (and isOptional (not hasDefault))}}
         {{snakeCase name}}?: {{type}};
       {{else}}

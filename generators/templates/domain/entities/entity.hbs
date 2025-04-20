@@ -6,7 +6,7 @@ import { NotificationError } from 'domain/shared/notification/NotificationError'
 
 {{#each fields}}
   {{#if this.isEnum}}
-    export type {{pascalCase this.name}}Props =
+    export type {{pascalCase this.type}}Props =
       {{#each enumType}}
         '{{this}}'{{#unless @last}} | {{/unless}}
       {{/each}};
@@ -16,7 +16,7 @@ import { NotificationError } from 'domain/shared/notification/NotificationError'
 interface I{{pascalCase name}} {
   {{#each fields}}
     {{#if this.isEnum}}
-      {{snakeCase this.name}}: {{pascalCase this.name}}Props;
+      {{snakeCase this.name}}: {{pascalCase this.type}}Props;
     {{else}}
       {{#if this.isOptional}}
         {{snakeCase this.name}}?: {{this.type}};
@@ -38,7 +38,7 @@ constructor(
     {
       {{#each fields}}
         {{#if this.isEnum}}
-          {{snakeCase this.name}}?: {{pascalCase this.name}}Props;
+          {{snakeCase this.name}}?: {{pascalCase this.type}}Props;
         {{else if this.hasDefault}}
           {{snakeCase this.name}}?: {{this.type}};
         {{/if}}
@@ -97,11 +97,11 @@ constructor(
 
 {{#each fields}}
   {{#if this.isEnum}}
-    public set {{camelCase this.name}}({{snakeCase this.name}}: {{pascalCase this.name}}Props) {
+    public set {{camelCase this.name}}({{snakeCase this.name}}: {{pascalCase this.type}}Props) {
       this.props.{{snakeCase this.name}} = {{snakeCase this.name}};
     }
 
-    public get {{camelCase this.name}}(): {{pascalCase this.name}}Props {
+    public get {{camelCase this.name}}(): {{pascalCase this.type}}Props {
       return this.props.{{snakeCase this.name}};
     }
   {{else}}
