@@ -75,35 +75,25 @@ constructor(
   }
 
   private validate() {
-  {{#each fields}}
-    {{#unless isOptional}}
-      {{#unless hasDefault}}
-        {{#if (eq type 'string')}}
-          if (
-            this.props.{{name}} === undefined ||
-            this.props.{{name}} === null ||
-            this.props.{{name}}.trim() === ''
-          ) {
-            this.notification.addError({
-              context: '{{snakeCase ../name}}',
-              message: '{{name}} is required!',
-            });
-          }
-        {{else}}
-          if (
-            this.props.{{name}} === undefined ||
-            this.props.{{name}} === null
-          ) {
-            this.notification.addError({
-              context: '{{snakeCase ../name}}',
-              message: '{{name}} is required!',
-            });
-          }
-        {{/if}}
+    {{#each fields}}
+      {{#unless isOptional}}
+        {{#unless hasDefault}}
+          {{#if (eq type 'string')}}
+            if (
+              this.props.{{name}} === undefined ||
+              this.props.{{name}} === null ||
+              this.props.{{name}}.trim() === ''
+            ) {
+              this.notification.addError({
+                context: '{{snakeCase ../name}}',
+                message: '{{name}} is required!',
+              });
+            }
+          {{/if}}
+        {{/unless}}
       {{/unless}}
-    {{/unless}}
-  {{/each}}
-  }
+    {{/each}}
+}
 
 {{#each fields}}
   {{#if this.isEnum}}

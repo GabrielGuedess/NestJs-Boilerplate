@@ -13,7 +13,7 @@ import { PageInfoOffset } from 'infrastructure/http/graphql/pagination/page-info
 
 {{#each fields}}
 {{#if this.isEnum}}
-import { {{pascalCase this.name}} } from 'infrastructure/http/graphql/generated/prisma/{{snakeCase this.name}}.enum';
+import { {{pascalCase this.type}} } from 'infrastructure/http/graphql/generated/prisma/{{dashCase this.type}}.enum';
 {{/if}}
 {{/each}}
 
@@ -25,8 +25,8 @@ export class {{ pascalCase name }}Model implements {{ pascalCase name }}Response
 {{#each fields}}
   {{#unless this.isHideField}}
     {{#if this.isEnum}}
-  @Field(() => {{pascalCase this.name}})
-  {{snakeCase this.name}}: {{pascalCase this.name}};
+  @Field(() => {{pascalCase this.type}})
+  {{snakeCase this.name}}: {{pascalCase this.type}};
 
     {{else if (and this.isOptional (not this.hasDefault))}}
   @Field(() => {{mapTypeToGraphQLClass this.type}}, { nullable: true })

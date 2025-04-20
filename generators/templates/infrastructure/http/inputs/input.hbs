@@ -3,13 +3,16 @@ import { Field, InputType, PartialType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import { GraphQLUUID } from 'graphql-scalars';
 import { ValidateNested } from 'class-validator';
+{{#if (some fields "type" "Date")}}
+import { GraphQLDateTimeISO } from 'graphql-scalars';
+{{/if}}
 
 import { type {{ pascalCase name }}RequestDTO } from 'infrastructure/http/dtos/{{ camelCase name }}/{{ pascalCase name }}RequestDTO';
 import { AtLeastOneField } from 'infrastructure/http/decorators/at-least-one-field.decorator';
 
 {{#each fields}}
 {{#if this.isEnum}}
-import { {{pascalCase this.name}} } from 'infrastructure/http/graphql/generated/prisma/{{snakeCase this.name}}.enum';
+import { {{pascalCase this.type}} } from 'infrastructure/http/graphql/generated/prisma/{{dashCase this.type}}.enum';
 {{/if}}
 {{/each}}
 
@@ -34,8 +37,8 @@ export class Create{{pascalCase name}}Input implements {{pascalCase name}}Reques
   {{#each fields}}
     {{#unless (or (eq this.name "created_at") (eq this.name "updated_at") (eq this.name "active"))}}
       {{#if this.isEnum}}
-  @Field(() => {{pascalCase this.name}}, { nullable: true })
-  {{snakeCase this.name}}?: {{pascalCase this.name}};
+  @Field(() => {{pascalCase this.type}}, { nullable: true })
+  {{snakeCase this.name}}?: {{pascalCase this.type}};
 
       {{else}}
         {{#if this.isOptional}}

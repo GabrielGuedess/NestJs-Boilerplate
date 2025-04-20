@@ -38,7 +38,7 @@ describe('Update {{ pascalCase name }}', () => {
         {{#each fields}}
           {{#if (and (not (eq this.name "id")) (not (eq this.name "created_at")) (not (eq this.name "updated_at")))}}
             {{#if @first}}
-              {{ camelCase name }}: new{{ pascalCase name }},
+              {{ snakeCase name }}: new{{ pascalCase name }},
             {{/if}}
           {{/if}}
         {{/each}}

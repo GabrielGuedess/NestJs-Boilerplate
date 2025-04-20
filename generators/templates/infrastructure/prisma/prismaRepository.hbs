@@ -88,7 +88,17 @@ export class Prisma{{ pascalCase name }}Repository implements {{ pascalCase name
 
   async create({{ camelCase name }}: {{ pascalCase name }}): Promise<{{ pascalCase name }}> {
     const {{ camelCase name }}Exist = await this.prisma.{{ camelCase name }}.findUnique({
-      where: { document: {{ camelCase name }}.document },
+      where: {
+        {{#if (some fields "isUnique")}}
+          {{#each fields}}
+            {{#if isUnique}}
+              {{snakeCase name}}: {{../camelCase name}}.{{camelCase name}},
+            {{/if}}
+          {{/each}}
+        {{else}}
+          id: {{camelCase name}}.id,
+        {{/if}}
+     },
     });
 
     if ({{ camelCase name }}Exist) {
@@ -175,7 +185,17 @@ export class Prisma{{ pascalCase name }}Repository implements {{ pascalCase name
     await Promise.all(
       {{ camelCasePlural name }}.map(async {{ camelCase name }} => {
         const {{ camelCase name }}Exist = await this.prisma.{{ camelCase name }}.findUnique({
-          where: { document: {{ camelCase name }}.document },
+          where: {
+            {{#if (some fields "isUnique")}}
+              {{#each fields}}
+                {{#if isUnique}}
+                  {{snakeCase name}}: {{../camelCase name}}.{{camelCase name}},
+                {{/if}}
+              {{/each}}
+            {{else}}
+              id: {{camelCase name}}.id,
+            {{/if}}
+           },
         });
 
         if ({{ camelCase name }}Exist) {

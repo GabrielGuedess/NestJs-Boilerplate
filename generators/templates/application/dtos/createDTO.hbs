@@ -5,17 +5,17 @@ import { type {{pascalCase this.name}}Props } from 'domain/entities/{{camelCase 
 {{/each}}
 
 export abstract class Create{{ pascalCase name }}UseCaseRequestDTO {
-  {{#each fields}}
-   {{#unless (or (eq this.name "created_at") (eq this.name "updated_at") (eq this.name "active"))}}
+{{#each fields}}
+  {{#unless (or (eq this.name "created_at") (eq this.name "updated_at") (eq this.name "active"))}}
     {{#if this.isEnum}}
       {{snakeCase this.name}}?: {{pascalCase this.name}}Props;
     {{else}}
-      {{#if this.isOptional}}
+      {{#if (or this.isOptional this.hasDefault)}}
         {{snakeCase this.name}}?: {{this.type}};
       {{else}}
         {{snakeCase this.name}}: {{this.type}};
       {{/if}}
     {{/if}}
-    {{/unless}}
-  {{/each}}
+  {{/unless}}
+{{/each}}
 }

@@ -22,7 +22,11 @@ describe('{{pascalCase name}}', () => {
         {{else if (eq this.defaultValue 'now(')}}
     expect({{camelCase ../name}}.{{camelCase this.name}}).toBeInstanceOf(Date);
         {{else}}
+      {{#if this.isEnum}}
+    expect({{camelCase ../name}}.{{camelCase this.name}}).toBe('{{this.defaultValue}}');
+      {{else}}
     expect({{camelCase ../name}}.{{camelCase this.name}}).toBe({{{this.defaultValue}}});
+      {{/if}}
         {{/if}}
       {{/if}}
     {{/each}}
@@ -30,11 +34,24 @@ describe('{{pascalCase name}}', () => {
 
   it('should be able to set and get props {{dashCase name}} with entity', () => {
     const {{camelCase name}} = new {{pascalCase name}}({
-      {{#each fields}}
-        {{#unless (or (eq this.name "created_at") (eq this.name "updated_at") (eq this.name "active"))}}
-          {{snakeCase this.name}}: {{#if (eq this.type "string")}}'test-{{snakeCase this.name}}'{{else if (eq this.type "number")}}123{{else if (eq this.type "boolean")}}true{{else if (eq this.type "Date")}}new Date(){{else}}'test'{{/if}},
-        {{/unless}}
-      {{/each}}
+    {{#each fields}}
+      {{#unless (or (eq this.name "created_at") (eq this.name "updated_at") (eq this.name "active"))}}
+        {{snakeCase this.name}}:
+          {{#if this.isEnum}}
+            '{{this.defaultValue}}'
+          {{else if (eq this.type "string")}}
+            'test-{{snakeCase this.name}}'
+          {{else if (eq this.type "number")}}
+            123
+          {{else if (eq this.type "boolean")}}
+            true
+          {{else if (eq this.type "Date")}}
+            new Date()
+          {{else}}
+            'test'
+          {{/if}},
+      {{/unless}}
+    {{/each}}
     });
 
     expect({{camelCase name}}.id).toBeTruthy();
@@ -45,21 +62,40 @@ describe('{{pascalCase name}}', () => {
     // Test setters
     {{#each fields}}
       {{#unless (or (eq this.name "id") (eq this.name "created_at"))}}
-        {{#if (eq this.type "string")}}
+        {{#if this.isEnum}}
+          {{#if (gt (length this.enumType) 0)}}
+            {{#each this.enumType}}
+              {{#unless (eq this ../defaultValue)}}
+                {{camelCase ../../name}}.{{camelCase ../name}} = '{{this}}';
+                expect({{camelCase ../../name}}.{{camelCase ../name}}).toBe('{{this}}');
+                {{break}}
+              {{/unless}}
+            {{/each}}
+          {{else}}
+            {{camelCase ../name}}.{{camelCase this.name}} = '{{this.defaultValue}}';
+            expect({{camelCase ../name}}.{{camelCase this.name}}).toBe('{{this.defaultValue}}');
+            {{break}}
+          {{/if}}
+        {{else if (eq this.type "string")}}
           {{camelCase ../name}}.{{camelCase this.name}} = 'new-{{snakeCase this.name}}';
           expect({{camelCase ../name}}.{{camelCase this.name}}).toBe('new-{{snakeCase this.name}}');
+          {{break}}
         {{else if (eq this.type "number")}}
           {{camelCase ../name}}.{{camelCase this.name}} = 456;
           expect({{camelCase ../name}}.{{camelCase this.name}}).toBe(456);
+          {{break}}
         {{else if (eq this.type "boolean")}}
           {{camelCase ../name}}.{{camelCase this.name}} = false;
           expect({{camelCase ../name}}.{{camelCase this.name}}).toBe(false);
+          {{break}}
         {{else if (eq this.type "Date")}}
           {{camelCase ../name}}.{{camelCase this.name}} = new Date('2000-01-01');
           expect({{camelCase ../name}}.{{camelCase this.name}}).toStrictEqual(new Date('2000-01-01'));
+          {{break}}
         {{else}}
           {{camelCase ../name}}.{{camelCase this.name}} = 'new-value';
           expect({{camelCase ../name}}.{{camelCase this.name}}).toBe('new-value');
+          {{break}}
         {{/if}}
       {{/unless}}
     {{/each}}
@@ -73,7 +109,20 @@ describe('{{pascalCase name}}', () => {
             {{snakeCase this.name}}: '',
           {{else}}
             {{#unless (or (eq this.name "created_at") (eq this.name "updated_at") (eq this.name "active"))}}
-              {{snakeCase this.name}}: {{#if (eq this.type "string")}}''{{else if (eq this.type "number")}}0{{else if (eq this.type "boolean")}}false{{else if (eq this.type "Date")}}new Date(){{else}}''{{/if}},
+              {{snakeCase this.name}}:
+                {{#if this.isEnum}}
+                  '{{this.defaultValue}}'
+                {{else if (eq this.type "string")}}
+                  ''
+                {{else if (eq this.type "number")}}
+                  0
+                {{else if (eq this.type "boolean")}}
+                  false
+                {{else if (eq this.type "Date")}}
+                  new Date()
+                {{else}}
+                  ''
+                {{/if}},
             {{/unless}}
           {{/if}}
         {{/each}}
