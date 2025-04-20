@@ -1,3 +1,10 @@
+## [1.4.3](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.4.2...v1.4.3) (2025-04-20)
+
+
+### Bug Fixes
+
+* add default value in where ([901cfb6](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/901cfb6ed4289ed86272ca8b38ee6ac531e7c326))
+
 ## [1.4.2](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.4.1...v1.4.2) (2025-04-20)
 
 
