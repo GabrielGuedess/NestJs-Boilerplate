@@ -1,3 +1,11 @@
+## [1.4.2](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.4.1...v1.4.2) (2025-04-20)
+
+
+### Bug Fixes
+
+* change name enums plop ([e7846bb](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/e7846bb977990a67688cf87b234d55633b6d6872))
+* remove extra model prisma ([0360a33](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/0360a33400121c717bd33855716576ae69d826fb))
+
 ## [1.4.1](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.4.0...v1.4.1) (2025-04-20)
 
 
