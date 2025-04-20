@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.4.0...v1.4.1) (2025-04-20)
+
+
+### Bug Fixes
+
+* add new options in plop ([990f0ec](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/990f0ec243659dea615ca1001a96dcb00660631a))
+
 # [1.4.0](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.3.0...v1.4.0) (2025-04-19)
 
 
