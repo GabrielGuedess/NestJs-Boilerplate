@@ -1,3 +1,10 @@
+## [1.5.3](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.2...v1.5.3) (2025-04-20)
+
+
+### Bug Fixes
+
+* fix import plop ([f8bf280](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/f8bf28003b17aff6b216930303e44c3e8d3f61bf))
+
 ## [1.5.2](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.1...v1.5.2) (2025-04-20)
 
 
