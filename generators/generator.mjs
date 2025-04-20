@@ -3,6 +3,8 @@ import { readFileSync } from 'node:fs';
 const parseModels = (schema) => {
   const modelRegex = /model (\w+) {([\S\s]*?)^}/gm;
 
+  const modelNames = [...schema.matchAll(/model (\w+) {/g)].map(([, name]) => name);
+
   const models = [];
   let match;
 
@@ -16,7 +18,6 @@ const parseModels = (schema) => {
     for (let i = 0; i < rawLines.length; i++) {
       const currentLine = rawLines[i].trim();
 
-      // Ignorar comentários, anotações e metadados
       if (
         !currentLine ||
         currentLine.startsWith('@') ||
@@ -34,6 +35,11 @@ const parseModels = (schema) => {
 
       const name = parts[0];
       const type = parts[1];
+
+      const cleanType = type.replace('?', '').replace('[]', '');
+      const isRelation = modelNames.includes(cleanType);
+      if (isRelation) continue;
+
       const isUnique = currentLine.includes('@unique');
       const isObjectId = currentLine.includes('@db.ObjectId');
       const hasDefault = currentLine.includes('@default');
@@ -50,10 +56,10 @@ const parseModels = (schema) => {
           .replace(/false/, 'false');
       }
 
-      const isEnum = schema.includes(`enum ${type}`);
+      const isEnum = schema.includes(`enum ${cleanType}`);
       let enumType = [];
       if (isEnum) {
-        const enumRegex = new RegExp(`enum ${type} \\{([\\S\\s]+?)\\}`, 'g');
+        const enumRegex = new RegExp(`enum ${cleanType} \\{([\\S\\s]+?)\\}`, 'g');
         const enumMatch = enumRegex.exec(schema);
         if (enumMatch) {
           enumType = enumMatch[1]
