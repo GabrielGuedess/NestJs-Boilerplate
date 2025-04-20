@@ -1,3 +1,10 @@
+## [1.4.4](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.4.3...v1.4.4) (2025-04-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @keyv/redis to v4.3.4 ([#268](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/268)) ([6cde8e5](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/6cde8e5e676299e08657424223aeff1c291c1209))
+
 ## [1.4.3](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.4.2...v1.4.3) (2025-04-20)
 
 
