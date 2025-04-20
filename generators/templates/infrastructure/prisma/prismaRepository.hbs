@@ -124,19 +124,19 @@ export class Prisma{{ pascalCase name }}Repository implements {{ pascalCase name
   ): Promise<OffsetPagination<{{ pascalCase name }}>> {
     const [{{ camelCasePlural name }}, pageInfo] = await this.prisma.prismaExtended.{{ camelCase name }}
       .paginate({
-        where: parameters.where,
-        orderBy: parameters.order,
+        where: parameters.where ?? {},
+        orderBy: parameters.order ?? {},
       })
       .withPages({
-        page: parameters.page,
         includePageCount: true,
+        page: parameters.page ?? 1,
         limit: parameters?.limit ?? 10,
       });
 
     const nodes = {{ camelCasePlural name }}.map({{ camelCase name }} => new {{ pascalCase name }}({{ camelCase name }}, {{ camelCase name }}.id));
 
     const totalCount = await this.prisma.{{ camelCase name }}.count({
-      where: parameters.where,
+      where: parameters.where ?? {},
     });
 
     return {
@@ -419,8 +419,8 @@ export class Prisma{{ pascalCase name }}Repository implements {{ pascalCase name
       args =>
         this.prisma.{{ camelCase name }}.findMany({
           ...args,
-          where: parameters.where,
           orderBy: parameters.order,
+          where: parameters.where ?? {},
         }),
       () => this.prisma.{{ camelCase name }}.count(),
       {

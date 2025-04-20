@@ -114,19 +114,19 @@ export class PrismaUserRepository implements UserRepository {
   ): Promise<OffsetPagination<User>> {
     const [users, pageInfo] = await this.prisma.prismaExtended.user
       .paginate({
-        where: parameters.where,
-        orderBy: parameters.order,
+        where: parameters.where ?? {},
+        orderBy: parameters.order ?? {},
       })
       .withPages({
-        page: parameters.page,
         includePageCount: true,
+        page: parameters.page ?? 1,
         limit: parameters?.limit ?? 10,
       });
 
     const nodes = users.map(user => new User(user, user.id));
 
     const totalCount = await this.prisma.user.count({
-      where: parameters.where,
+      where: parameters.where ?? {},
     });
 
     return {
@@ -399,8 +399,8 @@ export class PrismaUserRepository implements UserRepository {
       args =>
         this.prisma.user.findMany({
           ...args,
-          where: parameters.where,
           orderBy: parameters.order,
+          where: parameters.where ?? {},
         }),
       () => this.prisma.user.count(),
       {

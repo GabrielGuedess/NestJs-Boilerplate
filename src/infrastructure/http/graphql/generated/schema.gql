@@ -171,7 +171,7 @@ type Query {
   users(order: UserOrderByWithRelationInput, where: UserWhereInput): [UserModel!]!
   usersCount(where: UserWhereInput): Float!
   usersPaginationCursor(after: String, before: String, first: Float, last: Float, order: UserOrderByWithRelationInput, where: UserWhereInput): UsersCursorConnection!
-  usersPaginationOffset(limit: Float = 10, order: UserOrderByWithRelationInput, page: Float, where: UserWhereInput): UsersOffsetConnection!
+  usersPaginationOffset(limit: Float = 10, order: UserOrderByWithRelationInput, page: Float = 1, where: UserWhereInput): UsersOffsetConnection!
 }
 
 enum QueryMode {

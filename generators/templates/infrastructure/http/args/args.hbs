@@ -78,7 +78,7 @@ export class Pagination{{ pascalCasePlural name }}CursorArgs {
 
 @ArgsType()
 export class Pagination{{ pascalCasePlural name }}OffsetArgs {
-  @Field(() => Number, { nullable: true })
+  @Field(() => Number, { nullable: true, defaultValue: 1 })
   @IsOptional()
   page?: number;
 
