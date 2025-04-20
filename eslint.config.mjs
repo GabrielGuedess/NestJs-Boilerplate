@@ -33,6 +33,7 @@ const config = [
   {
     ignores: [
       'dist',
+      'docs',
       '**/coverage',
       'node_modules',
       '**/generator.mjs',
@@ -741,7 +742,27 @@ const config = [
   },
 
   {
-    files: ['**/decorators/**/*.ts', '**/pagination/**/*.ts'],
+    rules: {
+      'unicorn/filename-case': [
+        'error',
+        {
+          case: 'kebabCase',
+        },
+      ],
+    },
+
+    files: [
+      '**/args/**/*.ts',
+      '**/inputs/**/*.ts',
+      '**/models/**/*.ts',
+      '**/decorators/**/*.ts',
+      '**/pagination/**/*.ts',
+      '**/resolvers/**/*.ts',
+    ],
+  },
+
+  {
+    files: ['test/e2e/*.ts'],
 
     rules: {
       'unicorn/filename-case': [
