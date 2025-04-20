@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.0...v1.5.1) (2025-04-20)
+
+
+### Bug Fixes
+
+* change isOptional plop request ([9806c8b](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/9806c8b5a20ab594778ef3a19469afff16777703))
+
 # [1.5.0](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.4.4...v1.5.0) (2025-04-20)
 
 
