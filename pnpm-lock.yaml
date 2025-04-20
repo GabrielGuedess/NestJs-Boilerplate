@@ -19,7 +19,7 @@ importers:
         version: 3.1.2(@prisma/client@6.6.0(prisma@6.6.0(typescript@5.8.3))(typescript@5.8.3))
       '@keyv/redis':
         specifier: ^4.3.3
-        version: 4.3.3
+        version: 4.3.4(keyv@5.3.2)
       '@nestjs/apollo':
         specifier: ^13.1.0
         version: 13.1.0(@apollo/gateway@2.9.0(encoding@0.1.13)(graphql@16.10.0))(@apollo/server@4.12.0(encoding@0.1.13)(graphql@16.10.0))(@nestjs/common@11.0.20(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.20)(@nestjs/graphql@13.1.0(@nestjs/common@11.0.20(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.20)(class-transformer@0.5.1)(class-validator@0.14.1)(graphql@16.10.0)(reflect-metadata@0.2.2)(ts-morph@23.0.0))(graphql@16.10.0)
@@ -1551,9 +1551,11 @@ packages:
       typescript:
         optional: true
 
-  '@keyv/redis@4.3.3':
-    resolution: {integrity: sha512-J/uhvKu/Qfh11yMUs+9KdcGCLmWFd3vMxtDVQh2j9cOcnrpnM5jE1xU+K1/kI89czSVEdeMyqTC9gGNtwi3JEQ==}
+  '@keyv/redis@4.3.4':
+    resolution: {integrity: sha512-PLWmawfq9McxEvtHa2Uj5WjI7g6qWtv2eOvXvXJ9tkwEV5vLkqA+pFeZ/0pz9xvP20NQiAkGm4521YJ0DhuFiw==}
     engines: {node: '>= 18'}
+    peerDependencies:
+      keyv: ^5.3.3
 
   '@keyv/serialize@1.0.3':
     resolution: {integrity: sha512-qnEovoOp5Np2JDGonIDL6Ayihw0RhnRh6vxPuHo4RDn1UOzwEo4AeIfpL6UGIrsceWrCMiVPgwRjbHu4vYFc3g==}
@@ -11032,7 +11034,7 @@ snapshots:
       eslint-config-airbnb: 19.0.4(eslint-plugin-import@2.31.0)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.25.0(jiti@2.4.2)))(eslint-plugin-react-hooks@5.2.0(eslint@9.25.0(jiti@2.4.2)))(eslint-plugin-react@7.37.5(eslint@9.25.0(jiti@2.4.2)))(eslint@9.25.0(jiti@2.4.2))
       typescript: 5.8.3
 
-  '@keyv/redis@4.3.3':
+  '@keyv/redis@4.3.4(keyv@5.3.2)':
     dependencies:
       cluster-key-slot: 1.1.2
       keyv: 5.3.2
