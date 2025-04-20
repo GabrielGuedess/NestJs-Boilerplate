@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.1...v1.5.2) (2025-04-20)
+
+
+### Bug Fixes
+
+* remove relations in generator ([94e0959](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/94e09591a92df4ad610ad6fed14eddab6afa881b))
+
 ## [1.5.1](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.0...v1.5.1) (2025-04-20)
 
 
