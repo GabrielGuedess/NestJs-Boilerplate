@@ -10,7 +10,7 @@ export abstract class {{pascalCase name}}RequestDTO {
     {{#if this.isEnum}}
       {{snakeCase this.name}}?: {{pascalCase this.type}}Props;
     {{else}}
-      {{#if this.isOptional}}
+      {{#if (or this.isOptional this.hasDefault)}}
         {{snakeCase this.name}}?: {{this.type}};
       {{else}}
         {{snakeCase this.name}}: {{this.type}};

@@ -46,7 +46,7 @@ const graphql{{ pascalCasePlural name }} = {{ camelCasePlural name }}.map({{ cam
   id: {{ camelCase name }}.id,
   {{#each fields}}
     {{#unless isHideField}}
-      {{#if (eq this.type "Date")}}
+      {{#if (and (eq this.type "Date") (not this.isOptional) (or this.required this.hasDefault))}}
         {{snakeCase this.name}}: new Date({{camelCase ../name}}.{{camelCase this.name}}).toISOString(),
       {{else}}
         {{snakeCase this.name}}: {{camelCase ../name}}.{{camelCase this.name}},
@@ -142,7 +142,7 @@ describe('GraphQL {{ pascalCase name }} Queries (E2E)', () => {
   });
 
   describe('{{ camelCase name }}', () => {
-    it('should be able to find {{ camelCase name }} by document using {{ camelCase name }} query', async () => {
+    it('should be able to find {{ camelCase name }} by id using {{ camelCase name }} query', async () => {
       const query = print(gql`
         query {{ pascalCase name }}($where: {{ pascalCase name }}WhereUniqueInput) {
           {{ camelCase name }}(where: $where) {
@@ -178,7 +178,7 @@ describe('GraphQL {{ pascalCase name }} Queries (E2E)', () => {
   });
 
   describe('{{ camelCase name }}First', () => {
-    it('should be able to find {{ camelCase name }} by document using {{ camelCase name }}First query', async () => {
+    it('should be able to find {{ camelCase name }} by id using {{ camelCase name }}First query', async () => {
       const query = print(gql`
         query {{ pascalCase name }}First($where: {{ pascalCase name }}WhereInput) {
           {{ camelCase name }}First(where: $where) {
@@ -310,7 +310,6 @@ describe('GraphQL {{ pascalCase name }} Queries (E2E)', () => {
 
           for (const { node } of result.edges) {
             expect(node).toHaveProperty('id');
-            expect(node).toHaveProperty('document');
           }
 
           expect(result.pageInfo).toHaveProperty('hasNextPage');
@@ -423,7 +422,7 @@ describe('GraphQL {{ pascalCase name }} Mutations (E2E)', () => {
   });
 
   describe('activate{{ pascalCase name }}', () => {
-    it('should be able to activate a {{ camelCase name }} by document using activate{{ pascalCase name }} mutation', async () => {
+    it('should be able to activate a {{ camelCase name }} by id using activate{{ pascalCase name }} mutation', async () => {
       const query = print(gql`
         mutation Activate{{ pascalCase name }}($where: {{ pascalCase name }}WhereUniqueInput) {
           activate{{ pascalCase name }}(where: $where) {
@@ -462,7 +461,7 @@ describe('GraphQL {{ pascalCase name }} Mutations (E2E)', () => {
   });
 
   describe('deactivate{{ pascalCase name }}', () => {
-    it('should be able to deactivate a {{ camelCase name }} by document using deactivate{{ pascalCase name }} mutation', async () => {
+    it('should be able to deactivate a {{ camelCase name }} by id using deactivate{{ pascalCase name }} mutation', async () => {
       const query = print(gql`
         mutation Deactivate{{ pascalCase name }}($where: {{ pascalCase name }}WhereUniqueInput) {
           deactivate{{ pascalCase name }}(where: $where) {

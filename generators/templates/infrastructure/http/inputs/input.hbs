@@ -41,7 +41,7 @@ export class Create{{pascalCase name}}Input implements {{pascalCase name}}Reques
   {{snakeCase this.name}}?: {{pascalCase this.type}};
 
       {{else}}
-        {{#if this.isOptional}}
+        {{#if (or this.isOptional this.hasDefault)}}
   @Field(() => {{mapTypeToGraphQLClass this.type}}, { nullable: true })
   {{snakeCase this.name}}?: {{this.type}};
 
