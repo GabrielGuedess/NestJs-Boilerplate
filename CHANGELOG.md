@@ -1,3 +1,10 @@
+## [1.5.4](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.3...v1.5.4) (2025-04-20)
+
+
+### Bug Fixes
+
+* command watch ([34c4410](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/34c4410572c497af25b0f565636e055657af79a4))
+
 ## [1.5.3](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.2...v1.5.3) (2025-04-20)
 
 
