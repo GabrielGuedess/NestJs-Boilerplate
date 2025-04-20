@@ -255,17 +255,6 @@ const config = [
         },
       ],
 
-      'prefer-arrow-functions/prefer-arrow-functions': [
-        'error',
-        {
-          singleReturnOnly: false,
-          disallowPrototype: false,
-          returnStyle: 'unchanged',
-          allowNamedFunctions: false,
-          classPropertiesAllowed: false,
-        },
-      ],
-
       'no-secrets/no-secrets': [
         'error',
         {
@@ -275,8 +264,18 @@ const config = [
             'decorators.*',
             'validation.*',
             'repositories.*',
-            'UserOrderByWithRelationInput',
           ],
+        },
+      ],
+
+      'prefer-arrow-functions/prefer-arrow-functions': [
+        'error',
+        {
+          singleReturnOnly: false,
+          disallowPrototype: false,
+          returnStyle: 'unchanged',
+          allowNamedFunctions: false,
+          classPropertiesAllowed: false,
         },
       ],
 
@@ -770,6 +769,14 @@ const config = [
           case: 'kebabCase',
         },
       ],
+    },
+  },
+
+  {
+    files: ['test/e2e/*.ts'],
+
+    rules: {
+      'no-secrets/no-secrets': 'off',
     },
   },
 ];

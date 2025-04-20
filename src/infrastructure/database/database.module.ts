@@ -12,12 +12,19 @@ import { PrismaAuthRepository } from 'infrastructure/database/prisma/repositorie
   exports: [AuthRepository, UserRepository],
 
   providers: [
+    // JWT
     JwtService,
+
+    // Prisma
     PrismaService,
+
+    // Auth
     {
       provide: AuthRepository,
       useClass: PrismaAuthRepository,
     },
+
+    // User
     {
       provide: UserRepository,
       useClass: PrismaUserRepository,
