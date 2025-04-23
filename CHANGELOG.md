@@ -1,3 +1,10 @@
+## [1.5.7](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.6...v1.5.7) (2025-04-23)
+
+
+### Bug Fixes
+
+* plop ([51d4a77](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/51d4a773dac6ab715f1596970cfcc3555d81c439))
+
 ## [1.5.6](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.5...v1.5.6) (2025-04-23)
 
 
