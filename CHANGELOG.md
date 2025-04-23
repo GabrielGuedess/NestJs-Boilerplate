@@ -1,3 +1,10 @@
+## [1.5.5](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.4...v1.5.5) (2025-04-23)
+
+
+### Bug Fixes
+
+* regex plop http module ([843f29b](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/843f29b8ccb0257e698347d520ab1c8d0290e7e1))
+
 ## [1.5.4](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.3...v1.5.4) (2025-04-20)
 
 
