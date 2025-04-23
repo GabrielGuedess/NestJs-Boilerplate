@@ -64,6 +64,8 @@ export class AppError extends Error {
     statusCode: StatusCode;
   }) {
     super(message);
+
+    this.message = message;
     this.statusCode = statusCode;
     this.extensions = { code: statusCode };
   }
