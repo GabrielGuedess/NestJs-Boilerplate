@@ -1,3 +1,11 @@
+## [1.5.8](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.7...v1.5.8) (2025-04-23)
+
+
+### Bug Fixes
+
+* app error ([456547d](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/456547d9c334a72316dcfce2e515c02897768882))
+* remove swc ([f8e25ea](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/f8e25ea9976e30ed2a253a41d495a494ec3c445c))
+
 ## [1.5.7](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.6...v1.5.7) (2025-04-23)
 
 
