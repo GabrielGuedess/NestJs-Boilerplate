@@ -4,8 +4,6 @@
   "sourceRoot": "src",
   "entryFile": "infrastructure/main",
   "compilerOptions": {
-    "builder": "swc",
-    "typeCheck": true,
     "deleteOutDir": true,
     "assets": [
       {
