@@ -1,7 +1,7 @@
 import { type INestApplication } from '@nestjs/common';
 import { Test, type TestingModule } from '@nestjs/testing';
 
-import { hash } from 'bcrypt';
+import { hash } from 'bcryptjs';
 import { print } from 'graphql';
 import request from 'supertest';
 import { gql } from 'apollo-server-express';

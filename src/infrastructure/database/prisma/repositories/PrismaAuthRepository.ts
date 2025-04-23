@@ -3,7 +3,7 @@ import { I18nService } from 'nestjs-i18n';
 import { Injectable } from '@nestjs/common';
 
 import dayjs from 'dayjs';
-import { compare } from 'bcrypt';
+import { compare } from 'bcryptjs';
 import { I18nTranslations } from '@root/i18n/generated';
 
 import { AuthRepository } from 'domain/repositories/AuthRepository';
