@@ -242,7 +242,7 @@ import { PaginationOffset${pluralPascal}UseCase } from 'application/useCases/${c
 
     fileContent = fileContent.replace(importRegex, `${importBlock}\n$&`);
 
-    const providersRegex = /(\/\/ User[\s\S]+?PrismaHealthIndicator,)/;
+    const providersRegex = /(\/\/ Prisma[\s\S]+?PrismaHealthIndicator,)/;
 
     if (!providersRegex.test(fileContent)) {
       throw new Error('Providers insertion point not found');
