@@ -193,11 +193,11 @@ const plopConfig = (/** @type {import('plop').NodePlopAPI} */ plop) => {
 
     const pascalName = plopInstance.getHelper('pascalCase')(name);
     const camelName = plopInstance.getHelper('camelCase')(name);
-    const snakeName = plopInstance.getHelper('snakeCase')(name);
+    const kebabName = plopInstance.getHelper('kebabCase')(name);
     const pluralPascal = plopInstance.getHelper('pascalCase')(pluralize(name));
 
     const importBlock = `
-import { ${pascalName}Resolver } from 'infrastructure/http/graphql/resolvers/${snakeName}.resolver';
+import { ${pascalName}Resolver } from 'infrastructure/http/graphql/resolvers/${kebabName}.resolver';
 import { Count${pluralPascal}UseCase } from 'application/useCases/${camelName}/count${pluralPascal}/Count${pluralPascal}UseCase';
 import { Update${pascalName}UseCase } from 'application/useCases/${camelName}/update${pascalName}/Update${pascalName}UseCase';
 import { Delete${pascalName}UseCase } from 'application/useCases/${camelName}/delete${pascalName}/Delete${pascalName}UseCase';
