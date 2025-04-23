@@ -1,3 +1,10 @@
+## [1.5.9](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.8...v1.5.9) (2025-04-23)
+
+
+### Bug Fixes
+
+* add bcryptjs ([cc73e83](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/cc73e8307a01e5caca19508486be228f8631e039))
+
 ## [1.5.8](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.7...v1.5.8) (2025-04-23)
 
 
