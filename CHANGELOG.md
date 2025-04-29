@@ -1,3 +1,10 @@
+## [1.5.10](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.9...v1.5.10) (2025-04-29)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @aws-sdk/client-s3 to v3.798.0 ([#280](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/280)) ([85002e4](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/85002e4bf347ca6844c7e767fc9e163e31f3e90c))
+
 ## [1.5.9](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.8...v1.5.9) (2025-04-23)
 
 
