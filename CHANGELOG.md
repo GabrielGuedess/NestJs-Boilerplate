@@ -1,3 +1,10 @@
+## [1.5.11](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.10...v1.5.11) (2025-05-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency class-validator to v0.14.2 ([#287](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/287)) ([bb1b784](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/bb1b784e87420cc22f85145a2ba1a0dbc27bc8ef))
+
 ## [1.5.10](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.9...v1.5.10) (2025-04-29)
 
 
