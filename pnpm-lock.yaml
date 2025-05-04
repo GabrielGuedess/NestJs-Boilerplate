@@ -19,7 +19,7 @@ importers:
         version: 3.1.2(@prisma/client@6.7.0(prisma@6.7.0(typescript@5.8.3))(typescript@5.8.3))
       '@keyv/redis':
         specifier: ^4.3.3
-        version: 4.3.4(keyv@5.3.2)
+        version: 4.4.0(keyv@5.3.2)
       '@nestjs/apollo':
         specifier: ^13.1.0
         version: 13.1.0(@apollo/gateway@2.9.0(encoding@0.1.13)(graphql@16.11.0))(@apollo/server@4.12.0(encoding@0.1.13)(graphql@16.11.0))(@nestjs/common@11.1.0(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.0)(@nestjs/graphql@13.1.0(@nestjs/common@11.1.0(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.0)(class-transformer@0.5.1)(class-validator@0.14.2)(graphql@16.11.0)(reflect-metadata@0.2.2)(ts-morph@23.0.0))(graphql@16.11.0)
@@ -1564,8 +1564,8 @@ packages:
       typescript:
         optional: true
 
-  '@keyv/redis@4.3.4':
-    resolution: {integrity: sha512-PLWmawfq9McxEvtHa2Uj5WjI7g6qWtv2eOvXvXJ9tkwEV5vLkqA+pFeZ/0pz9xvP20NQiAkGm4521YJ0DhuFiw==}
+  '@keyv/redis@4.4.0':
+    resolution: {integrity: sha512-n/KEj3S7crVkoykggqsMUtcjNGvjagGPlJYgO/r6m9hhGZfhp1txJElHxcdJ1ANi/LJoBuOSILj15g6HD2ucqQ==}
     engines: {node: '>= 18'}
     peerDependencies:
       keyv: ^5.3.3
@@ -10762,11 +10762,11 @@ snapshots:
       eslint-config-airbnb: 19.0.4(eslint-plugin-import@2.31.0)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.26.0(jiti@2.4.2)))(eslint-plugin-react-hooks@5.2.0(eslint@9.26.0(jiti@2.4.2)))(eslint-plugin-react@7.37.5(eslint@9.26.0(jiti@2.4.2)))(eslint@9.26.0(jiti@2.4.2))
       typescript: 5.8.3
 
-  '@keyv/redis@4.3.4(keyv@5.3.2)':
+  '@keyv/redis@4.4.0(keyv@5.3.2)':
     dependencies:
+      '@redis/client': 1.6.0
       cluster-key-slot: 1.1.2
       keyv: 5.3.2
-      redis: 4.7.0
 
   '@keyv/serialize@1.0.3':
     dependencies:
@@ -11324,6 +11324,7 @@ snapshots:
   '@redis/bloom@1.2.0(@redis/client@1.6.0)':
     dependencies:
       '@redis/client': 1.6.0
+    optional: true
 
   '@redis/client@1.6.0':
     dependencies:
@@ -11334,18 +11335,22 @@ snapshots:
   '@redis/graph@1.1.1(@redis/client@1.6.0)':
     dependencies:
       '@redis/client': 1.6.0
+    optional: true
 
   '@redis/json@1.0.7(@redis/client@1.6.0)':
     dependencies:
       '@redis/client': 1.6.0
+    optional: true
 
   '@redis/search@1.2.0(@redis/client@1.6.0)':
     dependencies:
       '@redis/client': 1.6.0
+    optional: true
 
   '@redis/time-series@1.1.0(@redis/client@1.6.0)':
     dependencies:
       '@redis/client': 1.6.0
+    optional: true
 
   '@rtsao/scc@1.1.0': {}
 
@@ -17925,6 +17930,7 @@ snapshots:
       '@redis/json': 1.0.7(@redis/client@1.6.0)
       '@redis/search': 1.2.0(@redis/client@1.6.0)
       '@redis/time-series': 1.1.0(@redis/client@1.6.0)
+    optional: true
 
   reflect-metadata@0.2.2: {}
 
