@@ -1,7 +1,7 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Query, Mutation, Resolver } from '@nestjs/graphql';
 
-import { GraphQLUpload } from 'graphql-upload-minimal';
+import { GraphQLUpload } from 'graphql-upload-ts';
 
 import { FileUploadDTO } from 'domain/shared/dtos/FileUploadDTO';
 import { RelayPagination } from 'domain/shared/dtos/RelayPagination';

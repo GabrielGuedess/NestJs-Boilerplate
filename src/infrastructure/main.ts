@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { I18nValidationPipe } from 'nestjs-i18n';
 
 import colors from 'colors';
-import { graphqlUploadExpress } from 'graphql-upload-minimal';
+import { graphqlUploadExpress } from 'graphql-upload-ts';
 
 import { env } from 'infrastructure/env';
 import { AppModule } from 'infrastructure/app.module';
