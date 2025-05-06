@@ -35,7 +35,7 @@ services:
 
   redis:
     container_name: redis_nestjs_boilerplate
-    image: redis:7.4-alpine
+    image: redis:8.0-alpine
     env_file:
       - .env
     networks:
