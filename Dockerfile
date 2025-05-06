@@ -1,5 +1,5 @@
 # BASE
-FROM node:22.14-alpine AS base
+FROM node:22.15-alpine AS base
 
 RUN npm install -g pnpm
 WORKDIR /usr/src/app
@@ -29,7 +29,7 @@ RUN pnpm prisma generate
 USER node
 
 # PRODUCTION
-FROM node:22.14-alpine AS production
+FROM node:22.15-alpine AS production
 
 WORKDIR /usr/src/app
 
