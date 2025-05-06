@@ -1,4 +1,4 @@
-import { type User as RawUser } from '@prisma/client';
+import { type User as RawUser } from '@root/prisma/generated/prisma/client';
 
 import { User } from 'domain/entities/user/User';
 

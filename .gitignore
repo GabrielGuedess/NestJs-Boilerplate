@@ -38,6 +38,9 @@ tsconfig.build.tsbuildinfo
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# Prisma
+prisma/generated
+
 # Env
 .env
 .env.development

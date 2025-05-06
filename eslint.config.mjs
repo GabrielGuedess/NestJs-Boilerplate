@@ -657,7 +657,7 @@ const config = [
 
     files: [
       'plopfile.mjs',
-      'jest.config.ts',
+      '**/jest.config.ts',
       'jest.config.husky.ts',
       'commitlint.config.ts',
     ],

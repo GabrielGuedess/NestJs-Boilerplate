@@ -1,7 +1,7 @@
 import { Injectable, type OnModuleInit } from '@nestjs/common';
 
-import { PrismaClient } from '@prisma/client';
 import { pagination } from 'prisma-extension-pagination';
+import { PrismaClient } from '@root/prisma/generated/prisma/client';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {

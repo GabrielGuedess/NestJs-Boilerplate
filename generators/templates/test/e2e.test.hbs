@@ -636,10 +636,6 @@ describe('GraphQL {{ pascalCase name }} Mutations (E2E)', () => {
         ],
       };
 
-      const new{{ pascalCase name }} = Prisma{{ pascalCase name }}Mapper.toPrisma(new {{ pascalCase name }}(variables.{{ camelCase name }}[0]));
-
-      mockPrismaService.{{ camelCase name }}.create.mockResolvedValueOnce(new{{ pascalCase name }});
-
       mockPrismaService.{{ camelCase name }}.findUnique.mockResolvedValueOnce(prisma{{ pascalCasePlural name }}[0]);
 
       await request(app.getHttpServer() as string)
@@ -744,8 +740,8 @@ describe('GraphQL {{ pascalCase name }} Mutations (E2E)', () => {
 
     it('should throw error if {{ camelCase name }} already exists', async () => {
       const query = print(gql`
-        mutation CreateMany{{ pascalCasePlural name }}(${{ camelCase name }}: [Create{{ pascalCase name }}Input!]!) {
-          createMany{{ pascalCasePlural name }}({{ camelCase name }}: ${{ camelCase name }}) {
+        mutation Create{{ pascalCase name }}(${{ camelCase name }}: Create{{ pascalCaase name }}Input!) {
+          create{{ pascalCase name }}({{ camelCase name }}: ${{ camelCase name }}) {
             id
             {{#each fields}}
               {{#unless isHideField}}
@@ -784,10 +780,6 @@ describe('GraphQL {{ pascalCase name }} Mutations (E2E)', () => {
             {{/each}}
         },
       };
-
-      const new{{ pascalCase name }} = Prisma{{ pascalCase name }}Mapper.toPrisma(new {{ pascalCase name }}(variables.{{ camelCase name }}));
-
-      mockPrismaService.{{ camelCase name }}.create.mockResolvedValueOnce(new{{ pascalCase name }});
 
       mockPrismaService.{{ camelCase name }}.findUnique.mockResolvedValueOnce(prisma{{ pascalCasePlural name }}[0]);
 

@@ -1,3 +1,3 @@
 {
-  "ignore": "main.ts|app.module.ts|shared|validators|generated|commitlint.config.ts|jest.config.husky.ts|AwsUploaderProvider.ts"
+  "ignore": "main.ts|app.module.ts|shared|validators|generated|commitlint.config.ts|jest.config.ts|jest.config.husky.ts|AwsUploaderProvider.ts"
 }

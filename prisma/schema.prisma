@@ -1,5 +1,6 @@
 generator client {
   provider      = "prisma-client-js"
+  output        = "generated/prisma/client"
   binaryTargets = ["native", "debian-openssl-3.0.x", "linux-musl", "linux-musl-openssl-3.0.x"]
 }
 
@@ -15,6 +16,7 @@ generator nestgraphql {
   fields_Validator_from                 = "class-validator"
   useInputType_WhereInput_ALL           = "WhereInput"
   fields_Scalars_from                   = "graphql-scalars"
+  prismaClientImport                    = "@root/prisma/generated/prisma/client"
   fields_Scalars_input                  = true
   fields_Scalars_output                 = true
   output                                = "../src/infrastructure/http/graphql/generated"
@@ -55,7 +57,7 @@ model User {
   updated_at DateTime @default(now()) @updatedAt
 
   /// @HideField({ input: true, output: true })
-  password     String
+  password String
 
   @@map("users")
 }
