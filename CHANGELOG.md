@@ -1,3 +1,10 @@
+## [1.5.14](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.13...v1.5.14) (2025-05-06)
+
+
+### Bug Fixes
+
+* add deadcode and new prisma import ([3b9c843](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/3b9c843df994a375419bc30c0d5c660152632bdc))
+
 ## [1.5.13](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.12...v1.5.13) (2025-05-05)
 
 
