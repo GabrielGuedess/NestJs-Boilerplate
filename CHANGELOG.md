@@ -1,3 +1,9 @@
+## 1.6.0 (2025-05-09)
+
+* feat: add knip ([ad43956](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/ad43956))
+* chore: command e2e ([811fddf](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/811fddf))
+* chore(deps): update dependency @types/node to v22.15.17 (#292) ([f449908](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/f449908)), closes [#292](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/292)
+
 ## [1.5.14](https://github.com/GabrielGuedess/NestJs-Boilerplate/compare/v1.5.13...v1.5.14) (2025-05-06)
 
 
