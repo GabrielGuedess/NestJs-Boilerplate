@@ -1,1 +1,2 @@
+pnpm deadcode || exit 1
 npx --no-install lint-staged

@@ -1,11 +1,9 @@
-import js from '@eslint/js';
 import globals from 'globals';
 import zod from 'eslint-plugin-zod';
 import jest from 'eslint-plugin-jest';
 import unicorn from 'eslint-plugin-unicorn';
 import promise from 'eslint-plugin-promise';
 import prettier from 'eslint-plugin-prettier';
-import { FlatCompat } from '@eslint/eslintrc';
 import importPlugin from 'eslint-plugin-import';
 import noSecrets from 'eslint-plugin-no-secrets';
 import tsParser from '@typescript-eslint/parser';
@@ -17,28 +15,18 @@ import hexagonalArchitecture from 'eslint-plugin-hexagonal-architecture';
 import noRelativeImportPaths from 'eslint-plugin-no-relative-import-paths';
 import comments from '@eslint-community/eslint-plugin-eslint-comments/configs';
 
-const compat = new FlatCompat({
-  allConfig: js.configs.all,
-  baseDirectory: import.meta.dirname,
-  recommendedConfig: js.configs.recommended,
-});
-
 const config = [
   comments.recommended,
-
-  ...compat.extends('airbnb'),
-  ...compat.extends('@kesills/airbnb-typescript'),
-  ...compat.extends('@kesills/airbnb-typescript'),
 
   {
     ignores: [
       'dist',
       'docs',
-      '**/coverage',
+      'coverage',
       'node_modules',
-      '**/generator.mjs',
-      '**/plopfile.mjs',
       '**/generated/**',
+      '**/plopfile.mjs',
+      '**/generator.mjs',
     ],
   },
 
@@ -657,10 +645,20 @@ const config = [
 
     files: [
       'plopfile.mjs',
+      'knip.config.ts',
       '**/jest.config.ts',
+      'release.config.mjs',
       'jest.config.husky.ts',
       'commitlint.config.ts',
     ],
+  },
+
+  {
+    files: ['release.config.mjs'],
+
+    rules: {
+      'no-template-curly-in-string': 'off',
+    },
   },
 
   {

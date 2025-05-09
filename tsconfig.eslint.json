@@ -3,9 +3,12 @@
   "extends": "./tsconfig.json",
   "include": [
     "*.ts",
+    "*.mjs",
     ".jest/*.ts",
     "src/**/*.ts",
     "test/**/*.ts",
-    "eslint.config.mjs"
+    "scripts/**/*.ts",
+    "eslint.config.mjs",
+    "release.config.mjs"
   ]
 }

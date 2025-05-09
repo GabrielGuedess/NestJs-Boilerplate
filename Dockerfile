@@ -1,8 +1,10 @@
 # BASE
 FROM node:22.14-alpine AS base
 
-RUN npm install -g pnpm
+RUN npm install -g pnpm@10.10.0
+
 WORKDIR /usr/src/app
+
 COPY --chown=node:node pnpm-lock.yaml package.json ./
 
 # DEVELOPMENT
