@@ -1,6 +1,6 @@
 import { type UserConfig, RuleConfigSeverity } from '@commitlint/types';
 
-const configuration: UserConfig = {
+const config: UserConfig = {
   formatter: '@commitlint/format',
   parserPreset: 'conventional-changelog-atom',
   extends: ['@commitlint/config-conventional'],
@@ -148,4 +148,4 @@ const configuration: UserConfig = {
   },
 };
 
-export default configuration;
+export default config;

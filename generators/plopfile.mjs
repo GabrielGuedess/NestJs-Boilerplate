@@ -16,7 +16,7 @@ import { parsePrismaSchema } from "./generator.mjs"
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const plopConfig = (/** @type {import('plop').NodePlopAPI} */ plop) => {
+const config = (/** @type {import('plop').NodePlopAPI} */ plop) => {
   handlebars.registerHelper(helpers());
 
   // snake_case
@@ -912,4 +912,4 @@ import { PaginationOffset${pluralPascal}UseCase } from 'application/useCases/${c
   });
 };
 
-export default plopConfig;
+export default config;

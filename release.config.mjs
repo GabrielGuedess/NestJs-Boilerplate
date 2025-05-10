@@ -1,7 +1,7 @@
 /**
  * @type {import('semantic-release').GlobalConfig}
  */
-export default {
+const config = {
   branches: ['main', 'next'],
   plugins: [
     '@semantic-release/changelog',
@@ -10,9 +10,9 @@ export default {
       {
         assets: [
           {
-            path: 'nestjs-boilerplate.zip',
-            name: 'nestjs-boilerplate-${nextRelease.gitTag}.zip',
-            label: 'Nestjs Boilerplate - Build: ${nextRelease.gitTag}',
+            path: 'expo-boilerplate.zip',
+            name: 'expo-boilerplate-${nextRelease.gitTag}.zip',
+            label: 'Expo Boilerplate - Build: ${nextRelease.gitTag}',
           },
         ],
       },
@@ -122,3 +122,5 @@ export default {
     ],
   ],
 };
+
+export default config;

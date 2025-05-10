@@ -127,6 +127,7 @@ const config = [
       '@typescript-eslint/require-await': 'off',
       '@typescript-eslint/no-unsafe-call': 'off',
       'arrow-body-style': ['error', 'as-needed'],
+      'import/no-anonymous-default-export': 'warn',
       '@typescript-eslint/no-misused-promises': 'off',
       '@typescript-eslint/no-floating-promises': 'off',
       'quote-props': ['error', 'consistent-as-needed'],
