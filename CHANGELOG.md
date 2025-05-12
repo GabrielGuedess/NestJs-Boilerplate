@@ -1,3 +1,9 @@
+## <small>1.6.1 (2025-05-12)</small>
+
+* fix(deps): update dependency prisma-nestjs-graphql to v21.2.0 (#298) ([616aca2](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/616aca2)), closes [#298](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/298)
+* chore: remove anonymous exports ([5054980](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/5054980))
+* chore(deps): update dependency eslint-config-prettier to v10.1.5 (#296) ([4d610da](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/4d610da)), closes [#296](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/296)
+
 ## 1.6.0 (2025-05-09)
 
 * feat: add knip ([ad43956](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/ad43956))
