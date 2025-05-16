@@ -1,3 +1,10 @@
+## <small>1.6.2 (2025-05-16)</small>
+
+* fix(deps): update prisma monorepo to v6.8.1 (#305) ([d639f29](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/d639f29)), closes [#305](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/305)
+* chore(deps): update dependency @types/node to v22.15.18 (#301) ([d200a60](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/d200a60)), closes [#301](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/301)
+* chore(deps): update dependency supertest to v7.1.1 (#299) ([c26f681](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/c26f681)), closes [#299](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/299)
+* chore(deps): update dependency ts-jest to v29.3.3 (#303) ([f1bdf1c](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/f1bdf1c)), closes [#303](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/303)
+
 ## <small>1.6.1 (2025-05-12)</small>
 
 * fix(deps): update dependency prisma-nestjs-graphql to v21.2.0 (#298) ([616aca2](https://github.com/GabrielGuedess/NestJs-Boilerplate/commit/616aca2)), closes [#298](https://github.com/GabrielGuedess/NestJs-Boilerplate/issues/298)
